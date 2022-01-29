@@ -1,13 +1,14 @@
 ﻿using CleanMOQasine.Data.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CleanMOQasine.Data
 {
     public class CleanMOQasineContext: DbContext
     {
-        private readonly string _connectionString = @"Data Source=LAPTOP-7HPLQHLI\TEW_SQLEXPRESS;Database=CleanMOQasine;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=10;Encrypt=False;TrustServerCertificate=False";
+        private readonly string _connectionString = @"Data Source=LAPTOP-7HPLQHLI\TEW_SQLEXPRESS;Initial Catalog=CleanMOQasine;Integrated Security=True";
 
-        protected CleanMOQasineContext()
+        public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options):base(options)
         {
             Database.EnsureDeleted();
             Database.EnsureCreated();
@@ -25,11 +26,27 @@ namespace CleanMOQasine.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_connectionString);
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
+
+            modelBuilder.Entity<Order>()
+            .HasOne(o => o.Grade)
+            .WithOne(g => g.Order)
+            .HasForeignKey<Grade>(o => o.OrderId);
+
+            modelBuilder.Entity<Grade>()
+            .HasOne(o => o.Order)
+            .WithOne(g => g.Grade)
+            .HasForeignKey<Order>(o => o.GradeId);
+
+            modelBuilder.Entity<CleaningAddition>()
+            .HasMany(p => p.Orders)
+            .WithMany(b => b.CleaningAdditions);
+
         }
     }
 }

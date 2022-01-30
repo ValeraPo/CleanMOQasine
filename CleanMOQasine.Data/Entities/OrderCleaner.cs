@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Entities
 {
-    public class OrderUser
+    public class OrderCleaner
     {
-        public int Id { get; set; }
-
         public int UserId { get; set; }
         public User User { get; set; }
 

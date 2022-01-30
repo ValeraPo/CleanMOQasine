@@ -6,7 +6,7 @@ namespace CleanMOQasine.Data
 {
     public class CleanMOQasineContextFactory : IDesignTimeDbContextFactory<CleanMOQasineContext>
     {
-        private readonly string _connectionString = @"Data Source=LAPTOP-7HPLQHLI\TEW_SQLEXPRESS;Initial Catalog=CleanMOQasine;Integrated Security=True";
+        private readonly string _connectionString = @"Data Source=DESKTOP-16PSAEB;Initial Catalog=EbaniMenjaDrobjuBratan;Integrated Security=True";
         public CleanMOQasineContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<CleanMOQasineContext>();

@@ -76,6 +76,16 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CleaningAddition");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть пол",
+                            Price = 500m
+                        });
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.CleaningType", b =>
@@ -99,6 +109,36 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CleaningType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Поддерживающая",
+                            Price = 3000m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Генеральная",
+                            Price = 6000m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "После ремонта",
+                            Price = 8000m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Мытье окон",
+                            Price = 2000m
+                        });
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Grade", b =>
@@ -178,50 +218,34 @@ namespace CleanMOQasine.Data.Migrations
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderCleaningAddition", b =>
+            modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderCleaner", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CleaningAdditionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CleaningAdditionId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderCleaningAddition");
-                });
-
-            modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
+                    b.HasKey("OrderId", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OrderUser");
+                    b.ToTable("OrderCleaner");
+                });
+
+            modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderCleaningAddition", b =>
+                {
+                    b.Property<int>("CleaningAdditionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CleaningAdditionId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderCleaningAddition");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Payment", b =>
@@ -272,6 +296,43 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Room");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Жилая комната",
+                            Price = 1100m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Гостиная",
+                            Price = 1300m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "Кухня",
+                            Price = 1300m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Санузел",
+                            Price = 800m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsDeleted = false,
+                            Name = "Гараж",
+                            Price = 1700m
+                        });
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.User", b =>
@@ -404,7 +465,7 @@ namespace CleanMOQasine.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.User", "Client")
-                        .WithMany("Orders")
+                        .WithMany("ClientOrders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -420,6 +481,25 @@ namespace CleanMOQasine.Data.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Grade");
+                });
+
+            modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderCleaner", b =>
+                {
+                    b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
+                        .WithMany("OrderCleaners")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CleanMOQasine.Data.Entities.User", "User")
+                        .WithMany("OrderCleaners")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderCleaningAddition", b =>
@@ -439,25 +519,6 @@ namespace CleanMOQasine.Data.Migrations
                     b.Navigation("CleaningAddition");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("CleanMOQasine.Data.Entities.OrderUser", b =>
-                {
-                    b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
-                        .WithMany("OrderUsers")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CleanMOQasine.Data.Entities.User", "User")
-                        .WithMany("OrderUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Payment", b =>
@@ -515,18 +576,18 @@ namespace CleanMOQasine.Data.Migrations
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Order", b =>
                 {
-                    b.Navigation("OrderCleaningAdditions");
+                    b.Navigation("OrderCleaners");
 
-                    b.Navigation("OrderUsers");
+                    b.Navigation("OrderCleaningAdditions");
 
                     b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.User", b =>
                 {
-                    b.Navigation("OrderUsers");
+                    b.Navigation("ClientOrders");
 
-                    b.Navigation("Orders");
+                    b.Navigation("OrderCleaners");
 
                     b.Navigation("WorkingTime");
                 });

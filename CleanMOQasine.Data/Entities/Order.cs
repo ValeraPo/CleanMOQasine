@@ -7,12 +7,14 @@ namespace CleanMOQasine.Data.Entities
     {
         [Key]
         public int Id { get; set; }
+
+        public int ClientId { get; set; }
         public virtual User Client { get; set; }
         public virtual CleaningType CleaningType { get; set; }
         public ICollection<OrderCleaningAddition> OrderCleaningAdditions { get; set; }
         public ICollection<CleaningAddition> CleaningAdditions { get; set; }   
 
-        [NotMapped]
+        public ICollection<OrderUser> OrderUsers { get; set; }
         public virtual ICollection<User> Cleaners { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
         public int GradeId { get; set; }

@@ -14,6 +14,8 @@ namespace CleanMOQasine.Data.Entities
         public string Password { get; set; }
         public virtual ICollection<CleaningAddition> CleaningAdditions { get; set; }
         public virtual ICollection<WorkingTime> WorkingTime { get; set; }
+        public ICollection<OrderUser> OrderUsers { get; set; }
+        public virtual ICollection<Order> CleanerOrders { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public double Rank { get; set; }
         public bool IsDeleted { get; set; }

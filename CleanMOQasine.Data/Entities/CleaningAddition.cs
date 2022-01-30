@@ -11,7 +11,7 @@ namespace CleanMOQasine.Data.Entities
         public virtual ICollection<User> Users { get; set; }
         public ICollection<OrderCleaningAddition> OrderCleaningAdditions { get; set; }
         public virtual ICollection<Order> Orders { get; set; } 
-        public virtual CleaningType CleaningType { get; set; }
+        public virtual ICollection<CleaningType> CleaningTypes { get; set; }
         public decimal Price { get; set; }
         public TimeSpan Duration { get; set; }
         public bool IsDeleted { get; set; }

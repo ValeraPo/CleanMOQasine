@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220130154325_Huentiti")]
+    [Migration("20220130160509_Huentiti")]
     partial class Huentiti
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -509,13 +509,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", "CleaningAddition")
                         .WithMany("OrderCleaningAdditions")
                         .HasForeignKey("CleaningAdditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
                         .WithMany("OrderCleaningAdditions")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CleaningAddition");

@@ -32,42 +32,7 @@ namespace CleanMOQasine.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Order>()
-            .HasOne(o => o.Grade)
-            .WithOne(g => g.Order)
-            .HasForeignKey<Grade>(o => o.OrderId);
-
-            modelBuilder.Entity<Grade>()
-            .HasOne(o => o.Order)
-            .WithOne(g => g.Grade)
-            .HasForeignKey<Order>(o => o.GradeId);
-
-            modelBuilder.Entity<CleaningAddition>()
-            .HasMany(p => p.Orders)
-            .WithMany(b => b.CleaningAdditions)
-            .UsingEntity<OrderCleaningAddition>(
-                j => j.HasOne(i => i.Order)
-                .WithMany(t => t.OrderCleaningAdditions)
-                .HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Cascade),
-                j => j.HasOne(i => i.CleaningAddition)
-                .WithMany(t => t.OrderCleaningAdditions)
-                .HasForeignKey(o => o.CleaningAdditionId).OnDelete(DeleteBehavior.Cascade));
-
-            modelBuilder.Entity<User>()
-            .HasMany(p => p.CleanerOrders)
-            .WithMany(b => b.Cleaners)
-            .UsingEntity<OrderCleaner>(
-                j => j.HasOne(i => i.Order)
-                .WithMany(t => t.OrderCleaners)
-                .HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Restrict),
-                j => j.HasOne(i => i.User)
-                .WithMany(t => t.OrderCleaners)
-                .HasForeignKey(o => o.UserId).OnDelete(DeleteBehavior.Restrict));
-
-            modelBuilder.Entity<Order>()
-            .HasOne(u => u.Client)
-            .WithMany(c => c.ClientOrders)
-            .HasForeignKey(f => f.ClientId);
+            modelBuilder.CreateEntities();
             
             modelBuilder.Seed();
         }

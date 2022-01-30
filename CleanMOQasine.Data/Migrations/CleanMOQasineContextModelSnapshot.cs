@@ -507,13 +507,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", "CleaningAddition")
                         .WithMany("OrderCleaningAdditions")
                         .HasForeignKey("CleaningAdditionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
                         .WithMany("OrderCleaningAdditions")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CleaningAddition");

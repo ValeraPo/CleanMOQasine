@@ -1,14 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanMOQasine.Data.Entities
 {
     public class Order
     {
+        [Key]
         public int Id { get; set; }
         public virtual User Client { get; set; }
         public virtual CleaningType CleaningType { get; set; }
-
-        public virtual ICollection<CleaningAddition> CleaningAdditions { get; set; }
+        public ICollection<OrderCleaningAddition> OrderCleaningAdditions { get; set; }
+        public ICollection<CleaningAddition> CleaningAdditions { get; set; }   
 
         [NotMapped]
         public virtual ICollection<User> Cleaners { get; set; }

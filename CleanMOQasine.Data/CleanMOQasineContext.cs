@@ -10,7 +10,6 @@ namespace CleanMOQasine.Data
 
         public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options):base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -45,7 +44,16 @@ namespace CleanMOQasine.Data
 
             modelBuilder.Entity<CleaningAddition>()
             .HasMany(p => p.Orders)
-            .WithMany(b => b.CleaningAdditions);
+            .WithMany(b => b.CleaningAdditions)
+            .UsingEntity<OrderCleaningAddition>(
+                j => j.HasOne(i => i.Order)
+                .WithMany(t => t.OrderCleaningAdditions)
+                .HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Restrict),
+                j => j.HasOne(i => i.CleaningAddition)
+                .WithMany(t => t.OrderCleaningAdditions)
+                .HasForeignKey(o => o.CleaningAdditionId).OnDelete(DeleteBehavior.Restrict));
+
+
 
         }
     }

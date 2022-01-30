@@ -6,7 +6,7 @@ namespace CleanMOQasine.Data
 {
     public class CleanMOQasineContext: DbContext
     {
-        private readonly string _connectionString = @"Data Source=LAPTOP-7HPLQHLI\TEW_SQLEXPRESS;Initial Catalog=CleanMOQasine;Integrated Security=True";
+        private readonly string _connectionString = @"Data Source=DESKTOP-16PSAEB;Initial Catalog=EbaniMenjaDrobjuBratan;Integrated Security=True";
 
         public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options):base(options)
         {
@@ -31,7 +31,6 @@ namespace CleanMOQasine.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Seed();
 
             modelBuilder.Entity<Order>()
             .HasOne(o => o.Grade)
@@ -49,26 +48,28 @@ namespace CleanMOQasine.Data
             .UsingEntity<OrderCleaningAddition>(
                 j => j.HasOne(i => i.Order)
                 .WithMany(t => t.OrderCleaningAdditions)
-                .HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Restrict),
+                .HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Cascade),
                 j => j.HasOne(i => i.CleaningAddition)
                 .WithMany(t => t.OrderCleaningAdditions)
-                .HasForeignKey(o => o.CleaningAdditionId).OnDelete(DeleteBehavior.Restrict));
+                .HasForeignKey(o => o.CleaningAdditionId).OnDelete(DeleteBehavior.Cascade));
 
             modelBuilder.Entity<User>()
             .HasMany(p => p.CleanerOrders)
             .WithMany(b => b.Cleaners)
-            .UsingEntity<OrderUser>(
+            .UsingEntity<OrderCleaner>(
                 j => j.HasOne(i => i.Order)
-                .WithMany(t => t.OrderUsers)
+                .WithMany(t => t.OrderCleaners)
                 .HasForeignKey(o => o.OrderId).OnDelete(DeleteBehavior.Restrict),
                 j => j.HasOne(i => i.User)
-                .WithMany(t => t.OrderUsers)
+                .WithMany(t => t.OrderCleaners)
                 .HasForeignKey(o => o.UserId).OnDelete(DeleteBehavior.Restrict));
 
             modelBuilder.Entity<Order>()
             .HasOne(u => u.Client)
-            .WithMany(c => c.Orders)
+            .WithMany(c => c.ClientOrders)
             .HasForeignKey(f => f.ClientId);
+            
+            modelBuilder.Seed();
         }
     }
 }

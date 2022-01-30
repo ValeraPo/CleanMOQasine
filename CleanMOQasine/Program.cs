@@ -2,12 +2,6 @@ using CleanMOQasine.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-static IHostBuilder CreateHostBuilder(string[] args)
-       => Host.CreateDefaultBuilder(args)
-           .ConfigureWebHostDefaults(
-               webBuilder => webBuilder.UseStartup<Startup>());
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

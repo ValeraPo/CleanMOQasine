@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220130142519_Huentiti")]
+    [Migration("20220130154325_Huentiti")]
     partial class Huentiti
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

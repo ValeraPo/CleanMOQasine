@@ -7,10 +7,9 @@ namespace CleanMOQasine.Data
     public class CleanMOQasineContext: DbContext
     {
         private readonly string _connectionString = @"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23";
-
-        public CleanMOQasineContext(string connectionString)
+        CleanMOQasineContext instance;
+        public CleanMOQasineContext()
         {
-            connectionString = _connectionString;
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
         }

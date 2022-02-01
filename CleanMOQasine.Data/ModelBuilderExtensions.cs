@@ -61,7 +61,7 @@ namespace CleanMOQasine.Data
                 new CleaningType() { Id = 4, Name = "Мытье окон", Price = 2000, IsDeleted = false });
 
             modelBuilder.Entity<CleaningAddition>().HasData(
-                new CleaningAddition() { Id = 1, Name = "Помыть пол", Price = 500, Duration = new TimeSpan(0, 30, 0), IsDeleted = false });
+                new CleaningAddition() { Id = 1, Name = "Помыть пол", Price = 500, Duration = new TimeSpan(0, 30, 0), IsDeleted = false },
             new CleaningAddition() { Id = 2, Name = "Почистить ковёр", Price = 700, Duration = new TimeSpan(0, 30, 0), IsDeleted = false },
             new CleaningAddition() { Id = 3, Name = "Почистить мебель", Price = 900, Duration = new TimeSpan(1, 0, 0), IsDeleted = false },
             new CleaningAddition() { Id = 4, Name = "Протереть пыль", Price = 500, Duration = new TimeSpan(0, 40, 0), IsDeleted = false },

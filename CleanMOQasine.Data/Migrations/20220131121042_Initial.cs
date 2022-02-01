@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CleanMOQasine.Data.Migrations
 {
-    public partial class Huentiti : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -300,7 +300,41 @@ namespace CleanMOQasine.Data.Migrations
             migrationBuilder.InsertData(
                 table: "CleaningAddition",
                 columns: new[] { "Id", "Duration", "IsDeleted", "Name", "Price" },
-                values: new object[] { 1, new TimeSpan(0, 0, 30, 0, 0), false, "Помыть пол", 500m });
+                values: new object[,]
+                {
+                    { 1, new TimeSpan(0, 0, 30, 0, 0), false, "Помыть пол", 500m },
+                    { 2, new TimeSpan(0, 0, 30, 0, 0), false, "Почистить ковёр", 700m },
+                    { 3, new TimeSpan(0, 1, 0, 0, 0), false, "Почистить мебель", 900m },
+                    { 4, new TimeSpan(0, 0, 40, 0, 0), false, "Протереть пыль", 500m },
+                    { 5, new TimeSpan(0, 0, 20, 0, 0), false, "Помыть зеркала", 400m },
+                    { 6, new TimeSpan(0, 0, 15, 0, 0), false, "Застелить постель", 200m },
+                    { 7, new TimeSpan(0, 0, 30, 0, 0), false, "Сложить вещи", 400m },
+                    { 8, new TimeSpan(0, 0, 15, 0, 0), false, "Вынести мусор", 200m },
+                    { 9, new TimeSpan(0, 0, 20, 0, 0), false, "Помыть люстру", 600m },
+                    { 10, new TimeSpan(0, 0, 20, 0, 0), false, "Дезинфекция", 500m },
+                    { 11, new TimeSpan(0, 0, 30, 0, 0), false, "Убраться в гардеробной", 600m },
+                    { 12, new TimeSpan(0, 0, 15, 0, 0), false, "Помыть окно изнутри", 400m },
+                    { 13, new TimeSpan(0, 0, 45, 0, 0), false, "Помыть окна на балконе изнутри", 700m },
+                    { 14, new TimeSpan(0, 0, 35, 0, 0), false, "Убрать балкон", 600m },
+                    { 15, new TimeSpan(0, 1, 0, 0, 0), false, "Погладить вещи", 600m },
+                    { 16, new TimeSpan(0, 0, 40, 0, 0), false, "Доставить ключи", 300m },
+                    { 17, new TimeSpan(0, 0, 40, 0, 0), false, "Забрать ключи", 300m },
+                    { 18, new TimeSpan(0, 0, 15, 0, 0), false, "Помыть раковину", 400m },
+                    { 19, new TimeSpan(0, 0, 15, 0, 0), false, "Помыть столешницу", 200m },
+                    { 20, new TimeSpan(0, 0, 25, 0, 0), false, "Помыть плиту", 600m },
+                    { 21, new TimeSpan(0, 0, 30, 0, 0), false, "Помыть обеденный стол", 500m },
+                    { 22, new TimeSpan(0, 0, 50, 0, 0), false, "Помыть посуду", 600m },
+                    { 23, new TimeSpan(0, 0, 40, 0, 0), false, "Помыть холодильник", 500m },
+                    { 24, new TimeSpan(0, 0, 30, 0, 0), false, "Помыть духовку", 400m },
+                    { 25, new TimeSpan(0, 0, 20, 0, 0), false, "Помыть микроволновку", 300m },
+                    { 26, new TimeSpan(0, 1, 0, 0, 0), false, "Помыть шкафы на кухне", 800m },
+                    { 27, new TimeSpan(0, 0, 40, 0, 0), false, "Помыть ванну или душевую", 800m },
+                    { 28, new TimeSpan(0, 0, 25, 0, 0), false, "Помыть унитаз", 500m },
+                    { 29, new TimeSpan(0, 0, 20, 0, 0), false, "Помыть биде", 300m },
+                    { 30, new TimeSpan(0, 0, 10, 0, 0), false, "Помыть лоток", 200m },
+                    { 31, new TimeSpan(0, 0, 30, 0, 0), false, "Убрать что-то ещё", 400m },
+                    { 32, new TimeSpan(0, 1, 0, 0, 0), false, "Ебануть дробью", 0m }
+                });
 
             migrationBuilder.InsertData(
                 table: "CleaningType",

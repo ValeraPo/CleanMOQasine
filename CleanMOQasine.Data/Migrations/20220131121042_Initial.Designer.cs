@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220130160509_Huentiti")]
-    partial class Huentiti
+    [Migration("20220131121042_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -87,6 +87,254 @@ namespace CleanMOQasine.Data.Migrations
                             IsDeleted = false,
                             Name = "Помыть пол",
                             Price = 500m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Почистить ковёр",
+                            Price = 700m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Duration = new TimeSpan(0, 1, 0, 0, 0),
+                            IsDeleted = false,
+                            Name = "Почистить мебель",
+                            Price = 900m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Duration = new TimeSpan(0, 0, 40, 0, 0),
+                            IsDeleted = false,
+                            Name = "Протереть пыль",
+                            Price = 500m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Duration = new TimeSpan(0, 0, 20, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть зеркала",
+                            Price = 400m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Duration = new TimeSpan(0, 0, 15, 0, 0),
+                            IsDeleted = false,
+                            Name = "Застелить постель",
+                            Price = 200m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Сложить вещи",
+                            Price = 400m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Duration = new TimeSpan(0, 0, 15, 0, 0),
+                            IsDeleted = false,
+                            Name = "Вынести мусор",
+                            Price = 200m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Duration = new TimeSpan(0, 0, 20, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть люстру",
+                            Price = 600m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Duration = new TimeSpan(0, 0, 20, 0, 0),
+                            IsDeleted = false,
+                            Name = "Дезинфекция",
+                            Price = 500m
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Убраться в гардеробной",
+                            Price = 600m
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Duration = new TimeSpan(0, 0, 15, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть окно изнутри",
+                            Price = 400m
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Duration = new TimeSpan(0, 0, 45, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть окна на балконе изнутри",
+                            Price = 700m
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Duration = new TimeSpan(0, 0, 35, 0, 0),
+                            IsDeleted = false,
+                            Name = "Убрать балкон",
+                            Price = 600m
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Duration = new TimeSpan(0, 1, 0, 0, 0),
+                            IsDeleted = false,
+                            Name = "Погладить вещи",
+                            Price = 600m
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Duration = new TimeSpan(0, 0, 40, 0, 0),
+                            IsDeleted = false,
+                            Name = "Доставить ключи",
+                            Price = 300m
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Duration = new TimeSpan(0, 0, 40, 0, 0),
+                            IsDeleted = false,
+                            Name = "Забрать ключи",
+                            Price = 300m
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Duration = new TimeSpan(0, 0, 15, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть раковину",
+                            Price = 400m
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Duration = new TimeSpan(0, 0, 15, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть столешницу",
+                            Price = 200m
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Duration = new TimeSpan(0, 0, 25, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть плиту",
+                            Price = 600m
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть обеденный стол",
+                            Price = 500m
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Duration = new TimeSpan(0, 0, 50, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть посуду",
+                            Price = 600m
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Duration = new TimeSpan(0, 0, 40, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть холодильник",
+                            Price = 500m
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть духовку",
+                            Price = 400m
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Duration = new TimeSpan(0, 0, 20, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть микроволновку",
+                            Price = 300m
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Duration = new TimeSpan(0, 1, 0, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть шкафы на кухне",
+                            Price = 800m
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Duration = new TimeSpan(0, 0, 40, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть ванну или душевую",
+                            Price = 800m
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Duration = new TimeSpan(0, 0, 25, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть унитаз",
+                            Price = 500m
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Duration = new TimeSpan(0, 0, 20, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть биде",
+                            Price = 300m
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Duration = new TimeSpan(0, 0, 10, 0, 0),
+                            IsDeleted = false,
+                            Name = "Помыть лоток",
+                            Price = 200m
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Duration = new TimeSpan(0, 0, 30, 0, 0),
+                            IsDeleted = false,
+                            Name = "Убрать что-то ещё",
+                            Price = 400m
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Duration = new TimeSpan(0, 1, 0, 0, 0),
+                            IsDeleted = false,
+                            Name = "Ебануть дробью",
+                            Price = 0m
                         });
                 });
 

@@ -6,12 +6,25 @@ namespace CleanMOQasine.Data
 {
     public class CleanMOQasineContext: DbContext
     {
-        private readonly string _connectionString = @"Data Source=DESKTOP-16PSAEB;Initial Catalog=EbaniMenjaDrobjuBratan;Integrated Security=True";
+        private readonly string _connectionString = @"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23";
 
-        public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options):base(options)
+        public CleanMOQasineContext(string connectionString)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            connectionString = _connectionString;
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_connectionString);
+            
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.CreateEntities();
+            modelBuilder.Seed();
         }
 
         public DbSet<CleaningAddition> CleaningAddition { get; set; }
@@ -22,19 +35,7 @@ namespace CleanMOQasine.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<Grade> Grade { get; set; }
         public DbSet<Payment> Payment { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_connectionString);
-            
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-
-            modelBuilder.CreateEntities();
-            
-            modelBuilder.Seed();
-        }
+        public DbSet<OrderCleaner> OrderCleaner { get; set; }
+        public DbSet<OrderCleaningAddition> OrderCleaningAddition { get; set; }
     }
 }

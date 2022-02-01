@@ -8,10 +8,11 @@ namespace CleanMOQasine.Data
     {
         private readonly string _connectionString = @"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23";
 
-        public CleanMOQasineContext()
+        public CleanMOQasineContext(string connectionString)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+            connectionString = _connectionString;
+            //Database.EnsureDeleted();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -34,5 +35,7 @@ namespace CleanMOQasine.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<Grade> Grade { get; set; }
         public DbSet<Payment> Payment { get; set; }
+        public DbSet<OrderCleaner> OrderCleaner { get; set; }
+        public DbSet<OrderCleaningAddition> OrderCleaningAddition { get; set; }
     }
 }

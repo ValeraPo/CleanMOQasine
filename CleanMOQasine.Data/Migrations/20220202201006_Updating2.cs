@@ -4,7 +4,7 @@
 
 namespace CleanMOQasine.Data.Migrations
 {
-    public partial class ebae : Migration
+    public partial class Updating2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

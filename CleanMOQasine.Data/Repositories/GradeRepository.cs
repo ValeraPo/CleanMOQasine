@@ -35,16 +35,16 @@ namespace CleanMOQasine.Data.Repositories
         }
         public void AddGrade(Grade grade)
         {
-            Info.Context.Grade.Add(grade);
-            var boundedOrder = Info.Context.Order.FirstOrDefault(o => o.Id == grade.OrderId);
-            if (boundedOrder.Grade is null)
-            {
-                Info.Context.SaveChanges();
-                return;
-            }
-            boundedOrder.Grade = grade;
-            boundedOrder.GradeId = grade.Id;
-            Info.Context.SaveChanges();
+            //Info.Context.Grade.Add(grade);
+            //var boundedOrder = Info.Context.Order.FirstOrDefault(o => o.Id == grade.OrderId);
+            //if (boundedOrder.Grade is null)
+            //{
+            //    Info.Context.SaveChanges();
+            //    return;
+            //}
+            //boundedOrder.Grade = grade;
+            //boundedOrder.GradeId = grade.Id;
+            //Info.Context.SaveChanges();
         }
     }
 }

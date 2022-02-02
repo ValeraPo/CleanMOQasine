@@ -15,44 +15,58 @@ namespace CleanMOQasine.Data.Repositories
         public void UpdateOrder(Order order)
         {
             var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
-            oldOrder.ClientId = order.ClientId;
-            oldOrder.Client = order.Client;
             oldOrder.CleaningType = order.CleaningType;
-            oldOrder.GradeId = order.GradeId;
             oldOrder.Grade = order.Grade;
             oldOrder.Address = order.Address;
             oldOrder.TotalPrice = order.TotalPrice;
             oldOrder.TotalDuration = order.TotalDuration;
             oldOrder.Date = order.Date;
-            oldOrder.IsCompleted = order.IsCompleted;
             oldOrder.Rooms = order.Rooms;
-            oldOrder.OrderCleaningAdditions = order.OrderCleaningAdditions;
             oldOrder.CleaningAdditions = order.CleaningAdditions;
-            oldOrder.OrderCleaners = order.OrderCleaners;
-            oldOrder.Cleaners = order.Cleaners;
-            oldOrder.Payments = order.Payments;
+            Save(); 
+        }
 
-            _dbContext.SaveChanges();
+        public void AddCleaner(Order order, User cleaner)
+        {
+            var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
+            oldOrder.Cleaners.Add(cleaner);
+            Save();
+        }
+
+        public void RemoveCleaner(Order order, User cleaner)
+        {
+            var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
+            oldOrder.Cleaners.Remove(cleaner);
+            Save();
+        }
+
+        public void AddPayment(Order order, Payment payment)
+        {
+            var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
+            oldOrder.Payments.Add(payment);
+            Save();
         }
 
         public void DeleteOrder(int id)
         {
             var order = _dbContext.Order.FirstOrDefault(o => o.Id == id);
             order.IsDeleted = true;
-            _dbContext.SaveChanges();
+            Save();
         }
 
         public void RestoreOrder(int id)
         {
             var order = _dbContext.Order.FirstOrDefault(o => o.Id == id);
             order.IsDeleted = true;
-            _dbContext.SaveChanges();
+            Save();
         }
 
         public void AddOrder(Order order)
         {
             _dbContext.Order.Add(order);
-            _dbContext.SaveChanges();
+            Save();
         }
+
+        private void Save() => _dbContext.SaveChanges();
     }
 }

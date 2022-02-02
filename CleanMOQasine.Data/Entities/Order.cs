@@ -8,10 +8,10 @@ namespace CleanMOQasine.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        public int ClientId { get; set; }//да нет
+        //public int ClientId { get; set; }//да нет
         public virtual User Client { get; set; }
         public virtual CleaningType CleaningType { get; set; }
-        public int GradeId { get; set; }
+        //public int GradeId { get; set; }
         public virtual Grade Grade { get; set; }
         public string Address { get; set; }
         public decimal TotalPrice { get; set; }

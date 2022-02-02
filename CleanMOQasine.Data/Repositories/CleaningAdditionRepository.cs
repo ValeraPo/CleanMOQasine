@@ -30,7 +30,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public List<CleaningAddition> GetCleaningAdditionsByCleaningType(CleaningType cleaningType)
         {
-            List<CleaningAddition> cleaningAdditions = _context.CleaningAddition.Where(ca => ca.CleaningTypes.Contains(cleaningType))
+            var cleaningAdditions = _context.CleaningAddition.Where(ca => ca.CleaningTypes.Contains(cleaningType))
                                                                                .Include(ca => ca.CleaningTypes)
                                                                                .Include(ca => ca.Users)
                                                                                .ToList();
@@ -45,7 +45,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public void UpdateCleaningAddition(CleaningAddition updatedCleaningAddition)
         {
-            CleaningAddition cleaningAddition = GetCleaningAdditionById(updatedCleaningAddition.Id);
+            var cleaningAddition = GetCleaningAdditionById(updatedCleaningAddition.Id);
             cleaningAddition = updatedCleaningAddition;
 
             _context.SaveChanges();
@@ -53,14 +53,14 @@ namespace CleanMOQasine.Data.Repositories
 
         public void DeleteCleaningAddition(int id)
         {
-            CleaningAddition cleaningaddition = _context.CleaningAddition.FirstOrDefault(ca => ca.Id == id);
+            var cleaningaddition = _context.CleaningAddition.FirstOrDefault(ca => ca.Id == id);
             cleaningaddition.IsDeleted = true;
             _context.SaveChanges();
         }
 
         public void RestoreCleaningAddition(int id)
         {
-            CleaningAddition cleaningaddition = _context.CleaningAddition.FirstOrDefault(ca => ca.Id == id);
+            var cleaningaddition = _context.CleaningAddition.FirstOrDefault(ca => ca.Id == id);
             cleaningaddition.IsDeleted = false;
 
             _context.SaveChanges();

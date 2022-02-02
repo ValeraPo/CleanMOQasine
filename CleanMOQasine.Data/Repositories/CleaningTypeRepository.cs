@@ -32,8 +32,8 @@ namespace CleanMOQasine.Data.Repositories
 
         public void UpdateCleaningType(CleaningType updatedCleaningType)
         {
-            
-            CleaningType cleaningType = GetCleaningTypeById(updatedCleaningType.Id);
+
+            var cleaningType = GetCleaningTypeById(updatedCleaningType.Id);
             cleaningType = updatedCleaningType;
 
             _context.SaveChanges();
@@ -41,8 +41,8 @@ namespace CleanMOQasine.Data.Repositories
 
         public void AddCleaningAdditionToCleaningType(int cleaningTypeId, CleaningAddition cleaningAddition)
         {
-            
-            CleaningType interstedCleaningType = GetCleaningTypeById(cleaningTypeId);
+
+            var interstedCleaningType = GetCleaningTypeById(cleaningTypeId);
             interstedCleaningType.CleaningAdditions.Add(cleaningAddition);
 
             _context.SaveChanges();
@@ -50,14 +50,14 @@ namespace CleanMOQasine.Data.Repositories
 
         public void DeleteCleaningType(int id)
         {
-            CleaningType cleaningType = GetCleaningTypeById(id);
+            var cleaningType = GetCleaningTypeById(id);
             cleaningType.IsDeleted = true;
             _context.SaveChanges();
         }
 
         public void RestoreCleaningType(int id)
         {
-            CleaningType cleaningType = GetCleaningTypeById(id);
+            var cleaningType = GetCleaningTypeById(id);
             cleaningType.IsDeleted = false;
 
             _context.SaveChanges();

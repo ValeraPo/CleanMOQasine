@@ -9,7 +9,7 @@ namespace CleanMOQasine.API.Controllers
     public class CleaningAdditionController : ControllerBase
     {
 
-        [HttpGet("Get by Id")]
+        [HttpGet("{id}")]
         public ActionResult<CleaningAdditionModel> GetCleaningAdditionById(int id)
         {
             return Ok(new CleaningAdditionModel());
@@ -27,20 +27,20 @@ namespace CleanMOQasine.API.Controllers
             return StatusCode(StatusCodes.Status201Created, cleaningAdditionModel);
         }
 
-        [HttpPut("Update by Id")]
+        [HttpPut()]
         public ActionResult UpdateCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel)
         {
             return Ok($"Cleaning type with {id} was updated");
         }
 
 
-        [HttpPatch("Delete by Id")]
+        [HttpPatch()]
         public ActionResult DeleteCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel)
         {
             return Accepted($"Cleaning type with {id} was deleted");
         }
 
-        [HttpPatch("Restore by {id}")]
+        [HttpPatch("{id}")]
         public ActionResult RestoreCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel)
         {
             return Accepted($"Cleaning type with {id} was deleted");

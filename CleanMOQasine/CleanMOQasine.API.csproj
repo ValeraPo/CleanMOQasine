@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CleanMOQasine.Data\CleanMOQasine.Data.csproj" />
+    <ProjectReference Include="..\CleanMOQasine.Business\CleanMOQasine.Business.csproj" />
   </ItemGroup>
 
 </Project>

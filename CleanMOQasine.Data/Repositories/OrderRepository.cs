@@ -21,7 +21,23 @@ namespace CleanMOQasine.Data.Repositories
         public void UpdateOrder(Order order)
         {
             var oldOrder = _info.Order.FirstOrDefault(o => o.Id == order.Id);
-            oldOrder = order;
+            oldOrder.ClientId = order.ClientId;
+            oldOrder.Client = order.Client;
+            oldOrder.CleaningType = order.CleaningType;
+            oldOrder.GradeId = order.GradeId;
+            oldOrder.Grade = order.Grade;
+            oldOrder.Address = order.Address;
+            oldOrder.TotalPrice = order.TotalPrice;
+            oldOrder.TotalDuration = order.TotalDuration;
+            oldOrder.Date = order.Date;
+            oldOrder.IsCompleted = order.IsCompleted;
+            oldOrder.Rooms = order.Rooms;
+            oldOrder.OrderCleaningAdditions = order.OrderCleaningAdditions;
+            oldOrder.CleaningAdditions = order.CleaningAdditions;
+            oldOrder.OrderCleaners = order.OrderCleaners;
+            oldOrder.Cleaners = order.Cleaners;
+            oldOrder.Payments = order.Payments;
+
             _info.SaveChanges();
         }
 

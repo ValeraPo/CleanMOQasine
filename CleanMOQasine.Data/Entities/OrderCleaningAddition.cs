@@ -13,6 +13,7 @@ namespace CleanMOQasine.Data.Entities
 
         public int CleaningAdditionId { get; set; }
         public CleaningAddition CleaningAddition { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }

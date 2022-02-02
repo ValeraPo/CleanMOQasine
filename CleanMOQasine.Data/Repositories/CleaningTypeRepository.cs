@@ -13,38 +13,31 @@ namespace CleanMOQasine.Data.Repositories
         public CleaningType GetCleaningTypeById(int id)
         {
             return _context.CleaningType.Include(ca => ca.CleaningAdditions)
-                                       .FirstOrDefault(ct => ct.Id == id);
+                           .FirstOrDefault(ct => ct.Id == id);
         }
 
         public List<CleaningType> GetAllCleaningTypes()
         {
-            
             return _context.CleaningType.Include(ca => ca.CleaningAdditions).ToList();
         }
 
         public void AddCleaningType(CleaningType cleaningType)
         {
-            
             _context.CleaningType.Add(cleaningType);
-
             _context.SaveChanges();
         }
 
         public void UpdateCleaningType(CleaningType updatedCleaningType)
         {
-
             var cleaningType = GetCleaningTypeById(updatedCleaningType.Id);
             cleaningType = updatedCleaningType;
-
             _context.SaveChanges();
         }
 
         public void AddCleaningAdditionToCleaningType(int cleaningTypeId, CleaningAddition cleaningAddition)
         {
-
             var interstedCleaningType = GetCleaningTypeById(cleaningTypeId);
             interstedCleaningType.CleaningAdditions.Add(cleaningAddition);
-
             _context.SaveChanges();
         }
 
@@ -59,7 +52,6 @@ namespace CleanMOQasine.Data.Repositories
         {
             var cleaningType = GetCleaningTypeById(id);
             cleaningType.IsDeleted = false;
-
             _context.SaveChanges();
         }
     }

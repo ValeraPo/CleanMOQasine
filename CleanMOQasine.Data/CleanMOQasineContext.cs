@@ -1,4 +1,4 @@
-﻿using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 
@@ -12,6 +12,12 @@ namespace CleanMOQasine.Data
         {
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
+        }
+        public static CleanMOQasineContext GetInstance()
+        {
+            if (_instance == null)
+                _instance = new CleanMOQasineContext();
+            return _instance;
         }
 
         public static CleanMOQasineContext GetInstance()
@@ -33,6 +39,7 @@ namespace CleanMOQasine.Data
             modelBuilder.Seed();
         }
 
+
         public DbSet<CleaningAddition> CleaningAddition { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<CleaningType> CleaningType { get; set; }
@@ -41,7 +48,5 @@ namespace CleanMOQasine.Data
         public DbSet<Order> Order { get; set; }
         public DbSet<Grade> Grade { get; set; }
         public DbSet<Payment> Payment { get; set; }
-        public DbSet<OrderCleaner> OrderCleaner { get; set; }
-        public DbSet<OrderCleaningAddition> OrderCleaningAddition { get; set; }
     }
 }

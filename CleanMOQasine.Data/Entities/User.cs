@@ -12,7 +12,7 @@ namespace CleanMOQasine.Data.Entities
         public string Email { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public double Rank { get; set; }
+        public double? Rank { get; set; }
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<CleaningAddition> CleaningAdditions { get; set; }

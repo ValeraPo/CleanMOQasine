@@ -29,14 +29,14 @@ namespace CleanMOQasine.Data.Repositories
         public void AddCleaner(Order order, User cleaner)
         {
             var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
-            oldOrder.Cleaners.Add(cleaner);
+            oldOrder.InvolvedUsers.Add(cleaner);
             Save();
         }
 
         public void RemoveCleaner(Order order, User cleaner)
         {
             var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
-            oldOrder.Cleaners.Remove(cleaner);
+            oldOrder.InvolvedUsers.Remove(cleaner);
             Save();
         }
 

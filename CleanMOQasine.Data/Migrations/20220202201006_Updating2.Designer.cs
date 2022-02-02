@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220202144152_wwwwe")]
-    partial class wwwwe
+    [Migration("20220202201006_Updating2")]
+    partial class Updating2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

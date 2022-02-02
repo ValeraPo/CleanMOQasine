@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CleanMOQasine.Data.Migrations
 {
-    public partial class wwwwe : Migration
+    public partial class Updating : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

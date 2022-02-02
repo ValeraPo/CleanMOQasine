@@ -9,7 +9,7 @@ namespace CleanMOQasine.Data.Entities
         public int Id { get; set; }
 
         public int ClientId { get; set; }//да нет
-        public virtual User Client { get; set; }
+        //public virtual User Client { get; set; }
         public virtual CleaningType CleaningType { get; set; }
         public int GradeId { get; set; }
         public virtual Grade Grade { get; set; }
@@ -22,10 +22,8 @@ namespace CleanMOQasine.Data.Entities
 
 
         public virtual ICollection<Room> Rooms { get; set; }
-        public virtual ICollection<OrderCleaningAddition> OrderCleaningAdditions { get; set; }
         public virtual ICollection<CleaningAddition> CleaningAdditions { get; set; }   
-        public virtual ICollection<OrderCleaner> OrderCleaners { get; set; }
-        public virtual ICollection<User> Cleaners { get; set; }
+        public virtual ICollection<User> InvolvedUsers { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }
 }

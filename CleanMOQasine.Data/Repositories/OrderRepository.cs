@@ -8,7 +8,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public OrderRepository() => _dbContext = Garbage.GetInstance().Context;
 
-        public IEnumerable<Order> GetAllOrders() => _dbContext.Order.ToList();
+        public IEnumerable<Order> GetAllOrders() => _dbContext.Order.Where(o => !o.IsDeleted).ToList();
 
         public Order GetOrderById(int id) => _dbContext.Order.FirstOrDefault(o => o.Id == id);
 

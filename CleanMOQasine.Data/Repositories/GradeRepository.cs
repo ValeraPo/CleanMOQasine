@@ -42,7 +42,6 @@ namespace CleanMOQasine.Data.Repositories
         public void AddGrade(Grade grade)
         {
             Info.Context.Grade.Add(grade);
-            var boundedOrder = Info.Context.Order.FirstOrDefault(o => o.Id == grade.OrderId);
             Info.Context.SaveChanges();
         }
 

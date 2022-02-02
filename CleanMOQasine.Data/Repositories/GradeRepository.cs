@@ -9,7 +9,7 @@ namespace CleanMOQasine.Data.Repositories
 {
     public class GradeRepository
     {
-        Garbage Info = Garbage.GetInstance();
+        protected Garbage Info = Garbage.GetInstance();
 
         public IEnumerable<Grade> GetAllGrades()
         {

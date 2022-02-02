@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CleanMOQasine.Data.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -18,7 +19,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         public ActionResult GetAllGrades ()
         {
-            return View();
+            return Ok();
         }
         [HttpDelete]
         public ActionResult DeleteGradeById(int id)
@@ -28,8 +29,14 @@ namespace CleanMOQasine.API.Controllers
             //else
                 return Ok();
         }
+        [HttpPost]
+        public ActionResult AddGrade(Grade grade)
+        {
+            return Ok();
+        }
 
-        public ActionResult AddGrade(int orderId, int mark, bool isAnonimous, string comment )
+        [HttpPut]
+        public ActionResult UpdateGrade(Grade grade)
         {
             return Ok();
         }

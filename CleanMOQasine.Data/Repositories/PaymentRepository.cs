@@ -15,15 +15,12 @@ namespace CleanMOQasine.Data.Repositories
             _context = CleanMOQasineContext.GetInstance();
         }
 
-        //getOne
         public Payment GetPaymentById (int id) 
             => _context.Payment.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
-        //getall
         public IEnumerable<Payment> GetAllPayments () 
             => _context.Payment.Where(p => !p.IsDeleted).ToList();
 
-        //delete
         public void DeletePayment(int id)
         {
             var oldPayment = _context.Payment.FirstOrDefault(p => p.Id == id);
@@ -31,7 +28,6 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        //update
         public void UpdatePayment(Payment newPayment)
         {
             var oldPayment = _context.Payment.FirstOrDefault(p => p.Id == newPayment.Id);
@@ -39,7 +35,6 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        //Addone
         public void AddPayment (Payment newPayment)
         {
             _context.Payment.Add(newPayment);

@@ -9,11 +9,9 @@ namespace CleanMOQasine.Data.Repositories
 
         public RoomRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
-        public Room GetRoomById(int id) => _dbContext.Room.Include(r => r.Orders).FirstOrDefault(r => r.Id == id);
+        public Room? GetRoomById(int id) => _dbContext.Room.Include(r => r.Orders).FirstOrDefault(r => r.Id == id);
 
-        public List<Room> GetAllRooms() => _dbContext.Room.Include(r => r.Orders).ToList();
-
-        public List<Room> GetRoomsByOrders(Order order) => _dbContext.Room.Where(r => r.Orders.Contains(order)).Include(r => r.Orders).ToList();
+        public List<Room> GetRooms() => _dbContext.Room.Where(r => !r.IsDeleted).ToList();
 
         public void AddRoom(Room room)
         {
@@ -21,24 +19,18 @@ namespace CleanMOQasine.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void UpdateRoom(Room updatedRoom)
+        public void UpdateRoom(Room room)
         {
-            var room = GetRoomById(updatedRoom.Id);
-            room = updatedRoom;
+            var entity = GetRoomById(room.Id);
+            entity.Name = room.Name;
+            entity.Price = room.Price;
             _dbContext.SaveChanges();
         }
 
-        public void DeleteRoom(int id)
+        public void UpdateRoom(int id, bool isDeleted)
         {
             var room = _dbContext.Room.FirstOrDefault(r => r.Id == id);
-            room.IsDeleted = true;
-            _dbContext.SaveChanges();
-        }
-
-        public void RestoreRoom(int id)
-        {
-            var room = _dbContext.Room.FirstOrDefault(r => r.Id == id);
-            room.IsDeleted = false;
+            room.IsDeleted = isDeleted;
             _dbContext.SaveChanges();
         }
     }

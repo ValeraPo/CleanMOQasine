@@ -2,7 +2,7 @@
 
 namespace CleanMOQasine.Data.Repositories
 {
-    internal class UserRepository
+    public class UserRepository
     {
         private readonly CleanMOQasineContext _dbContext;
 

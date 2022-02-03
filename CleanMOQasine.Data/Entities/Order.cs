@@ -11,7 +11,7 @@ namespace CleanMOQasine.Data.Entities
         public int ClientId { get; set; }//да нет
         //public virtual User Client { get; set; }
         public virtual CleaningType CleaningType { get; set; }
-        public int GradeId { get; set; }
+        //public int GradeId { get; set; }
         public virtual Grade Grade { get; set; }
         public string Address { get; set; }
         public decimal TotalPrice { get; set; }

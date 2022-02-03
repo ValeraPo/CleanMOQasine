@@ -13,6 +13,7 @@ namespace CleanMOQasine.Data
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
         }
+        
         public static CleanMOQasineContext GetInstance()
         {
             if (_instance == null)
@@ -31,7 +32,6 @@ namespace CleanMOQasine.Data
             modelBuilder.CreateEntities();
             modelBuilder.Seed();
         }
-
 
         public DbSet<CleaningAddition> CleaningAddition { get; set; }
         public DbSet<User> User { get; set; }

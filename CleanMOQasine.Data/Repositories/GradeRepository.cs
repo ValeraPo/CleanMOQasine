@@ -9,42 +9,40 @@ namespace CleanMOQasine.Data.Repositories
 {
     public class GradeRepository
     {
-        Garbage Info = Garbage.GetInstance();
-        public IEnumerable<Grade> GetAllGrades()
+        private readonly CleanMOQasineContext _context;
+
+        public GradeRepository()
         {
-            return Info.Context.Grade.Where(g => !g.IsDeleted).ToList();
+            _context = CleanMOQasineContext.GetInstance();
         }
-        public Grade GetGradeById (int id)
-        {
-            return Info.Context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
-        }
+
+        public IEnumerable<Grade> GetAllGrades() 
+            => _context.Grade.Where(g => !g.IsDeleted).ToList();
+
+        public Grade? GetGradeById(int id) 
+            => _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public void UpdateGradeById(Grade grade)
         {
-            var oldGrade = Info.Context.Grade.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
+            var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
             oldGrade = grade;
-            Info.Context.SaveChanges();
+            _context.SaveChanges();
         }
-        public void Delete (int id)
+
+        public void DeleteGradeById (int id)
         {
-            var oldGrade = Info.Context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+            var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+            if (oldGrade is null)
+                return;
             oldGrade.IsDeleted = true;
-            oldGrade.Order.Grade = null;
-            Info.Context.SaveChanges();
-            //ef check
+            _context.SaveChanges();
         }
+
         public void AddGrade(Grade grade)
         {
-            //Info.Context.Grade.Add(grade);
-            //var boundedOrder = Info.Context.Order.FirstOrDefault(o => o.Id == grade.OrderId);
-            //if (boundedOrder.Grade is null)
-            //{
-            //    Info.Context.SaveChanges();
-            //    return;
-            //}
-            //boundedOrder.Grade = grade;
-            //boundedOrder.GradeId = grade.Id;
-            //Info.Context.SaveChanges();
+            _context.Grade.Add(grade);
+            _context.SaveChanges();
         }
+
     }
 }

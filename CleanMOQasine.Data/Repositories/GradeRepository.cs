@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,8 @@ namespace CleanMOQasine.Data.Repositories
             _context = CleanMOQasineContext.GetInstance();
         }
 
-        public IEnumerable<Grade> GetAllGrades() 
-            => _context.Grade.Where(g => !g.IsDeleted).ToList();
+        public IEnumerable<Grade> GetAllGrades()
+            => _context.Grade.Include(o => o.Order).Where(g => !g.IsDeleted).ToList();
 
         public Grade? GetGradeById(int id) 
             => _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);

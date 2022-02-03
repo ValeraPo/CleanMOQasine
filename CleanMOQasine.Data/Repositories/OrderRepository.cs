@@ -6,7 +6,6 @@ namespace CleanMOQasine.Data.Repositories
     {
         private CleanMOQasineContext _dbContext;
 
-        public OrderRepository() => _dbContext = Garbage.GetInstance().Context;
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Order.Where(o => !o.IsDeleted).ToList();
 

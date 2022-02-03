@@ -1,4 +1,5 @@
-﻿using CleanMOQasine.Data.Entities;
+﻿using CleanMOQasine.API.Services;
+using CleanMOQasine.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -10,11 +11,12 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet("{id}")]
         public ActionResult GetGradeById(int id)
         {
-            
-            //if (neededGrade != null)
-                return Ok();
-            //else
-                return BadRequest();
+            GradeServices service = new();
+            var grade = service.GetGradeById(id);
+            if (grade != null)
+                return Ok(grade);
+            else
+                return BadRequest("Grade does not exist");
         }
 
         [HttpGet]

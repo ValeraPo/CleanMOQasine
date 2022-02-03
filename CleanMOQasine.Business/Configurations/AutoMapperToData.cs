@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CleanMOQasine.Business.Models;
+using CleanMOQasine.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,8 @@ namespace CleanMOQasine.Business.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-
+                cfg.CreateMap<Grade, GradeModel>();
+                cfg.CreateMap<Order, OrderModel>();
             }));
         }
     }

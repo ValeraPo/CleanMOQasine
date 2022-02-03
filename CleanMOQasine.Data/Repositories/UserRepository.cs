@@ -27,6 +27,7 @@ namespace CleanMOQasine.Data.Repositories
             entity.LastName = user.LastName;
             entity.Login = user.Login;
             entity.PhoneNumber = user.PhoneNumber;
+            entity.Rank = user.Rank;
             _dbContext.SaveChanges();
         }
 

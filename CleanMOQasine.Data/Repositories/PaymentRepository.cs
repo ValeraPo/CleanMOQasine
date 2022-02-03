@@ -9,36 +9,36 @@ namespace CleanMOQasine.Data.Repositories
 {
     public class PaymentRepository
     {
-        public class GradeRepository
+        private readonly CleanMOQasineContext _context;
+        public PaymentRepository()
         {
-            protected Garbage Info = Garbage.GetInstance();
-            public IEnumerable<Payment> GetAllPayments()
-            {
-                return Info.Context.Payment.Where(p => !p.IsDeleted).ToList();
-            }
-            public Payment GetPaymentById(int id)
-            {
-                return Info.Context.Payment.FirstOrDefault(p => p.Id == id && !p.IsDeleted);
-            }
+            _context = CleanMOQasineContext.GetInstance();
+        }
 
-            public void UpdatePaymentById(Payment payment)
-            {
-                var oldPayment = Info.Context.Payment.FirstOrDefault(p => p.Id == grade.Id);
-                oldPayment = payment;
-                Info.Context.SaveChanges();
-            }
-            public void DeletePayment(int id)
-            {
-                var oldPayment = Info.Context.Payment.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
-                oldPayment.IsDeleted = true;
-                Info.Context.SaveChanges();
-                //ef check
-            }
-            public void AddPayment(Payment payment)
-            {
-                Info.Context.Payment.Add(payment);
-                Info.Context.SaveChanges();
-            }
+        public Payment GetPaymentById (int id) 
+            => _context.Payment.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+
+        public IEnumerable<Payment> GetAllPayments () 
+            => _context.Payment.Where(p => !p.IsDeleted).ToList();
+
+        public void DeletePayment(int id)
+        {
+            var oldPayment = _context.Payment.FirstOrDefault(p => p.Id == id);
+            oldPayment.IsDeleted = true;
+            _context.SaveChanges();
+        }
+
+        public void UpdatePayment(Payment newPayment)
+        {
+            var oldPayment = _context.Payment.FirstOrDefault(p => p.Id == newPayment.Id);
+            oldPayment = newPayment;
+            _context.SaveChanges();
+        }
+
+        public void AddPayment (Payment newPayment)
+        {
+            _context.Payment.Add(newPayment);
+            _context.SaveChanges();
         }
     }
 }

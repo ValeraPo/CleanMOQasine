@@ -8,7 +8,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public UserRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
-        public User? GetUserById(int id) => _dbContext.User.FirstOrDefault(t => t.Id == id);
+        public User? GetUserById(int id) => _dbContext.User.FirstOrDefault(u => u.Id == id);
 
         public List<User> GetUsers() => _dbContext.User.Where(u => !u.IsDeleted).ToList();
 

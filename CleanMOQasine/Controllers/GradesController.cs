@@ -5,7 +5,7 @@ namespace CleanMOQasine.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GradeController : Controller
+    public class GradesController : Controller
     {
         [HttpGet("{id}")]
         public ActionResult GetGradeById(int id)
@@ -16,11 +16,13 @@ namespace CleanMOQasine.API.Controllers
             //else
                 return BadRequest();
         }
+
         [HttpGet]
         public ActionResult GetAllGrades ()
         {
             return Ok();
         }
+
         [HttpDelete]
         public ActionResult DeleteGradeById(int id)
         {
@@ -29,6 +31,7 @@ namespace CleanMOQasine.API.Controllers
             //else
                 return Ok();
         }
+
         [HttpPost]
         public ActionResult AddGrade(Grade grade)
         {
@@ -40,5 +43,6 @@ namespace CleanMOQasine.API.Controllers
         {
             return Ok();
         }
+
     }
 }

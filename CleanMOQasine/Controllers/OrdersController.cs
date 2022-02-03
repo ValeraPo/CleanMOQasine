@@ -5,7 +5,7 @@ namespace CleanMOQasine.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         [HttpGet]
         public ActionResult<List<OrderModel>> GetOrders()

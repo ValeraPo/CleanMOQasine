@@ -20,20 +20,6 @@ namespace CleanMOQasine.Data
             return _instance;
         }
 
-        public static CleanMOQasineContext GetInstance()
-        {
-            if (_instance == null)
-                _instance = new CleanMOQasineContext();
-            return _instance;
-        }
-
-        public static CleanMOQasineContext GetInstance()
-        {
-            if (_instance == null)
-                _instance = new CleanMOQasineContext();
-            return _instance;
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_connectionString);

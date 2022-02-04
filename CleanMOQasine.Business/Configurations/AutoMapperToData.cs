@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CleanMOQasine.Business.Models;
+using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
     public class AutoMapperToData
     {
         private static Mapper _instance;
+
         private AutoMapperToData() { }
+
         public static Mapper GetInstance()
         {
             if (_instance == null)
@@ -19,11 +18,14 @@ namespace CleanMOQasine.Business.Configurations
             }
             return _instance;
         }
+
         public static void InitAutoMapperToData()
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<User, UserModel>();
 
+                cfg.CreateMap<Room, RoomModel>();
             }));
         }
     }

@@ -19,8 +19,7 @@ namespace CleanMOQasine.Business.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CleaningAdditionModel, CleaningAddition>();
-                cfg.CreateMap<CleaningAddition, CleaningAdditionModel>();
+                cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
             }));
         }
     }

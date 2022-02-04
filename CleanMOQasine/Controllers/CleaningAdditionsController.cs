@@ -41,11 +41,11 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
-        public ActionResult<CleaningAdditionOutputModel> AddCleaningAddition([FromBody]CleaningAdditionInputModel cleaningAdditionInputModel)
+        public ActionResult AddCleaningAddition([FromBody]CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.AddCleaningAddition(model);
-            return StatusCode(StatusCodes.Status201Created, cleaningAdditionInputModel);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         //api/CleaningAdditions/228

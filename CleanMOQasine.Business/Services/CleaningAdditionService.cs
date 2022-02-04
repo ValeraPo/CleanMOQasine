@@ -6,40 +6,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CleanMOQasine.Data.Entities;
+using AutoMapper;
 
 namespace CleanMOQasine.Business.Services
 {
     public class CleaningAdditionService
     {
         private readonly CleaningAdditionRepository _cleaningAdditionRepository;
-
+        private readonly Mapper _autoMapperInstance;
         public CleaningAdditionService()
         {
             _cleaningAdditionRepository = new CleaningAdditionRepository();
+            _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 
         public CleaningAdditionModel GetCleaningAdditionById(int id)
         {
             var entity = _cleaningAdditionRepository.GetCleaningAdditionById(id);
-            return AutoMapperToData.GetInstance().Map<CleaningAdditionModel>(entity);
+            return _autoMapperInstance.Map<CleaningAdditionModel>(entity);
         }
 
         public List<CleaningAdditionModel> GetAllCleaningAdditions()
         {
             var entities = _cleaningAdditionRepository.GetAllCleaningAdditions();
-            return AutoMapperToData.GetInstance().Map<List<CleaningAdditionModel>>(entities);
+            return _autoMapperInstance.Map<List<CleaningAdditionModel>>(entities);
         }
 
         public void AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)
         {
-            var entity = AutoMapperToData.GetInstance().Map<CleaningAddition>(cleaningAdditionModel);
-            //entity.Duration = new TimeSpan()
+            var entity = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);
             _cleaningAdditionRepository.AddCleaningAddition(entity);
         }
 
         public void UpdateCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel)
         {
-            var entity = AutoMapperToData.GetInstance().Map<CleaningAddition>(cleaningAdditionModel);
+            var entity = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);
             _cleaningAdditionRepository.UpdateCleaningAddition(id, entity);
         }
 

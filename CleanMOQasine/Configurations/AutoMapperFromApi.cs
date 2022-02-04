@@ -25,7 +25,7 @@ namespace CleanMOQasine.API.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CleaningAdditionInsertInputModel, CleaningAdditionModel>();
+                cfg.CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
                 cfg.CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
 
             }));

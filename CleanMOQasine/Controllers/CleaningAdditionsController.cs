@@ -38,25 +38,25 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
-        public ActionResult<CleaningAdditionOutputModel> AddCleaningAddition([FromBody]CleaningAdditionInsertInputModel cleaningAdditionInsertInputModel)
+        public ActionResult<CleaningAdditionOutputModel> AddCleaningAddition([FromBody]CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInsertInputModel);
-            model.Duration = TimeSpan.Parse(cleaningAdditionInsertInputModel.Duration);
+            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            model.Duration = TimeSpan.Parse(cleaningAdditionInputModel.Duration);
             _cleaningAdditionService.AddCleaningAddition(model);
-            return StatusCode(StatusCodes.Status201Created, cleaningAdditionInsertInputModel);
+            return StatusCode(StatusCodes.Status201Created, cleaningAdditionInputModel);
         }
 
         //api/CleaningAdditions/228
         [HttpPut("{id}")]
-        public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInsertInputModel cleaningAdditionInsertInputModel)
+        public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInsertInputModel);
-            model.Duration = TimeSpan.Parse(cleaningAdditionInsertInputModel.Duration);
+            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            model.Duration = TimeSpan.Parse(cleaningAdditionInputModel.Duration);
             _cleaningAdditionService.UpdateCleaningAddition(id, model);
             return Ok($"Cleaning type with {id} was updated");
         }
 
-        //api/CleaningAdditions
+        //api/CleaningAdditions/228-delete
         [HttpPatch("{id}-delete")]
         public ActionResult DeleteCleaningAddition(int id)
         {
@@ -64,7 +64,7 @@ namespace CleanMOQasine.API.Controllers
             return Ok($"Cleaning type with {id} was deleted");
         }
 
-        //api/CleaningAdditions/228
+        //api/CleaningAdditions/228-restore
         [HttpPatch("{id}-restore")]
         public ActionResult RestoreCleaningAddition(int id)
         {

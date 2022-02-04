@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -6,11 +7,11 @@ namespace CleanMOQasine.Data.Repositories
     {
         private CleanMOQasineContext _dbContext;
 
-        public OrderRepository() => _dbContext = Garbage.GetInstance().Context;
+        public OrderRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Order.Where(o => !o.IsDeleted).ToList();
 
-        public Order GetOrderById(int id) => _dbContext.Order.FirstOrDefault(o => o.Id == id);
+        public Order GetOrderById(int id) => _dbContext.Order.Include(o=>o.Grade).FirstOrDefault(o => o.Id == id);
 
         public void UpdateOrder(Order order)
         {
@@ -18,8 +19,8 @@ namespace CleanMOQasine.Data.Repositories
             oldOrder.CleaningType = order.CleaningType;
             oldOrder.Grade = order.Grade;
             oldOrder.Address = order.Address;
-            oldOrder.TotalPrice = order.TotalPrice;
-            oldOrder.TotalDuration = order.TotalDuration;
+            //oldOrder.TotalPrice = order.TotalPrice;
+            //oldOrder.TotalDuration = order.TotalDuration;
             oldOrder.Date = order.Date;
             oldOrder.Rooms = order.Rooms;
             oldOrder.CleaningAdditions = order.CleaningAdditions;
@@ -29,14 +30,14 @@ namespace CleanMOQasine.Data.Repositories
         public void AddCleaner(Order order, User cleaner)
         {
             var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
-            oldOrder.InvolvedUsers.Add(cleaner);
+            oldOrder.Cleaners.Add(cleaner);
             Save();
         }
 
         public void RemoveCleaner(Order order, User cleaner)
         {
             var oldOrder = _dbContext.Order.FirstOrDefault(o => o.Id == order.Id);
-            oldOrder.InvolvedUsers.Remove(cleaner);
+            oldOrder.Cleaners.Remove(cleaner);
             Save();
         }
 

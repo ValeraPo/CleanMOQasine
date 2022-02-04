@@ -76,7 +76,7 @@ namespace CleanMOQasine.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                        .HasColumnType("time(2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -422,10 +422,16 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("Grade");
                 });
@@ -451,27 +457,14 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GradeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<TimeSpan>("TotalDuration")
-                        .HasColumnType("time");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CleaningTypeId");
 
-                    b.HasIndex("GradeId")
-                        .IsUnique();
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Order");
                 });
@@ -490,7 +483,7 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")
@@ -629,7 +622,7 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -637,6 +630,21 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WorkingTime");
+                });
+
+            modelBuilder.Entity("OrderCleaner", b =>
+                {
+                    b.Property<int>("CleanerOrdersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CleanersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CleanerOrdersId", "CleanersId");
+
+                    b.HasIndex("CleanersId");
+
+                    b.ToTable("OrderCleaner");
                 });
 
             modelBuilder.Entity("OrderRoom", b =>
@@ -654,33 +662,18 @@ namespace CleanMOQasine.Data.Migrations
                     b.ToTable("OrderRoom");
                 });
 
-            modelBuilder.Entity("OrderUser", b =>
-                {
-                    b.Property<int>("InvolvedUsersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("InvolvedUsersId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("OrderUser");
-                });
-
             modelBuilder.Entity("CleaningAdditionCleaningType", b =>
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", null)
                         .WithMany()
                         .HasForeignKey("CleaningAdditionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningType", null)
                         .WithMany()
                         .HasForeignKey("CleaningTypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -689,13 +682,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", null)
                         .WithMany()
                         .HasForeignKey("CleaningAdditionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -704,14 +697,25 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", null)
                         .WithMany()
                         .HasForeignKey("CleaningAdditionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CleanMOQasine.Data.Entities.Grade", b =>
+                {
+                    b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
+                        .WithOne("Grade")
+                        .HasForeignKey("CleanMOQasine.Data.Entities.Grade", "OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Order", b =>
@@ -719,27 +723,25 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningType", "CleaningType")
                         .WithMany("Order")
                         .HasForeignKey("CleaningTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CleanMOQasine.Data.Entities.Grade", "Grade")
-                        .WithOne("Order")
-                        .HasForeignKey("CleanMOQasine.Data.Entities.Order", "GradeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CleanMOQasine.Data.Entities.User", "Client")
+                        .WithMany("ClientOrders")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CleaningType");
 
-                    b.Navigation("Grade");
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Payment", b =>
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
                         .WithMany("Payments")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
                 });
@@ -748,11 +750,24 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.User", "User")
                         .WithMany("WorkingTime")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OrderCleaner", b =>
+                {
+                    b.HasOne("CleanMOQasine.Data.Entities.Order", null)
+                        .WithMany()
+                        .HasForeignKey("CleanerOrdersId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CleanMOQasine.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CleanersId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OrderRoom", b =>
@@ -760,28 +775,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OrderUser", b =>
-                {
-                    b.HasOne("CleanMOQasine.Data.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("InvolvedUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CleanMOQasine.Data.Entities.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -790,19 +790,18 @@ namespace CleanMOQasine.Data.Migrations
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("CleanMOQasine.Data.Entities.Grade", b =>
-                {
-                    b.Navigation("Order")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Order", b =>
                 {
+                    b.Navigation("Grade")
+                        .IsRequired();
+
                     b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.User", b =>
                 {
+                    b.Navigation("ClientOrders");
+
                     b.Navigation("WorkingTime");
                 });
 #pragma warning restore 612, 618

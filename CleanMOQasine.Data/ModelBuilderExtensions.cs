@@ -8,15 +8,18 @@ namespace CleanMOQasine.Data
 
         public static void CreateEntities(this ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Order>()
-            //.HasOne(o => o.Grade)
-            //.WithOne(g => g.Order)
-            //.HasForeignKey<Grade>(o => o.OrderId);
+            modelBuilder.Entity<Order>()
+            .HasOne(o => o.Grade)
+            .WithOne(g => g.Order)
+            .HasForeignKey<Grade>("OrderId")
+            .IsRequired();
 
             //modelBuilder.Entity<Grade>()
             //.HasOne(o => o.Order)
             //.WithOne(g => g.Grade)
-            //.HasForeignKey<Order>(o => o.GradeId);
+            //.HasForeignKey<Order>("GradeId")
+            //.IsRequired();
+
 
             //modelBuilder.Entity<CleaningAddition>()
             //.HasMany(p => p.Orders)
@@ -40,10 +43,23 @@ namespace CleanMOQasine.Data
             //    .WithMany(t => t.OrderCleaners)
             //    .HasForeignKey(o => o.UserId).OnDelete(DeleteBehavior.Restrict));
 
-            //modelBuilder.Entity<Order>()
-            //.HasOne(u => u.Client)
-            //.WithMany(c => c.ClientOrders)
-            //.HasForeignKey(f => f.ClientId);
+            modelBuilder.Entity<Order>()
+            .HasOne(u => u.Client)
+            .WithMany(c => c.ClientOrders)
+            .HasForeignKey("ClientId");
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.Cleaners)
+                .WithMany(u => u.CleanerOrders)
+                .UsingEntity("OrderCleaner");
+
+            var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+                                    .SelectMany(t => t.GetForeignKeys())
+                                    .Where(fk => fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+            foreach (var fk in cascadeFKs)
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+
         }
         public static void Seed(this ModelBuilder modelBuilder)
         {

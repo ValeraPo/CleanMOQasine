@@ -1,9 +1,5 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
@@ -23,7 +19,8 @@ namespace CleanMOQasine.Business.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-
+                cfg.CreateMap<CleaningAdditionModel, CleaningAddition>();
+                cfg.CreateMap<CleaningAddition, CleaningAdditionModel>();
             }));
         }
     }

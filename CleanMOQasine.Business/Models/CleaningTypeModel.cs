@@ -11,5 +11,7 @@ namespace CleanMOQasine.Business.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public ICollection<OrderModel> Order { get; set; } //наверное это и не надо здесь по логике
+        public ICollection<CleaningAdditionModel> CleaningAdditions { get; set; }
     }
 }

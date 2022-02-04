@@ -1,6 +1,9 @@
-﻿using CleanMOQasine.Business.Models;
-using CleanMOQasine.Business.Services;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CleanMOQasine.Business;
+using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Services;
+using AutoMapper;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -11,10 +14,12 @@ namespace CleanMOQasine.API.Controllers
         private readonly UserService _userService;
 
         [HttpGet("{id}")]
-        public ActionResult<UserModel> GetUserById(int id)
+        public ActionResult<UserInputModel> GetUserById(int id)
         {
-
-            return Ok(new UserModel());
+            var model = _cleaningAdditionService.GetCleaningAdditionById(id);
+            var output = _autoMapperInstance.Map<CleaningAdditionOutputModel>(model);
+            return Ok(output);
+            return Ok(new UserInputModel());
         }
 
         [HttpGet]
@@ -84,6 +89,5 @@ namespace CleanMOQasine.API.Controllers
         {
             return Accepted($"Cleaning type with {id} was deleted");
         }
-
     }
 }

@@ -1,5 +1,8 @@
 ﻿using CleanMOQasine.API.Models;
 using CleanMOQasine.API.Services;
+using CleanMOQasine.Business.Configurations;
+using CleanMOQasine.Business.Models;
+using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,8 +15,9 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet("{id}")]
         public ActionResult GetGradeById(int id)
         {
-            GradeServices service = new();
-            var grade = service.GetGradeById(id);
+            GradeService service = new();
+            var model = service.GetGradeById(id);
+            var grade = AutoMapperFromApi.GetInstance().Map<GradeBaseOutputModel>(model);
             if (grade != null)
                 return Ok(grade);
             else
@@ -23,32 +27,39 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         public ActionResult GetAllGrades ()
         {
-            GradeServices service = new();
-            var grades = service.GetAllGrades();
-            return Ok(grades);
+            GradeService service = new();
+            var model = service.GetAllGrades();
+            return Ok(AutoMapperFromApi.GetInstance()
+                .Map<IEnumerable<GradeBaseOutputModel>>(model));
         }
 
         [HttpDelete]
         public ActionResult DeleteGradeById(int id)
         {
-            //if method to delete by id == -1
+            GradeService service = new();
+            if (service.DeleteGradeById(id) == -1)
                 return BadRequest();
-            //else
+            else
                 return Ok();
         }
 
         [HttpPost]
-        public ActionResult AddGrade(Grade grade)
+        public ActionResult AddGrade(GradeBaseInputModel grade, int orderId)
         {
-            return Ok();
+
+            GradeService service = new();
+            var model = AutoMapperFromApi.GetInstance().Map<GradeModel>(grade);
+            service.AddGrade(model, orderId);
+            return StatusCode(StatusCodes.Status201Created, grade);
         }
 
         [HttpPut("{id}")]
         public ActionResult UpdateGrade(int id, GradeBaseInputModel grade)
         {
+            GradeService service = new();
             grade.Id = id;
-            GradeServices service = new();
-            service.UpdateGrade(grade);//не апдейтит
+            var model = AutoMapperFromApi.GetInstance().Map<GradeModel>(grade);
+            service.UpdateGrade(model);
             return Ok();
         }
 

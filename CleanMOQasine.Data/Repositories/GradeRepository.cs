@@ -35,13 +35,14 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void DeleteGradeById (int id)
+        public int DeleteGradeById (int id)
         {
             var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
             if (oldGrade is null)
-                return;
+                return -1;
             oldGrade.IsDeleted = true;
             _context.SaveChanges();
+            return 1;
         }
 
         public void AddGrade(Grade grade)

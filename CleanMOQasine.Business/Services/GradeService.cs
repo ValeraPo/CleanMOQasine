@@ -39,5 +39,11 @@ namespace CleanMOQasine.Business.Services
             newGrade.OrderId = orderId;
             repository.AddGrade(newGrade);
         }
+
+        public int DeleteGradeById(int id)
+        {
+            GradeRepository repository = new();
+            return repository.DeleteGradeById(id);
+        }
     }
 }

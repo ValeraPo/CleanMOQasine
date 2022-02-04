@@ -4,6 +4,7 @@ using CleanMOQasine.Business;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.API.Configurations;
+using AutoMapper;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -12,10 +13,12 @@ namespace CleanMOQasine.API.Controllers
     public class CleaningAdditionsController : ControllerBase
     {
         private readonly CleaningAdditionService _cleaningAdditionService;
+        private readonly Mapper _autoMapperInstance;
 
         public CleaningAdditionsController()
         {
             _cleaningAdditionService = new();
+            _autoMapperInstance = AutoMapperFromApi.GetInstance();
         }
 
         //api/CleaningAdditions/228
@@ -23,7 +26,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<CleaningAdditionOutputModel> GetCleaningAdditionById(int id)
         {
             var model = _cleaningAdditionService.GetCleaningAdditionById(id);
-            var output = AutoMapperFromApi.GetInstance().Map<CleaningAdditionOutputModel>(model);
+            var output = _autoMapperInstance.Map<CleaningAdditionOutputModel>(model);
             return Ok(output);
         }
 
@@ -32,7 +35,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
             var models = _cleaningAdditionService.GetAllCleaningAdditions();
-            var outputs = AutoMapperFromApi.GetInstance().Map<List<CleaningAdditionOutputModel>>(models);
+            var outputs = _autoMapperInstance.Map<List<CleaningAdditionOutputModel>>(models);
             return Ok(outputs);
         }
 
@@ -40,8 +43,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPost]
         public ActionResult<CleaningAdditionOutputModel> AddCleaningAddition([FromBody]CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
-            model.Duration = TimeSpan.Parse(cleaningAdditionInputModel.Duration);
+            var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.AddCleaningAddition(model);
             return StatusCode(StatusCodes.Status201Created, cleaningAdditionInputModel);
         }
@@ -51,21 +53,20 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
-            model.Duration = TimeSpan.Parse(cleaningAdditionInputModel.Duration);
             _cleaningAdditionService.UpdateCleaningAddition(id, model);
             return Ok($"Cleaning type with {id} was updated");
         }
 
-        //api/CleaningAdditions/228-delete
-        [HttpPatch("{id}-delete")]
+        //api/CleaningAdditions/228
+        [HttpDelete("{id}")]
         public ActionResult DeleteCleaningAddition(int id)
         {
             _cleaningAdditionService.DeleteCleaningAddition(id);
             return Ok($"Cleaning type with {id} was deleted");
         }
 
-        //api/CleaningAdditions/228-restore
-        [HttpPatch("{id}-restore")]
+        //api/CleaningAdditions/228
+        [HttpPatch("{id}")]
         public ActionResult RestoreCleaningAddition(int id)
         {
             _cleaningAdditionService.RestoreCleaningAddition(id);

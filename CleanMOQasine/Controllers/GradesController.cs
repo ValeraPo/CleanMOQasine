@@ -1,4 +1,5 @@
-﻿using CleanMOQasine.API.Services;
+﻿using CleanMOQasine.API.Models;
+using CleanMOQasine.API.Services;
 using CleanMOQasine.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,9 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         public ActionResult GetAllGrades ()
         {
-            return Ok();
+            GradeServices service = new();
+            var grades = service.GetAllGrades();
+            return Ok(grades);
         }
 
         [HttpDelete]
@@ -40,9 +43,12 @@ namespace CleanMOQasine.API.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public ActionResult UpdateGrade(Grade grade)
+        [HttpPut("{id}")]
+        public ActionResult UpdateGrade(int id, GradeBaseInputModel grade)
         {
+            grade.Id = id;
+            GradeServices service = new();
+            service.UpdateGrade(grade);//не апдейтит
             return Ok();
         }
 

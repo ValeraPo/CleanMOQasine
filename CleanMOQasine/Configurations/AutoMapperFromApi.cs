@@ -2,6 +2,7 @@
 using CleanMOQasine.API.Models;
 using CleanMOQasine.API.Models.Outputs;
 using CleanMOQasine.Business.Models;
+using CleanMOQasine.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace CleanMOQasine.Business.Configurations
             {
                 cfg.CreateMap<GradeModel, GradeBaseOutputModel>();
                 cfg.CreateMap<GradeBaseOutputModel, GradeModel>();
+                cfg.CreateMap<GradeBaseInputModel, GradeModel>();
             }));
         }
     }

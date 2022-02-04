@@ -26,6 +26,7 @@ namespace CleanMOQasine.Business.Configurations
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Grade, GradeModel>();
+                cfg.CreateMap<GradeModel, Grade>();
                 cfg.CreateMap<Order, OrderModel>();
             }));
         }

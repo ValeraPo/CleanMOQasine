@@ -1,9 +1,8 @@
-﻿using CleanMOQasine.API.Models.Outputs;
-
-namespace CleanMOQasine.API.Models
+﻿namespace CleanMOQasine.API.Models
 {
-    public class GradeBaseOutputModel
+    public class GradeBaseInputModel
     {
+        public int Id { get; set; }
         public bool IsAnonymous { get; set; }
         public string Comment { get; set; }
         public int Rating { get; set; }

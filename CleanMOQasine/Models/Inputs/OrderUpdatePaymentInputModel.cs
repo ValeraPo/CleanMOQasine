@@ -2,6 +2,6 @@ namespace CleanMOQasine.API.Models
 {
     public class OrderUpdatePaymentInputModel
     {
-        public int IdPayment { get; set; }
+        public int PaymentId { get; set; }
     }
 }

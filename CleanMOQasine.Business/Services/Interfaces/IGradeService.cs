@@ -6,7 +6,7 @@ namespace CleanMOQasine.Business.Services
     {
         void AddGrade(GradeModel grade, int orderId);
         int DeleteGradeById(int id);
-        IEnumerable<GradeModel> GetAllGrades();
+        List<GradeModel> GetAllGrades();
         GradeModel GetGradeById(int id);
         void UpdateGrade(GradeModel grade, int id);
     }

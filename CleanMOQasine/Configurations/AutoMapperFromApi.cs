@@ -11,26 +11,17 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Configurations
 {
-    public class AutoMapperFromApi
+    public class AutoMapperFromApi : IAutoMapperFromApi
     {
-        private static Mapper _instance;
-        private AutoMapperFromApi() { }
-        public static Mapper GetInstance()
+        public AutoMapperFromApi() { }
+
+        public Mapper InitAutoMapperFromApi()
         {
-            if (_instance == null)
-            {
-                InitAutoMapperFromApi();
-            }
-            return _instance;
-        }
-        public static void InitAutoMapperFromApi()
-        {
-            _instance = new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<GradeModel, GradeBaseOutputModel>();
-                cfg.CreateMap<GradeBaseOutputModel, GradeModel>();
-                cfg.CreateMap<GradeBaseInputModel, GradeModel>();
-            }));
+            return new Mapper(new MapperConfiguration(cfg =>
+             {
+                 cfg.CreateMap<GradeModel, GradeBaseOutputModel>().ReverseMap();
+                 cfg.CreateMap<GradeBaseInputModel, GradeModel>().ReverseMap();
+             }));
         }
     }
 }

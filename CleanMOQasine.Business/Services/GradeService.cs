@@ -18,18 +18,20 @@ namespace CleanMOQasine.Business.Services
             var grade = _gradeRepository.GetGradeById(id);
             return AutoMapperToData.GetInstance().Map<GradeModel>(grade);
         }
+
         public void UpdateGrade(GradeModel grade, int id)
         {
-        
+            if (GetGradeById(id) is null)
+                return;
             var updatedGrade = AutoMapperToData.GetInstance().Map<Grade>(grade);
             updatedGrade.Id = id;
             _gradeRepository.UpdateGradeById(updatedGrade);
         }
 
-        public IEnumerable<GradeModel> GetAllGrades()
+        public List<GradeModel> GetAllGrades()
         {
             var grades = _gradeRepository.GetAllGrades();
-            return AutoMapperToData.GetInstance().Map<IEnumerable<GradeModel>>(grades);
+            return AutoMapperToData.GetInstance().Map<List<GradeModel>>(grades);
         }
 
         public void AddGrade(GradeModel grade, int orderId)
@@ -40,7 +42,6 @@ namespace CleanMOQasine.Business.Services
         }
 
         public int DeleteGradeById(int id) 
-            => _gradeRepository.DeleteGradeById(id);
-
+            => (GetGradeById(id) is null) ? -1 : _gradeRepository.DeleteGradeById(id);
     }
 }

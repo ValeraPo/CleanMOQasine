@@ -2,6 +2,8 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using CleanMOQasine.Business.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,7 @@ builder.Services.AddDbContext<CleanMOQasineContext>(opt
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 
-
+builder.Services.AddScoped<IAutoMapperFromApi, AutoMapperFromApi>();
 
 var app = builder.Build();
 

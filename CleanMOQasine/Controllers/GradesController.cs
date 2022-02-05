@@ -1,4 +1,5 @@
-﻿using CleanMOQasine.API.Models;
+﻿using AutoMapper;
+using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
@@ -12,16 +13,18 @@ namespace CleanMOQasine.API.Controllers
     public class GradesController : Controller
     {
         private readonly IGradeService _gradeService;
-        public GradesController(IGradeService gradeService)
+        private readonly Mapper _mapper;
+        public GradesController(IGradeService gradeService, IAutoMapperFromApi mapper)
         {
             _gradeService = gradeService;
+            _mapper = mapper.InitAutoMapperFromApi();
         }
 
         [HttpGet("{id}")]
         public ActionResult GetGradeById(int id)
         {
             var model = _gradeService.GetGradeById(id);
-            var grade = AutoMapperFromApi.GetInstance().Map<GradeBaseOutputModel>(model);
+            var grade = _mapper.Map<GradeBaseOutputModel>(model);
             if (grade != null)
                 return Ok(grade);
             else
@@ -32,7 +35,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult GetAllGrades ()
         {
             var model = _gradeService.GetAllGrades();
-            return Ok(AutoMapperFromApi.GetInstance()
+            return Ok(_mapper
                 .Map<IEnumerable<GradeBaseOutputModel>>(model));
         }
 
@@ -49,7 +52,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult AddGrade(GradeBaseInputModel grade, int orderId)
         {
 
-            var model = AutoMapperFromApi.GetInstance().Map<GradeModel>(grade);
+            var model = _mapper.Map<GradeModel>(grade);
             _gradeService.AddGrade(model, orderId);
             return StatusCode(StatusCodes.Status201Created, grade);
         }
@@ -57,7 +60,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateGrade(int id, GradeBaseInputModel grade)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<GradeModel>(grade);
+            var model =_mapper.Map<GradeModel>(grade);
             _gradeService.UpdateGrade(model, id);
             return Ok();
         }

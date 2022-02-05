@@ -4,7 +4,7 @@ namespace CleanMOQasine.Data.Repositories
 {
     public class OrderRepository
     {
-        private CleanMOQasineContext _dbContext;
+        private readonly CleanMOQasineContext _dbContext;
 
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Order.Where(o => !o.IsDeleted).ToList();

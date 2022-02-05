@@ -8,24 +8,24 @@ namespace CleanMOQasine.Data
     {
         private readonly string _connectionString = @"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23";
         private static CleanMOQasineContext _instance;
-        public CleanMOQasineContext()
+        public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options): base(options)
         {
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
         }
-        
+
         public static CleanMOQasineContext GetInstance()
         {
             if (_instance == null)
-                _instance = new CleanMOQasineContext();
+                _instance = new CleanMOQasineContext(null);
             return _instance;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_connectionString);
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(_connectionString);
             
-        }
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

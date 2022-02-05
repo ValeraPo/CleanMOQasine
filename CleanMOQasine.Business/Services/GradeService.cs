@@ -2,48 +2,45 @@
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Services
 {
-    public class GradeService
+    public class GradeService : IGradeService
     {
+        private readonly IGradeRepository _gradeRepository;
+        public GradeService(IGradeRepository gradeRpository)
+        {
+            _gradeRepository = gradeRpository;
+        }
+
         public GradeModel GetGradeById(int id)
         {
-            GradeRepository repository = new();
-            var grade = repository.GetGradeById(id);
+            var grade = _gradeRepository.GetGradeById(id);
             return AutoMapperToData.GetInstance().Map<GradeModel>(grade);
         }
-        public void UpdateGrade(GradeModel grade)
+        public void UpdateGrade(GradeModel grade, int id)
         {
-            GradeRepository repository = new();
+        
             var updatedGrade = AutoMapperToData.GetInstance().Map<Grade>(grade);
-            repository.UpdateGradeById(updatedGrade);
+            updatedGrade.Id = id;
+            _gradeRepository.UpdateGradeById(updatedGrade);
         }
 
         public IEnumerable<GradeModel> GetAllGrades()
         {
-            GradeRepository repository = new();
-            var grades = repository.GetAllGrades();
+            var grades = _gradeRepository.GetAllGrades();
             return AutoMapperToData.GetInstance().Map<IEnumerable<GradeModel>>(grades);
         }
 
         public void AddGrade(GradeModel grade, int orderId)
         {
-            GradeRepository repository = new();
             var newGrade = AutoMapperToData.GetInstance().Map<Grade>(grade);
             newGrade.OrderId = orderId;
-            repository.AddGrade(newGrade);
+            _gradeRepository.AddGrade(newGrade);
         }
 
-        public int DeleteGradeById(int id)
-        {
-            GradeRepository repository = new();
-            return repository.DeleteGradeById(id);
-        }
+        public int DeleteGradeById(int id) 
+            => _gradeRepository.DeleteGradeById(id);
+
     }
 }

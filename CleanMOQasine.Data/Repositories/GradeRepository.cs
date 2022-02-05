@@ -8,24 +8,22 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class GradeRepository
+    public class GradeRepository : IGradeRepository
     {
         private readonly CleanMOQasineContext _context;
+        public bool _isInitialized;
 
-        public GradeRepository()
+        public GradeRepository(CleanMOQasineContext context)
         {
-            _context = CleanMOQasineContext.GetInstance();
+            _context = context;
+            _isInitialized = true;
         }
 
         public IEnumerable<Grade> GetAllGrades()
-            => _context.Grade.Include(o => o.Order).Where(g => !g.IsDeleted).ToList();
+            => _context.Grade.Where(g => !g.IsDeleted).ToList();
 
-        public Grade? GetGradeById(int id)
-        {
-
-            var a =  _context.Grade.Include(o => o.Order).FirstOrDefault(g => g.Id == id && !g.IsDeleted);
-            return a;
-        }
+        public Grade? GetGradeById(int id) 
+            => _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public void UpdateGradeById(Grade grade)
         {
@@ -39,7 +37,7 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public int DeleteGradeById (int id)
+        public int DeleteGradeById(int id)
         {
             var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
             if (oldGrade is null)

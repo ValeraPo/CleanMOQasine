@@ -1,10 +1,16 @@
-﻿using CleanMOQasine.Business.Models;
+﻿using CleanMOQasine.API.Models.Inputs;
+using CleanMOQasine.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class PaymentsController : Controller
     {
+        //private readonly IP _gradeService;
+
+
         [HttpGet("{id}")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
@@ -30,7 +36,7 @@ namespace CleanMOQasine.API.Controllers
             return Ok();
         }
         [HttpPost]
-        public ActionResult AddPayment(PaymentModel payment)
+        public ActionResult AddPayment(PaymentInputModel payment, int orderId)
         {
             return StatusCode(StatusCodes.Status201Created, payment);
         }

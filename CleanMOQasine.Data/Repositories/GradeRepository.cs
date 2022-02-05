@@ -31,7 +31,11 @@ namespace CleanMOQasine.Data.Repositories
         {
             var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
             grade.OrderId = oldGrade.OrderId;
-            oldGrade = grade;
+            oldGrade.Comment = grade.Comment;
+            oldGrade.IsAnonymous = grade.IsAnonymous;
+            oldGrade.IsDeleted = grade.IsDeleted;
+            oldGrade.OrderId = grade.OrderId;
+            oldGrade.Rating = grade.Rating;
             _context.SaveChanges();
         }
 

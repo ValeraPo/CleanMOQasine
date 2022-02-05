@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Models;
+using CleanMOQasine.Business;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CleanMOQasine.Business.Configurations
+namespace CleanMOQasine.API.Configurations
 {
     public class AutoMapperFromApi
     {
@@ -23,7 +25,9 @@ namespace CleanMOQasine.Business.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-                
+                cfg.CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
+                cfg.CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
+
             }));
         }
     }

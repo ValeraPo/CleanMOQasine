@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class WorkingTimesController : Controller
     {
         [HttpGet("{id}")]

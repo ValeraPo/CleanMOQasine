@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class PaymentsController : Controller
     {
+
         [HttpGet("{id}")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {

@@ -17,21 +17,21 @@ namespace CleanMOQasine.Data.Repositories
         }
 
         public IEnumerable<Grade> GetAllGrades() 
-            => _context.Grade.Where(g => !g.IsDeleted).ToList();
+            => _context.Grades.Where(g => !g.IsDeleted).ToList();
 
         public Grade? GetGradeById(int id) 
-            => _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+            => _context.Grades.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public void UpdateGradeById(Grade grade)
         {
-            var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
+            var oldGrade = _context.Grades.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
             oldGrade = grade;
             _context.SaveChanges();
         }
 
         public void DeleteGradeById (int id)
         {
-            var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+            var oldGrade = _context.Grades.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
             if (oldGrade is null)
                 return;
             oldGrade.IsDeleted = true;
@@ -40,7 +40,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public void AddGrade(Grade grade)
         {
-            _context.Grade.Add(grade);
+            _context.Grades.Add(grade);
             _context.SaveChanges();
         }
 

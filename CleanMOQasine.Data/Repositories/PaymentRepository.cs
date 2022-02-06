@@ -41,7 +41,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public void AddPayment(Payment newPayment)
         {
-            _context.Payment.Add(newPayment);
+            _context.Payments.Add(newPayment);
             _context.SaveChanges();
         }
     }

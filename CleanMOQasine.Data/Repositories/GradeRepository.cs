@@ -20,14 +20,14 @@ namespace CleanMOQasine.Data.Repositories
         }
 
         public IEnumerable<Grade> GetAllGrades()
-            => _context.Grade.Where(g => !g.IsDeleted).ToList();
+            => _context.Grades.Where(g => !g.IsDeleted).ToList();
 
         public Grade? GetGradeById(int id) 
             => _context.Grades.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public void UpdateGradeById(Grade grade)
         {
-            var oldGrade = _context.Grade.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
+            var oldGrade = _context.Grades.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
             grade.OrderId = oldGrade.OrderId;
             oldGrade.Comment = grade.Comment;
             oldGrade.IsAnonymous = grade.IsAnonymous;

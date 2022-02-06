@@ -13,6 +13,7 @@ namespace CleanMOQasine.Data
         private static CleanMOQasineContext _instance;
         public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options): base(options)
         {
+            //Database.EnsureDeleted();
         }
 
         public static CleanMOQasineContext GetInstance()

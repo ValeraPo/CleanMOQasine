@@ -457,12 +457,6 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GradeId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -711,17 +705,6 @@ namespace CleanMOQasine.Data.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("CleanMOQasine.Data.Entities.Grade", b =>
-                {
-                    b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
-                        .WithOne("Grade")
-                        .HasForeignKey("CleanMOQasine.Data.Entities.Grade", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Grade", b =>

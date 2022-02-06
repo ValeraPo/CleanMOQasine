@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220203165601_upd3")]
-    partial class upd3
+    [Migration("20220206123248_NewTablesName")]
+    partial class NewTablesName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,7 +78,7 @@ namespace CleanMOQasine.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                        .HasColumnType("time(2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -92,7 +92,7 @@ namespace CleanMOQasine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CleaningAddition");
+                    b.ToTable("CleaningAdditions");
 
                     b.HasData(
                         new
@@ -373,7 +373,7 @@ namespace CleanMOQasine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CleaningType");
+                    b.ToTable("CleaningTypes");
 
                     b.HasData(
                         new
@@ -435,7 +435,7 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Grade");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Order", b =>
@@ -459,23 +459,16 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<TimeSpan>("TotalDuration")
-                        .HasColumnType("time");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CleaningTypeId");
 
-                    b.ToTable("Order");
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Payment", b =>
@@ -492,7 +485,7 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("PaymentDate")
@@ -502,7 +495,7 @@ namespace CleanMOQasine.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Room", b =>
@@ -525,7 +518,7 @@ namespace CleanMOQasine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Room");
+                    b.ToTable("Rooms");
 
                     b.HasData(
                         new
@@ -608,7 +601,7 @@ namespace CleanMOQasine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.WorkingTime", b =>
@@ -631,14 +624,29 @@ namespace CleanMOQasine.Data.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("WorkingTime");
+                    b.ToTable("WorkingHours");
+                });
+
+            modelBuilder.Entity("OrderCleaner", b =>
+                {
+                    b.Property<int>("CleanerOrdersId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CleanersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CleanerOrdersId", "CleanersId");
+
+                    b.HasIndex("CleanersId");
+
+                    b.ToTable("OrderCleaner");
                 });
 
             modelBuilder.Entity("OrderRoom", b =>
@@ -656,33 +664,18 @@ namespace CleanMOQasine.Data.Migrations
                     b.ToTable("OrderRoom");
                 });
 
-            modelBuilder.Entity("OrderUser", b =>
-                {
-                    b.Property<int>("InvolvedUsersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrdersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("InvolvedUsersId", "OrdersId");
-
-                    b.HasIndex("OrdersId");
-
-                    b.ToTable("OrderUser");
-                });
-
             modelBuilder.Entity("CleaningAdditionCleaningType", b =>
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", null)
                         .WithMany()
                         .HasForeignKey("CleaningAdditionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningType", null)
                         .WithMany()
                         .HasForeignKey("CleaningTypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -691,13 +684,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", null)
                         .WithMany()
                         .HasForeignKey("CleaningAdditionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -706,13 +699,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningAddition", null)
                         .WithMany()
                         .HasForeignKey("CleaningAdditionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -721,7 +714,7 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
                         .WithOne("Grade")
                         .HasForeignKey("CleanMOQasine.Data.Entities.Grade", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -732,19 +725,25 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.CleaningType", "CleaningType")
                         .WithMany("Order")
                         .HasForeignKey("CleaningTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CleanMOQasine.Data.Entities.User", "Client")
+                        .WithMany("ClientOrders")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("CleaningType");
+
+                    b.Navigation("Client");
                 });
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.Payment", b =>
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.Order", "Order")
                         .WithMany("Payments")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Order");
                 });
@@ -753,11 +752,24 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.User", "User")
                         .WithMany("WorkingTime")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OrderCleaner", b =>
+                {
+                    b.HasOne("CleanMOQasine.Data.Entities.Order", null)
+                        .WithMany()
+                        .HasForeignKey("CleanerOrdersId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CleanMOQasine.Data.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("CleanersId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OrderRoom", b =>
@@ -765,28 +777,13 @@ namespace CleanMOQasine.Data.Migrations
                     b.HasOne("CleanMOQasine.Data.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CleanMOQasine.Data.Entities.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OrderUser", b =>
-                {
-                    b.HasOne("CleanMOQasine.Data.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("InvolvedUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CleanMOQasine.Data.Entities.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -805,6 +802,8 @@ namespace CleanMOQasine.Data.Migrations
 
             modelBuilder.Entity("CleanMOQasine.Data.Entities.User", b =>
                 {
+                    b.Navigation("ClientOrders");
+
                     b.Navigation("WorkingTime");
                 });
 #pragma warning restore 612, 618

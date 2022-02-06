@@ -8,13 +8,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanMOQasine.Business.Configurations;
 
 namespace CleanMOQasine.API.Configurations
 {
     public class AutoMapperFromApi : IAutoMapperFromApi
     {
-        public AutoMapperFromApi() { }
+        public AutoMapperFromApi() 
+        {
 
+        }
+
+        public static Mapper GetInstance()
+        {
+            return null;
+        }
         public Mapper InitAutoMapperFromApi()
         {
             return new Mapper(new MapperConfiguration(cfg =>
@@ -22,15 +30,6 @@ namespace CleanMOQasine.API.Configurations
                  cfg.CreateMap<GradeModel, GradeBaseOutputModel>().ReverseMap();
                  cfg.CreateMap<GradeBaseInputModel, GradeModel>().ReverseMap();
              }));
-        }
-        public static void InitAutoMapperFromApi()
-        {
-            _instance = new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
-                cfg.CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
-
-            }));
         }
     }
 }

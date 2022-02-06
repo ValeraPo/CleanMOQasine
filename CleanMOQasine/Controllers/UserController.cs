@@ -19,7 +19,6 @@ namespace CleanMOQasine.API.Controllers
             var model = _cleaningAdditionService.GetCleaningAdditionById(id);
             var output = _autoMapperInstance.Map<CleaningAdditionOutputModel>(model);
             return Ok(output);
-            return Ok(new UserInputModel());
         }
 
         [HttpGet]

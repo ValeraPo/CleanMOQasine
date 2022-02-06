@@ -1,4 +1,5 @@
-﻿using CleanMOQasine.Business.Configurations;
+﻿using AutoMapper;
+using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Enums;
@@ -9,10 +10,12 @@ namespace CleanMOQasine.Business.Services
     public class UserService
     {
         private readonly UserRepository _userRepository;
+        private readonly Mapper _autoMapperInstance;
 
         public UserService()
         {
             _userRepository = new UserRepository();
+            _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 
         public UserModel GetUserById(int id)

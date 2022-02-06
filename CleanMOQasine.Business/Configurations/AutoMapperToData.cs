@@ -23,9 +23,10 @@ namespace CleanMOQasine.Business.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, UserModel>();
+                cfg.CreateMap<User, UserModel>().ReverseMap();
 
-                cfg.CreateMap<Room, RoomModel>();
+                cfg.CreateMap<Room, RoomModel>().ReverseMap();
+
                 cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
             }));
         }

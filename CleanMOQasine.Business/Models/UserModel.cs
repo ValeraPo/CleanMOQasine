@@ -15,7 +15,7 @@ namespace CleanMOQasine.Business.Models
         public double? Rank { get; set; }
         public bool IsDeleted { get; set; }
         public List<CleaningAdditionModel> CleaningAdditions { get; set; }
-        public List<WorkingTimeModel> WorkingTime { get; set; }
+        public List<WorkingTimeModel> WorkingHours { get; set; }
         public List<OrderModel> Orders { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
@@ -28,6 +29,7 @@ namespace CleanMOQasine.Business.Configurations
                 cfg.CreateMap<Grade, GradeModel>();
                 cfg.CreateMap<GradeModel, Grade>();
                 cfg.CreateMap<Order, OrderModel>();
+                cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
             }));
         }
     }

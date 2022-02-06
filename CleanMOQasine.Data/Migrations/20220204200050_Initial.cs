@@ -5,59 +5,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CleanMOQasine.Data.Migrations
 {
-    public partial class Updating : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CleaningAddition",
+                name: "CleaningAdditions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Duration = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Duration = table.Column<TimeSpan>(type: "time(2)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CleaningAddition", x => x.Id);
+                    table.PrimaryKey("PK_CleaningAdditions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CleaningType",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CleaningType", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Grade",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsAnonymous = table.Column<bool>(type: "bit", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Grade", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Room",
+                name: "CleaningTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -68,11 +37,26 @@ namespace CleanMOQasine.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Room", x => x.Id);
+                    table.PrimaryKey("PK_CleaningTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -89,7 +73,7 @@ namespace CleanMOQasine.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,50 +87,15 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     table.PrimaryKey("PK_CleaningAdditionCleaningType", x => new { x.CleaningAdditionsId, x.CleaningTypesId });
                     table.ForeignKey(
-                        name: "FK_CleaningAdditionCleaningType_CleaningAddition_CleaningAdditionsId",
+                        name: "FK_CleaningAdditionCleaningType_CleaningAdditions_CleaningAdditionsId",
                         column: x => x.CleaningAdditionsId,
-                        principalTable: "CleaningAddition",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CleaningAdditions",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CleaningAdditionCleaningType_CleaningType_CleaningTypesId",
+                        name: "FK_CleaningAdditionCleaningType_CleaningTypes_CleaningTypesId",
                         column: x => x.CleaningTypesId,
-                        principalTable: "CleaningType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Order",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientId = table.Column<int>(type: "int", nullable: false),
-                    CleaningTypeId = table.Column<int>(type: "int", nullable: false),
-                    GradeId = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalDuration = table.Column<TimeSpan>(type: "time", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsCompleted = table.Column<bool>(type: "bit", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Order_CleaningType_CleaningTypeId",
-                        column: x => x.CleaningTypeId,
-                        principalTable: "CleaningType",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Order_Grade_GradeId",
-                        column: x => x.GradeId,
-                        principalTable: "Grade",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CleaningTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -160,21 +109,46 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     table.PrimaryKey("PK_CleaningAdditionUser", x => new { x.CleaningAdditionsId, x.UsersId });
                     table.ForeignKey(
-                        name: "FK_CleaningAdditionUser_CleaningAddition_CleaningAdditionsId",
+                        name: "FK_CleaningAdditionUser_CleaningAdditions_CleaningAdditionsId",
                         column: x => x.CleaningAdditionsId,
-                        principalTable: "CleaningAddition",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CleaningAdditions",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CleaningAdditionUser_User_UsersId",
+                        name: "FK_CleaningAdditionUser_Users_UsersId",
                         column: x => x.UsersId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkingTime",
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    CleaningTypeId = table.Column<int>(type: "int", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_CleaningTypes_CleaningTypeId",
+                        column: x => x.CleaningTypeId,
+                        principalTable: "CleaningTypes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkingHours",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -182,18 +156,17 @@ namespace CleanMOQasine.Data.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Day = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkingTime", x => x.Id);
+                    table.PrimaryKey("PK_WorkingHours", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkingTime_User_UserId",
+                        name: "FK_WorkingHours_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -207,17 +180,59 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     table.PrimaryKey("PK_CleaningAdditionOrder", x => new { x.CleaningAdditionsId, x.OrdersId });
                     table.ForeignKey(
-                        name: "FK_CleaningAdditionOrder_CleaningAddition_CleaningAdditionsId",
+                        name: "FK_CleaningAdditionOrder_CleaningAdditions_CleaningAdditionsId",
                         column: x => x.CleaningAdditionsId,
-                        principalTable: "CleaningAddition",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "CleaningAdditions",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CleaningAdditionOrder_Order_OrdersId",
+                        name: "FK_CleaningAdditionOrder_Orders_OrdersId",
                         column: x => x.OrdersId,
-                        principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsAnonymous = table.Column<bool>(type: "bit", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Grades_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderCleaner",
+                columns: table => new
+                {
+                    CleanerOrdersId = table.Column<int>(type: "int", nullable: false),
+                    CleanersId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderCleaner", x => new { x.CleanerOrdersId, x.CleanersId });
+                    table.ForeignKey(
+                        name: "FK_OrderCleaner_Orders_CleanerOrdersId",
+                        column: x => x.CleanerOrdersId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_OrderCleaner_Users_CleanersId",
+                        column: x => x.CleanersId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -231,67 +246,40 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     table.PrimaryKey("PK_OrderRoom", x => new { x.OrdersId, x.RoomsId });
                     table.ForeignKey(
-                        name: "FK_OrderRoom_Order_OrdersId",
+                        name: "FK_OrderRoom_Orders_OrdersId",
                         column: x => x.OrdersId,
-                        principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Orders",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OrderRoom_Room_RoomsId",
+                        name: "FK_OrderRoom_Rooms_RoomsId",
                         column: x => x.RoomsId,
-                        principalTable: "Room",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Rooms",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderUser",
-                columns: table => new
-                {
-                    InvolvedUsersId = table.Column<int>(type: "int", nullable: false),
-                    OrdersId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderUser", x => new { x.InvolvedUsersId, x.OrdersId });
-                    table.ForeignKey(
-                        name: "FK_OrderUser_Order_OrdersId",
-                        column: x => x.OrdersId,
-                        principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderUser_User_InvolvedUsersId",
-                        column: x => x.InvolvedUsersId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payment",
+                name: "Payments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payment", x => x.Id);
+                    table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payment_Order_OrderId",
+                        name: "FK_Payments_Orders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Order",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Orders",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
-                table: "CleaningAddition",
+                table: "CleaningAdditions",
                 columns: new[] { "Id", "Duration", "IsDeleted", "Name", "Price" },
                 values: new object[,]
                 {
@@ -330,7 +318,7 @@ namespace CleanMOQasine.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "CleaningType",
+                table: "CleaningTypes",
                 columns: new[] { "Id", "IsDeleted", "Name", "Price" },
                 values: new object[,]
                 {
@@ -341,7 +329,7 @@ namespace CleanMOQasine.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Room",
+                table: "Rooms",
                 columns: new[] { "Id", "IsDeleted", "Name", "Price" },
                 values: new object[,]
                 {
@@ -368,15 +356,15 @@ namespace CleanMOQasine.Data.Migrations
                 column: "UsersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_CleaningTypeId",
-                table: "Order",
-                column: "CleaningTypeId");
+                name: "IX_Grades_OrderId",
+                table: "Grades",
+                column: "OrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_GradeId",
-                table: "Order",
-                column: "GradeId",
-                unique: true);
+                name: "IX_OrderCleaner_CleanersId",
+                table: "OrderCleaner",
+                column: "CleanersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderRoom_RoomsId",
@@ -384,18 +372,23 @@ namespace CleanMOQasine.Data.Migrations
                 column: "RoomsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderUser_OrdersId",
-                table: "OrderUser",
-                column: "OrdersId");
+                name: "IX_Orders_CleaningTypeId",
+                table: "Orders",
+                column: "CleaningTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payment_OrderId",
-                table: "Payment",
+                name: "IX_Orders_ClientId",
+                table: "Orders",
+                column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_OrderId",
+                table: "Payments",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkingTime_UserId",
-                table: "WorkingTime",
+                name: "IX_WorkingHours_UserId",
+                table: "WorkingHours",
                 column: "UserId");
         }
 
@@ -411,34 +404,34 @@ namespace CleanMOQasine.Data.Migrations
                 name: "CleaningAdditionUser");
 
             migrationBuilder.DropTable(
+                name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "OrderCleaner");
+
+            migrationBuilder.DropTable(
                 name: "OrderRoom");
 
             migrationBuilder.DropTable(
-                name: "OrderUser");
+                name: "Payments");
 
             migrationBuilder.DropTable(
-                name: "Payment");
+                name: "WorkingHours");
 
             migrationBuilder.DropTable(
-                name: "WorkingTime");
+                name: "CleaningAdditions");
 
             migrationBuilder.DropTable(
-                name: "CleaningAddition");
+                name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Room");
+                name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "CleaningTypes");
 
             migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "CleaningType");
-
-            migrationBuilder.DropTable(
-                name: "Grade");
+                name: "Users");
         }
     }
 }

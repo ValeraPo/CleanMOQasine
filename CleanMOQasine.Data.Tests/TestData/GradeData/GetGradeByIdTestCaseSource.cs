@@ -21,8 +21,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsDeleted = false,
                 OrderId = 1
             };
-            int id1 = 1;
-            yield return new object[] { grade1, id1 };
+            yield return new object[] { grade1};
             Grade grade2 = new Grade
             {
                 Id = 2,
@@ -32,8 +31,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsDeleted = false,
                 OrderId = 1
             };
-            int id2 = 2;
-            yield return new object[] { grade2, id2 };
+            yield return new object[] { grade2};
         }
     }
 }

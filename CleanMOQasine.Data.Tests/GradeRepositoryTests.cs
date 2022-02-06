@@ -26,27 +26,33 @@ namespace CleanMOQasine.Data.Tests
         }
 
         [TestCaseSource(typeof(GetGradeByIdTestCaseSource))]
-        public void GetGradeByIdTest(Grade grade, int id)
+        public void GetGradeByIdTest(Grade grade)
         {
-            mock.Setup(obj => obj.GetGradeById(id)).Returns(grade);
+            //given
+            mock.Setup(obj => obj.GetGradeById(grade.Id)).Returns(grade);
             _context.Grade.Add(grade);
             _context.SaveChanges();
+            //when
             var repo = new GradeRepository(_context);
-            var actual = repo.GetGradeById(id);
-            var expected = _context.Grade.FirstOrDefault(g => g.Id == id);
+            var actual = repo.GetGradeById(grade.Id);
+            var expected = _context.Grade.FirstOrDefault(g => g.Id == grade.Id);
+            //then
             Assert.AreEqual(expected, actual);
         }
 
         [TestCaseSource(typeof(GetAllGradesTestCaseSource))]
-        public void GetAllGradesTest(List <Grade> grades)
+        public void GetAllGradesTest(List <Grade> grades, List<Grade> expectedList)
         {
+            //given
             mock.Setup(obj => obj.GetAllGrades()).Returns(grades);
             foreach (var grade in grades)
                 _context.Grade.Add(grade);
             _context.SaveChanges();
+            //when
             var repo = new GradeRepository(_context);
             var actual = repo.GetAllGrades().ToList();
-            var expected = _context.Grade.Where(g => !g.IsDeleted).ToList();
+            var expected = expectedList;
+            //then
             for (int i = 0; i < actual.Count; i++)
                 Assert.AreEqual(expected[i], actual[i]);
             if (expected.Count != actual.Count)
@@ -56,19 +62,39 @@ namespace CleanMOQasine.Data.Tests
         [TestCaseSource(typeof(UpdateGradeTestCaseSource))]
         public void UpdateGradeAndDeleteGradeTest(Grade oldGrade, Grade updatedGrade, int id)
         {
+            //given
             mock.Setup(obj => obj.UpdateGradeById(updatedGrade));
             var repo = new GradeRepository(_context);
             _context.Grade.Add(oldGrade);
             _context.SaveChanges();
             repo.UpdateGradeById(updatedGrade);
+            //when
             var actual = _context.Grade.FirstOrDefault(g => g.Id == id);
             var expected = updatedGrade;
+            //then
             Assert.AreEqual(expected, actual);
             actual.IsDeleted = true;
             _context.SaveChanges();
             actual = _context.Grade.FirstOrDefault(g => g.Id == id);
-            if (!actual.IsDeleted)
+        }
+
+        [TestCaseSource(typeof(DeleteGradeById))]
+        public void DeleteGradeById(List<Grade> grades, List<Grade> expected, int idToDelete)
+        {
+            //given
+            mock.Setup(obj => obj.DeleteGradeById(idToDelete));
+            var repo = new GradeRepository(_context);
+            foreach (var grade in grades)
+                _context.Grade.Add(grade);
+            _context.SaveChanges();
+            //when
+            repo.DeleteGradeById(idToDelete);
+            List<Grade> actual = _context.Grade.Where(g => !g.IsDeleted).ToList();
+            //then
+            if (actual.Count != expected.Count)
                 Assert.Fail();
+            for(int i = 0; i < actual.Count; i++)
+                Assert.AreEqual(expected[i], actual[i]);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Tests.TestData
 {
-    public  class GetAllGradesTestCaseSource : IEnumerable
+    public class DeleteGradeById : IEnumerable
     {
 
         public IEnumerator GetEnumerator()
@@ -46,7 +46,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsAnonymous = true,
                 Comment = "Ne",
                 Rating = 6,
-                IsDeleted = true,
+                IsDeleted = false,
                 OrderId = 4
             };
             List<Grade> grades = new();
@@ -54,7 +54,11 @@ namespace CleanMOQasine.Data.Tests.TestData
             grades.Add(grade2);
             grades.Add(grade3);
             grades.Add(grade4);
-            yield return new object[] { grades, new List<Grade> { grade1, grade2, grade3} };
+            var expectedList = new List<Grade>();
+            expectedList.Add(grade1);
+            expectedList.Add(grade2);
+            expectedList.Add(grade3);
+            yield return new object[] { grades, expectedList, grade4.Id };
         }
     }
 }

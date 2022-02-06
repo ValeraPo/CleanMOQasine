@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CleanMOQasine.Business.Models;
+
 
 namespace CleanMOQasine.API.Configurations
 {
@@ -27,6 +24,11 @@ namespace CleanMOQasine.API.Configurations
             {
                 cfg.CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
                 cfg.CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
+                cfg.CreateMap<OrderInsertInputModel, OrderModel>();
+                cfg.CreateMap<OrderUpdateInputModel, OrderModel>();
+                cfg.CreateMap<OrderUpdateCleanerInputModel, OrderModel>();
+                cfg.CreateMap<OrderUpdatePaymentInputModel, OrderModel>();
+                cfg.CreateMap<OrderModel, OrderOutputModel>();
 
             }));
         }

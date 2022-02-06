@@ -7,14 +7,14 @@ using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Services
 {
-    public class OrderService
+    public class OrderService : IOrderService
     {
-        private readonly OrderRepository _orderRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly Mapper _autoMapperInstance;
 
-        public OrderService()
+        public OrderService(IOrderRepository orderRpository)
         {
-            _orderRepository = new OrderRepository();
+            _orderRepository = orderRpository;
             _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 

@@ -6,10 +6,10 @@ using CleanMOQasine.Business.Models;
 
 namespace CleanMOQasine.API.Configurations
 {
-    public class AutoMapperFromApi
+    public class AutoMapperFromApi 
     {
         private static Mapper _instance;
-        private AutoMapperFromApi() { }
+        public AutoMapperFromApi() { }
         public static Mapper GetInstance()
         {
             if (_instance == null)

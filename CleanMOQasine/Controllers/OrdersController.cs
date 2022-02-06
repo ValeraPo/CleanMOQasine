@@ -13,9 +13,9 @@ namespace CleanMOQasine.API.Controllers
     {
         private readonly OrderService _orderService;
         private readonly Mapper _autoMapperInstance;
-        public OrdersController()
+        public OrdersController(IOrderService orderService)
         {
-            _orderService = new();
+            _orderService = (OrderService?)orderService;
             _autoMapperInstance = AutoMapperFromApi.GetInstance();
         }
 

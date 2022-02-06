@@ -3,13 +3,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly CleanMOQasineContext _dbContext;
+        public bool _isInitialized;
 
-        public OrderRepository() => _dbContext = CleanMOQasineContext.GetInstance();
+        public OrderRepository(CleanMOQasineContext context)
+        {
+            _dbContext = context;
+            _isInitialized = true;
+        }
 
-        public Order GetOrderById(int id) => _dbContext.Orders.Include(o=>o.Grade).FirstOrDefault(o => o.Id == id);
+        public Order GetOrderById(int id) => _dbContext.Orders.Include(o => o.Grade).FirstOrDefault(o => o.Id == id);
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
@@ -22,7 +27,7 @@ namespace CleanMOQasine.Data.Repositories
             oldOrder.Date = order.Date;
             oldOrder.Rooms = order.Rooms;
             oldOrder.CleaningAdditions = order.CleaningAdditions;
-            Save(); 
+            Save();
         }
 
         public void AddOrder(Order order)

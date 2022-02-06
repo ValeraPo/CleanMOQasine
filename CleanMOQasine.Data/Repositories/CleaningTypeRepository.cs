@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class CleaningTypeRepository
+    public class CleaningTypeRepository : ICleaningTypeRepository
     {
         private readonly CleanMOQasineContext _context;
         public CleaningTypeRepository()
@@ -27,10 +27,14 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdateCleaningType(CleaningType updatedCleaningType)
+        public void UpdateCleaningType(int id, CleaningType updatedCleaningType)
         {
-            var cleaningType = GetCleaningTypeById(updatedCleaningType.Id);
-            cleaningType = updatedCleaningType;
+            var cleaningType = GetCleaningTypeById(id);
+            cleaningType.Name = updatedCleaningType.Name;
+            cleaningType.CleaningAdditions = updatedCleaningType.CleaningAdditions;
+            cleaningType.Price = updatedCleaningType.Price;
+            cleaningType.Order = updatedCleaningType.Order;
+
             _context.SaveChanges();
         }
 

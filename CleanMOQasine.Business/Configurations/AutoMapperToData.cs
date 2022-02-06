@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
@@ -20,6 +21,7 @@ namespace CleanMOQasine.Business.Configurations
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
+                cfg.CreateMap<OrderModel, Order>().ReverseMap();
             }));
         }
     }

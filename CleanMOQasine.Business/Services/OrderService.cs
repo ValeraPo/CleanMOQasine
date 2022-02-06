@@ -30,10 +30,10 @@ namespace CleanMOQasine.Business.Services
             return _autoMapperInstance.Map<List<OrderModel>>(entities);
         }
 
-        public void UpdateOrder(OrderModel orderModel)
+        public void UpdateOrder(int id, OrderModel orderModel)
         {
             var entity = _autoMapperInstance.Map<Order>(orderModel);
-            _orderRepository.UpdateOrder(entity);
+            _orderRepository.UpdateOrder(id, entity);
         }
 
         public void AddOrder(OrderModel orderModel)
@@ -42,22 +42,14 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.AddOrder(entity);
         }
 
-        public void AddCleaner(OrderModel orderModel, int idUser)
+        public void AddCleaner(int idOrder, int idUser)
         {
-            var entity = _autoMapperInstance.Map<Order>(orderModel);
-            _orderRepository.AddCleaner(entity, idUser);
+            _orderRepository.AddCleaner(idOrder, idUser);
         }
 
-        public void RemoveCleaner(OrderModel orderModel, int idUser)
+        public void RemoveCleaner(int idOrderl, int idUser)
         {
-            var entity = _autoMapperInstance.Map<Order>(orderModel);
-            _orderRepository.RemoveCleaner(entity, idUser);
-        }
-
-        public void AddPayment(OrderModel orderModel, int idPayment)
-        {
-            var entity = _autoMapperInstance.Map<Order>(orderModel);
-            _orderRepository.AddPayment(entity, idPayment);
+            _orderRepository.RemoveCleaner(idOrderl, idUser);
         }
 
         public void DeleteOrder(int id) => _orderRepository.DeleteOrder(id);

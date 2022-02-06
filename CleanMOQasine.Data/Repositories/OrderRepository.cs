@@ -13,9 +13,9 @@ namespace CleanMOQasine.Data.Repositories
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
-        public void UpdateOrder(Order order)
+        public void UpdateOrder(int id, Order order)
         {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == id);
             oldOrder.CleaningType = order.CleaningType;
             oldOrder.Grade = order.Grade;
             oldOrder.Address = order.Address;
@@ -31,27 +31,19 @@ namespace CleanMOQasine.Data.Repositories
             Save();
         }
 
-        public void AddCleaner(Order order, int idCleaner)
+        public void AddCleaner(int idOrder, int idCleaner)
         {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == idOrder);
             var cleaner = _dbContext.Users.FirstOrDefault(u => u.Id == idCleaner);
             oldOrder.Cleaners.Add(cleaner);
             Save();
         }
 
-        public void RemoveCleaner(Order order, int idCleaner)
+        public void RemoveCleaner(int idOrder, int idCleaner)
         {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == idOrder);
             var cleaner = _dbContext.Users.FirstOrDefault(u => u.Id == idCleaner);
             oldOrder.Cleaners.Remove(cleaner);
-            Save();
-        }
-
-        public void AddPayment(Order order, int idPayment)
-        {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
-            var payment = _dbContext.Payments.FirstOrDefault(p => p.Id == idPayment);
-            oldOrder.Payments.Add(payment);
             Save();
         }
 

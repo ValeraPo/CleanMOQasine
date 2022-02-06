@@ -27,7 +27,6 @@ namespace CleanMOQasine.API.Configurations
                 cfg.CreateMap<OrderInsertInputModel, OrderModel>();
                 cfg.CreateMap<OrderUpdateInputModel, OrderModel>();
                 cfg.CreateMap<OrderUpdateCleanerInputModel, OrderModel>();
-                cfg.CreateMap<OrderUpdatePaymentInputModel, OrderModel>();
                 cfg.CreateMap<OrderModel, OrderOutputModel>();
 
             }));

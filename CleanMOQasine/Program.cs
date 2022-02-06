@@ -1,4 +1,7 @@
+using CleanMOQasine.Business.Configurations;
+using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
+using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +15,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CleanMOQasineContext>(opt
     => opt.UseSqlServer(@"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23"));
 
+
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddScoped<IAutoMapperFromApi, AutoMapperFromApi>();
 
 var app = builder.Build();
 

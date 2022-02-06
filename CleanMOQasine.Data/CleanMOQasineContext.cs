@@ -13,18 +13,18 @@ namespace CleanMOQasine.Data
             //Database.EnsureDeleted();
             //Database.EnsureCreated();
         }
-        
-        //public static CleanMOQasineContext GetInstance()
-        //{
-        //    if (_instance == null)
-        //        _instance = new CleanMOQasineContext();
-        //    return _instance;
-        //}
+
+        public static CleanMOQasineContext GetInstance()
+        {
+            if (_instance == null)
+                _instance = new CleanMOQasineContext(null);
+            return _instance;
+        }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    optionsBuilder.UseSqlServer(_connectionString);
-            
+
         //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -9,24 +9,15 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Configurations
 {
-    public class AutoMapperFromApi
+    public class AutoMapperFromApi : IAutoMapperFromApi
     {
-        private static Mapper _instance;
-        private AutoMapperFromApi() { }
-        public static Mapper GetInstance()
+        public AutoMapperFromApi() { }
+        public Mapper InitAutoMapperFromApi()
         {
-            if (_instance == null)
-            {
-                InitAutoMapperFromApi();
-            }
-            return _instance;
-        }
-        public static void InitAutoMapperFromApi()
-        {
-            _instance = new Mapper(new MapperConfiguration(cfg =>
+            return new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<PaymentModel, PaymentOutputModel>()
-                .ForMember(a => a.PaymentDate, b => b.MapFrom(src => src.PaymentDate.ToString()));
+                .ForMember(a => a.PaymentDate, b => b.MapFrom(src => src.PaymentDate.ToString())).ReverseMap();
             }));
         }
     }

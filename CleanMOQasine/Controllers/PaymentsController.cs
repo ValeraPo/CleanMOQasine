@@ -1,5 +1,8 @@
-﻿using CleanMOQasine.API.Models.Inputs;
+﻿using AutoMapper;
+using CleanMOQasine.API.Models.Inputs;
+using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
+using CleanMOQasine.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -8,16 +11,23 @@ namespace CleanMOQasine.API.Controllers
     [Route("api/[controller]")]
     public class PaymentsController : Controller
     {
-        //private readonly IP _gradeService;
+        private readonly IPaymentService _paymentService;
+        private Mapper _mapper;
 
+        public PaymentsController(IPaymentService paymentService, IAutoMapperFromApi mapper)
+        {
+            _paymentService = paymentService;
+            _mapper = mapper.InitAutoMapperFromApi();
+        }
 
         [HttpGet("{id}")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
-            //if () payment is null
+            var payment = _paymentService.GetPaymentById(id);
+            if (payment is null)
                 return BadRequest();
-            //else
-                return Ok();
+            else
+                return Ok(payment);
 
         }
 

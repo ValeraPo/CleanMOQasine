@@ -20,7 +20,6 @@ namespace CleanMOQasine.Data.Entities
         public bool IsCompleted { get; set; }
         public bool IsDeleted { get; set; }
 
-
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<CleaningAddition> CleaningAdditions { get; set; }   
         public virtual ICollection<User> InvolvedUsers { get; set; }

@@ -32,11 +32,16 @@ namespace CleanMOQasine.Data.Tests
         {
             //given
             var userForTest = _userTestData.GetUserForTests();
+            _dbContext.Users.Add(userForTest);
+            _dbContext.SaveChanges();
+            var sut = new UserRepository();
 
             //when
-
+            var actual = sut.GetUserById(23);
 
             //then
+            Assert.AreEqual(actual, userForTest);
+            Assert.AreEqual(actual.Id, 23);
         }
        
     }

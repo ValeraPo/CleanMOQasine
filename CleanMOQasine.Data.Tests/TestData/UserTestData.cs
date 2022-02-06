@@ -8,7 +8,7 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             User user = new User
             {
-                Id = 3, 
+                Id = 23, 
                 Email = "bugaga@mail.com", 
                 FirstName = "Сергей", 
                 LastName = "Бугаев", 

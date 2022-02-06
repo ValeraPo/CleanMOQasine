@@ -11,14 +11,13 @@ namespace CleanMOQasine.Data
         private readonly string _connectionString = @"Data Source=LAPTOP-7HPLQHLI\TEW_SQLEXPRESS;Initial Catalog=CleanMOQasine;Integrated Security=True";
 
         private static CleanMOQasineContext _instance;
-        public CleanMOQasineContext()
-        {
-        }
+
+        public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options) : base(options) { }
         
         public static CleanMOQasineContext GetInstance()
         {
             if (_instance == null)
-                _instance = new CleanMOQasineContext();
+                _instance = new CleanMOQasineContext(null);
             return _instance;
         }
 

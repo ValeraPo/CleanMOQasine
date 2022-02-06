@@ -12,6 +12,8 @@
 
         public override bool Equals(object? obj)
         {
+            if (obj is null)
+                return false;
             Grade grade = (Grade)obj;
             if (grade.Id != Id
                 || grade.IsAnonymous != IsAnonymous

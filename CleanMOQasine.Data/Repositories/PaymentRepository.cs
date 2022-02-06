@@ -16,14 +16,14 @@ namespace CleanMOQasine.Data.Repositories
         }
 
         public Payment GetPaymentById(int id)
-            => _context.Payment.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+            => _context.Payments.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public IEnumerable<Payment> GetAllPayments()
-            => _context.Payment.Where(p => !p.IsDeleted).ToList();
+            => _context.Payments.Where(p => !p.IsDeleted).ToList();
 
         public int DeletePayment(int id)
         {
-            var oldPayment = _context.Payment.FirstOrDefault(p => p.Id == id);
+            var oldPayment = _context.Payments.FirstOrDefault(p => p.Id == id);
             if (oldPayment.IsDeleted == true)
                 return -1;
             oldPayment.IsDeleted = true;
@@ -34,7 +34,7 @@ namespace CleanMOQasine.Data.Repositories
         public void UpdatePayment(Payment newPayment, int id)
         {
             newPayment.Id = id;
-            var oldPayment = _context.Payment.FirstOrDefault(p => p.Id == newPayment.Id);
+            var oldPayment = _context.Payments.FirstOrDefault(p => p.Id == newPayment.Id);
             oldPayment = newPayment;
             _context.SaveChanges();
         }

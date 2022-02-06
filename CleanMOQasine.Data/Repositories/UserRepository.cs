@@ -8,15 +8,15 @@ namespace CleanMOQasine.Data.Repositories
 
         public UserRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
-        public User? GetUserById(int id) => _dbContext.User.FirstOrDefault(u => u.Id == id);
+        public User? GetUserById(int id) => _dbContext.Users.FirstOrDefault(u => u.Id == id);
 
-        public List<User> GetUsers() => _dbContext.User.Where(u => !u.IsDeleted).ToList();
+        public List<User> GetUsers() => _dbContext.Users.Where(u => !u.IsDeleted).ToList();
 
-        public User? GetUserByLogin(string login) => _dbContext.User.FirstOrDefault(u => u.Login == login);
+        public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
 
         public void AddUser(User user)
         {
-            _dbContext.User.Add(user);
+            _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
         }
 

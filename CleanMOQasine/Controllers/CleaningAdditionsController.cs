@@ -18,7 +18,7 @@ namespace CleanMOQasine.API.Controllers
         public CleaningAdditionsController()
         {
             _cleaningAdditionService = new();
-            _autoMapperInstance = AutoMapperFromApi.GetInstance();
+           // _autoMapperInstance = AutoMapperFromApi.GetInstance();
         }
 
         //api/CleaningAdditions/228
@@ -52,8 +52,8 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
-            _cleaningAdditionService.UpdateCleaningAddition(id, model);
+            var model = 1; /*= AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel)*/;
+            _cleaningAdditionService.UpdateCleaningAddition(id, null);
             return Ok($"Cleaning type with {id} was updated");
         }
 

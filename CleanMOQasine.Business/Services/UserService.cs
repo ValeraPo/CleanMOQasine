@@ -7,7 +7,7 @@ using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly UserRepository _userRepository;
         private readonly Mapper _autoMapperInstance;

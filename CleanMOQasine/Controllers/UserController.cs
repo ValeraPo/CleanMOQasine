@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using CleanMOQasine.Business;
+﻿using AutoMapper;
+using CleanMOQasine.API.Configurations;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business;
 using CleanMOQasine.Business.Services;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -12,81 +12,64 @@ namespace CleanMOQasine.API.Controllers
     public class UserController : Controller
     {
         private readonly UserService _userService;
+        private readonly Mapper _autoMapperInstance;
 
-        //[HttpGet("{id}")]
-        //public ActionResult<UserInputModel> GetUserById(int id)
-        //{
-        //    var model = _cleaningAdditionService.GetCleaningAdditionById(id);
-        //    var output = _autoMapperInstance.Map<CleaningAdditionOutputModel>(model);
-        //    return Ok(output);
-        //}
+        public UserController()
+        {
+            _userService = new UserService();
+            _autoMapperInstance = AutoMapperFromApi.GetInstance();
+        }
 
-        //[HttpGet]
-        //public ActionResult<List<UserModel>> GetAdmins()
-        //{
-        //    var admins = _userService.GetAllAdmins();
-        //    return Ok(new List<UserModel> { new UserModel() });
-        //}
+        //api/Users/23
+        [HttpGet("{id}")]
+        public ActionResult<UserOutputModel> GetUserById(int id)
+        {
+            var model = _userService.GetUserById(id);
+            var output = _autoMapperInstance.Map<UserOutputModel>(model);
+            return Ok(output);
+        }
 
-        //[HttpGet]
-        //public ActionResult<List<UserModel>> GetCleaners()
-        //{
-        //    return Ok(new List<UserModel> { new UserModel() });
-        //}
+        //api/CleaningAdditions
+        [HttpGet()]
+        public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
+        {
+            var models = _userService.GetAllCleaningAdditions();
+            var outputs = _autoMapperInstance.Map<List<CleaningAdditionOutputModel>>(models);
+            return Ok(outputs);
+        }
 
-        //[HttpGet]
-        //public ActionResult<List<UserModel>> GetClients()
-        //{
-        //    return Ok(new List<UserModel> { new UserModel() });
-        //}
+        //api/CleaningAdditions
+        [HttpPost]
+        public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
+        {
+            var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            _userService.AddCleaningAddition(model);
+            return StatusCode(StatusCodes.Status201Created);
+        }
 
-        //[HttpPost]
-        //public ActionResult AddAdmin(UserModel userModel)
-        //{
-        //    return StatusCode(StatusCodes.Status201Created, userModel);
-        //}
+        //api/CleaningAdditions/228
+        [HttpPut("{id}")]
+        public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
+        {
+            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            _userService.UpdateCleaningAddition(id, model);
+            return Ok($"Cleaning type with {id} was updated");
+        }
 
-        //[HttpPost]
-        //public ActionResult AddCleaner(UserModel userModel)
-        //{
-        //    return StatusCode(StatusCodes.Status201Created, userModel);
-        //}
+        //api/CleaningAdditions/228
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCleaningAddition(int id)
+        {
+            _userService.DeleteCleaningAddition(id);
+            return Ok($"Cleaning type with {id} was deleted");
+        }
 
-        //[HttpPost]
-        //public ActionResult AddClient(UserModel userModel)
-        //{
-        //    return StatusCode(StatusCodes.Status201Created, userModel);
-        //}
-
-        //[HttpPut()]
-        //public ActionResult UpdateAdmin(int id, CleaningAdditionModel cleaningAdditionModel)
-        //{
-        //    return Ok($"Cleaning type with {id} was updated");
-        //}
-
-        //[HttpPut()]
-        //public ActionResult UpdateCleaner(int id, CleaningAdditionModel cleaningAdditionModel)
-        //{
-        //    return Ok($"Cleaning type with {id} was updated");
-        //}
-
-        //[HttpPut()]
-        //public ActionResult UpdateClient(int id, CleaningAdditionModel cleaningAdditionModel)
-        //{
-        //    return Ok($"Cleaning type with {id} was updated");
-        //}
-
-
-        //[HttpPatch()]
-        //public ActionResult DeleteAdmin(int id, CleaningAdditionModel cleaningAdditionModel)
-        //{
-        //    return Accepted($"Cleaning type with {id} was deleted");
-        //}
-
-        //[HttpPatch("{id}")]
-        //public ActionResult RestoreAdmin(int id, CleaningAdditionModel cleaningAdditionModel)
-        //{
-        //    return Accepted($"Cleaning type with {id} was deleted");
-        //}
+        //api/CleaningAdditions/228
+        [HttpPatch("{id}")]
+        public ActionResult RestoreCleaningAddition(int id)
+        {
+            _userService.RestoreCleaningAddition(id);
+            return Ok($"Cleaning type with {id} was restored");
+        }
     }
 }

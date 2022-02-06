@@ -18,8 +18,7 @@ namespace CleanMOQasine.Data.Entities
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; }
-        public virtual ICollection<WorkingTime>? WorkingTime { get; set; }
-        public virtual ICollection<Order>? CleanerOrders { get; set; }
-        public virtual ICollection<Order>? ClientOrders { get; set; }
+        public virtual ICollection<WorkingTime>? WorkingHours { get; set; }
+        public virtual ICollection<Order>? Orders { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace CleanMOQasine.Data.Repositories
 
         public OrderRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
-        public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
-
         public Order GetOrderById(int id) => _dbContext.Orders.Include(o=>o.Grade).FirstOrDefault(o => o.Id == id);
+
+        public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
         public void UpdateOrder(Order order)
         {
@@ -25,23 +25,32 @@ namespace CleanMOQasine.Data.Repositories
             Save(); 
         }
 
-        public void AddCleaner(Order order, User cleaner)
+        public void AddOrder(Order order)
+        {
+            _dbContext.Orders.Add(order);
+            Save();
+        }
+
+        public void AddCleaner(Order order, int idCleaner)
         {
             var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var cleaner = _dbContext.Users.FirstOrDefault(u => u.Id == idCleaner);
             oldOrder.Cleaners.Add(cleaner);
             Save();
         }
 
-        public void RemoveCleaner(Order order, User cleaner)
+        public void RemoveCleaner(Order order, int idCleaner)
         {
             var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var cleaner = _dbContext.Users.FirstOrDefault(u => u.Id == idCleaner);
             oldOrder.Cleaners.Remove(cleaner);
             Save();
         }
 
-        public void AddPayment(Order order, Payment payment)
+        public void AddPayment(Order order, int idPayment)
         {
             var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == order.Id);
+            var payment = _dbContext.Payments.FirstOrDefault(p => p.Id == idPayment);
             oldOrder.Payments.Add(payment);
             Save();
         }
@@ -57,12 +66,6 @@ namespace CleanMOQasine.Data.Repositories
         {
             var order = _dbContext.Orders.FirstOrDefault(o => o.Id == id);
             order.IsDeleted = true;
-            Save();
-        }
-
-        public void AddOrder(Order order)
-        {
-            _dbContext.Orders.Add(order);
             Save();
         }
 

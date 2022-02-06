@@ -7,7 +7,7 @@ namespace CleanMOQasine.Data.Entities
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public WeekDay Day { get; set; }
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

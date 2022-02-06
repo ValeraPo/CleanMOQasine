@@ -26,6 +26,7 @@ namespace CleanMOQasine.Business.Configurations
                 cfg.CreateMap<User, UserModel>();
 
                 cfg.CreateMap<Room, RoomModel>();
+                cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
             }));
         }
     }

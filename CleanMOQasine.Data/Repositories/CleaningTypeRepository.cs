@@ -12,18 +12,18 @@ namespace CleanMOQasine.Data.Repositories
         }
         public CleaningType GetCleaningTypeById(int id)
         {
-            return _context.CleaningType.Include(ca => ca.CleaningAdditions)
+            return _context.CleaningTypes.Include(ca => ca.CleaningAdditions)
                            .FirstOrDefault(ct => ct.Id == id);
         }
 
         public List<CleaningType> GetAllCleaningTypes()
         {
-            return _context.CleaningType.Include(ca => ca.CleaningAdditions).ToList();
+            return _context.CleaningTypes.Include(ca => ca.CleaningAdditions).ToList();
         }
 
         public void AddCleaningType(CleaningType cleaningType)
         {
-            _context.CleaningType.Add(cleaningType);
+            _context.CleaningTypes.Add(cleaningType);
             _context.SaveChanges();
         }
 

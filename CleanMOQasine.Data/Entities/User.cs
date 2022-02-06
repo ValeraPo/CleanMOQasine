@@ -1,4 +1,6 @@
 ﻿using CleanMOQasine.Data.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanMOQasine.Data.Entities
 {
@@ -14,8 +16,10 @@ namespace CleanMOQasine.Data.Entities
         public string Password { get; set; }
         public double? Rank { get; set; }
         public bool IsDeleted { get; set; }
-        public virtual ICollection<CleaningAddition> CleaningAdditions { get; set; }
-        public virtual ICollection<WorkingTime> WorkingTime { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; }
+        public virtual ICollection<WorkingTime>? WorkingTime { get; set; }
+        public virtual ICollection<Order>? CleanerOrders { get; set; }
+        public virtual ICollection<Order>? ClientOrders { get; set; }
     }
 }

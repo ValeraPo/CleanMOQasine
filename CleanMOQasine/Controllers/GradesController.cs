@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Configurations;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
@@ -13,11 +14,11 @@ namespace CleanMOQasine.API.Controllers
     public class GradesController : Controller
     {
         private readonly IGradeService _gradeService;
-        private readonly Mapper _mapper;
-        public GradesController(IGradeService gradeService, IAutoMapperFromApi mapper)
+        private readonly IMapper _mapper;
+        public GradesController(IGradeService gradeService, IMapper mapper )
         {
             _gradeService = gradeService;
-            _mapper = mapper.InitAutoMapperFromApi();
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -49,7 +50,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddGrade(GradeBaseInputModel grade, int orderId)
+        public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery]int orderId)
         {
 
             var model = _mapper.Map<GradeModel>(grade);
@@ -58,7 +59,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateGrade(int id, GradeBaseInputModel grade)
+        public ActionResult UpdateGrade(int id, [FromBody] GradeBaseInputModel grade)
         {
             var model =_mapper.Map<GradeModel>(grade);
             _gradeService.UpdateGrade(model, id);

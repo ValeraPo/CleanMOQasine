@@ -10,10 +10,15 @@ using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
-    public class AutoMapperToData
+    public class AutoMapperToData : Profile
     {
         private static Mapper _instance;
-        private AutoMapperToData() { }
+        public AutoMapperToData() 
+        {
+            CreateMap<Grade, GradeModel>().ReverseMap();
+            CreateMap<Order, OrderModel>().ReverseMap();
+            CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
+        }
         public static Mapper GetInstance()
         {
             if (_instance == null)
@@ -26,9 +31,8 @@ namespace CleanMOQasine.Business.Configurations
         {
             _instance = new Mapper(new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Grade, GradeModel>();
-                cfg.CreateMap<GradeModel, Grade>();
-                cfg.CreateMap<Order, OrderModel>();
+                cfg.CreateMap<Grade, GradeModel>().ReverseMap();
+                cfg.CreateMap<Order, OrderModel>().ReverseMap();
                 cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
             }));
         }

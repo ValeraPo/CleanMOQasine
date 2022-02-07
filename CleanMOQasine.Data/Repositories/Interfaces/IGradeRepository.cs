@@ -4,7 +4,7 @@ namespace CleanMOQasine.Data.Repositories
 {
     public interface IGradeRepository
     {
-        void AddGrade(Grade grade);
+        void AddGrade(Grade grade, int orderId);
         int DeleteGradeById(int id);
         IEnumerable<Grade> GetAllGrades();
         Grade? GetGradeById(int id);

@@ -28,11 +28,9 @@ namespace CleanMOQasine.Data.Repositories
         public void UpdateGradeById(Grade grade)
         {
             var oldGrade = _context.Grades.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
-            grade.OrderId = oldGrade.OrderId;
             oldGrade.Comment = grade.Comment;
             oldGrade.IsAnonymous = grade.IsAnonymous;
             oldGrade.IsDeleted = grade.IsDeleted;
-            oldGrade.OrderId = grade.OrderId;
             oldGrade.Rating = grade.Rating;
             _context.SaveChanges();
         }
@@ -47,8 +45,10 @@ namespace CleanMOQasine.Data.Repositories
             return 1;
         }
 
-        public void AddGrade(Grade grade)
+        public void AddGrade(Grade grade, int orderId)
         {
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            grade.Order = order;
             _context.Grades.Add(grade);
             _context.SaveChanges();
         }

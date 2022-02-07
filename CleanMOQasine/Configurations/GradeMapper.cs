@@ -12,24 +12,18 @@ using CleanMOQasine.Business.Configurations;
 
 namespace CleanMOQasine.API.Configurations
 {
-    public class AutoMapperFromApi : IAutoMapperFromApi
+    public class GradeMapper : Profile
     {
-        public AutoMapperFromApi() 
+        public GradeMapper() 
         {
-
+            CreateMap<GradeModel, GradeBaseOutputModel>();
+            CreateMap<GradeBaseInputModel, GradeModel>();
         }
 
         public static Mapper GetInstance()
         {
             return null;
         }
-        public Mapper InitAutoMapperFromApi()
-        {
-            return new Mapper(new MapperConfiguration(cfg =>
-             {
-                 cfg.CreateMap<GradeModel, GradeBaseOutputModel>().ReverseMap();
-                 cfg.CreateMap<GradeBaseInputModel, GradeModel>().ReverseMap();
-             }));
-        }
+        
     }
 }

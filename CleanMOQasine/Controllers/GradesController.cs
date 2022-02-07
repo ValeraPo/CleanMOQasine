@@ -46,7 +46,7 @@ namespace CleanMOQasine.API.Controllers
             if (_gradeService.DeleteGradeById(id) == -1)
                 return BadRequest();
             else
-                return Ok();
+                return NoContent();
         }
 
         [HttpPost]

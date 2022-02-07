@@ -11,12 +11,10 @@ namespace CleanMOQasine.Data.Repositories
     public class GradeRepository : IGradeRepository
     {
         private readonly CleanMOQasineContext _context;
-        public bool _isInitialized;
 
         public GradeRepository(CleanMOQasineContext context)
         {
             _context = context;
-            _isInitialized = true;
         }
 
         public IEnumerable<Grade> GetAllGrades()
@@ -30,7 +28,6 @@ namespace CleanMOQasine.Data.Repositories
             var oldGrade = _context.Grades.FirstOrDefault(g => g.Id == grade.Id && !g.IsDeleted);
             oldGrade.Comment = grade.Comment;
             oldGrade.IsAnonymous = grade.IsAnonymous;
-            oldGrade.IsDeleted = grade.IsDeleted;
             oldGrade.Rating = grade.Rating;
             _context.SaveChanges();
         }

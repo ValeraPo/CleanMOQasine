@@ -4,25 +4,14 @@ using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
-    public class AutoMapperToData
+    public class AutoMapperToData: Profile
     {
-        private static Mapper _instance;
-        private AutoMapperToData() { }
-        public static Mapper GetInstance()
+        public AutoMapperToData()
         {
-            if (_instance == null)
-            {
-                InitAutoMapperToData();
-            }
-            return _instance;
+            CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
+            CreateMap<CleaningTypeModel, CleaningType>().ReverseMap();
         }
-        public static void InitAutoMapperToData()
-        {
-            _instance = new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
-                cfg.CreateMap<CleaningTypeModel, CleaningType>().ReverseMap();
-            }));
-        }
+
+
     }
 }

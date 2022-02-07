@@ -6,9 +6,11 @@ namespace CleanMOQasine.Data.Repositories
     public class CleaningTypeRepository : ICleaningTypeRepository
     {
         private readonly CleanMOQasineContext _context;
-        public CleaningTypeRepository()
+        private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
+        public CleaningTypeRepository(CleanMOQasineContext context, ICleaningAdditionRepository cleaningAdditionRepository)
         {
-            _context = CleanMOQasineContext.GetInstance();
+            _cleaningAdditionRepository = cleaningAdditionRepository;
+            _context = context;
         }
         public CleaningType GetCleaningTypeById(int id)
         {
@@ -38,9 +40,10 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void AddCleaningAdditionToCleaningType(int cleaningTypeId, CleaningAddition cleaningAddition)
+        public void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)
         {
             var interstedCleaningType = GetCleaningTypeById(cleaningTypeId);
+            var cleaningAddition = _cleaningAdditionRepository.GetCleaningAdditionById(cleaningAdditionId);
             interstedCleaningType.CleaningAdditions.Add(cleaningAddition);
             _context.SaveChanges();
         }

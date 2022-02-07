@@ -4,7 +4,7 @@ namespace CleanMOQasine.Data.Repositories
 {
     public interface ICleaningTypeRepository
     {
-        void AddCleaningAdditionToCleaningType(int cleaningTypeId, CleaningAddition cleaningAddition);
+        void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId);
         void AddCleaningType(CleaningType cleaningType);
         void DeleteCleaningType(int id);
         List<CleaningType> GetAllCleaningTypes();

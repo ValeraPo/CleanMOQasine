@@ -4,7 +4,7 @@ namespace CleanMOQasine.Business.Services
 {
     public interface ICleaningTypeService
     {
-        void AddCleaningAdditionToCleaningType(int cleaningTypeId, CleaningAdditionModel cleaningAdditionModel);
+        void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId);
         void AddCleaningType(CleaningTypeModel cleaningTypeModel);
         void DeleteCleaningType(int id);
         List<CleaningTypeModel> GetAllCleaningTypes();

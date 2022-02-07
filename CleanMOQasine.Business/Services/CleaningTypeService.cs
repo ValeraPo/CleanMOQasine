@@ -9,11 +9,11 @@ namespace CleanMOQasine.Business.Services
     public class CleaningTypeService : ICleaningTypeService
     {
         private readonly ICleaningTypeRepository _cleaningTypeRepository;
-        private readonly Mapper _autoMapperInstance;
-        public CleaningTypeService(ICleaningTypeRepository cleaningTypeRepository)
+        private readonly IMapper _autoMapperInstance;
+        public CleaningTypeService(ICleaningTypeRepository cleaningTypeRepository, IMapper mapper)
         {
             _cleaningTypeRepository = cleaningTypeRepository;
-            _autoMapperInstance = AutoMapperToData.GetInstance();
+            _autoMapperInstance = mapper;
         }
 
         public CleaningTypeModel GetCleaningTypeById(int id)
@@ -40,10 +40,9 @@ namespace CleanMOQasine.Business.Services
             _cleaningTypeRepository.UpdateCleaningType(id, entity);
         }
 
-        public void AddCleaningAdditionToCleaningType(int cleaningTypeId, CleaningAdditionModel cleaningAdditionModel)
+        public void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)
         {
-            var entity = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);
-            _cleaningTypeRepository.AddCleaningAdditionToCleaningType(cleaningTypeId, entity);
+            _cleaningTypeRepository.AddCleaningAdditionToCleaningType(cleaningTypeId, cleaningAdditionId);
         }
 
         public void DeleteCleaningType(int id)

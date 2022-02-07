@@ -11,14 +11,12 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IAutoMapperToData _autoMapperToData;
         private readonly Mapper _autoMapperInstance;
 
-        public OrderService(IOrderRepository orderRpository, CleanMOQasineContext context)
+        public OrderService(IOrderRepository orderRpository, CleanMOQasineContext context, IUserRepository userRepository)
         {
             _orderRepository = orderRpository;
-            _autoMapperToData = new AutoMapperToData();
-            _autoMapperInstance = _autoMapperToData.GetInstance();
+            _userRepository = userRepository;
         }
 
         public OrderModel GetOrderById(int id)

@@ -36,32 +36,26 @@ namespace CleanMOQasine.Data.Repositories
             Save();
         }
 
-        public void AddCleaner(int idOrder, int idCleaner)
+        public void AddCleaner(Order order, User cleaner)
         {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == idOrder);
-            var cleaner = _dbContext.Users.FirstOrDefault(u => u.Id == idCleaner);
-            oldOrder.Cleaners.Add(cleaner);
+            order.Cleaners.Add(cleaner);
             Save();
         }
 
-        public void RemoveCleaner(int idOrder, int idCleaner)
+        public void RemoveCleaner(Order order, User cleaner)
         {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == idOrder);
-            var cleaner = _dbContext.Users.FirstOrDefault(u => u.Id == idCleaner);
-            oldOrder.Cleaners.Remove(cleaner);
+            order.Cleaners.Remove(cleaner);
             Save();
         }
 
-        public void DeleteOrder(int id)
+        public void DeleteOrder(Order order)
         {
-            var order = _dbContext.Orders.FirstOrDefault(o => o.Id == id);
             order.IsDeleted = true;
             Save();
         }
 
-        public void RestoreOrder(int id)
+        public void RestoreOrder(Order order)
         {
-            var order = _dbContext.Orders.FirstOrDefault(o => o.Id == id);
             order.IsDeleted = true;
             Save();
         }

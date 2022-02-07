@@ -4,21 +4,19 @@ using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
-    public class AutoMapperToData
+    public class AutoMapperToData : IAutoMapperToData
     {
-        private static Mapper _instance;
-        private AutoMapperToData() { }
-        public static Mapper GetInstance()
+        private Mapper _instance;
+        public AutoMapperToData() { }
+        public Mapper GetInstance()
         {
             if (_instance == null)
-            {
-                InitAutoMapperToData();
-            }
+                _instance = InitAutoMapperToData();
             return _instance;
         }
-        public static void InitAutoMapperToData()
+        public Mapper InitAutoMapperToData()
         {
-            _instance = new Mapper(new MapperConfiguration(cfg =>
+            return new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
                 cfg.CreateMap<OrderModel, Order>().ReverseMap();

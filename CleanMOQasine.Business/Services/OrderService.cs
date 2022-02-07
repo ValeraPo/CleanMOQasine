@@ -3,19 +3,22 @@ using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Entities;
-
+using CleanMOQasine.Data;
 
 namespace CleanMOQasine.Business.Services
 {
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IAutoMapperToData _autoMapperToData;
         private readonly Mapper _autoMapperInstance;
 
-        public OrderService(IOrderRepository orderRpository)
+        public OrderService(IOrderRepository orderRpository, CleanMOQasineContext context)
         {
             _orderRepository = orderRpository;
-            _autoMapperInstance = AutoMapperToData.GetInstance();
+            _autoMapperToData = new AutoMapperToData();
+            _autoMapperInstance = _autoMapperToData.GetInstance();
         }
 
         public OrderModel GetOrderById(int id)
@@ -32,6 +35,8 @@ namespace CleanMOQasine.Business.Services
 
         public void UpdateOrder(int id, OrderModel orderModel)
         {
+            if (GetOrderById(id) is null)
+                return;
             var entity = _autoMapperInstance.Map<Order>(orderModel);
             _orderRepository.UpdateOrder(id, entity);
         }
@@ -44,16 +49,36 @@ namespace CleanMOQasine.Business.Services
 
         public void AddCleaner(int idOrder, int idUser)
         {
-            _orderRepository.AddCleaner(idOrder, idUser);
+            var order = _orderRepository.GetOrderById(idOrder);
+            var cleaner = _userRepository.GetUserById(idUser);
+            if (order is null || cleaner is null)
+                return;
+            _orderRepository.AddCleaner(order, cleaner);
         }
 
-        public void RemoveCleaner(int idOrderl, int idUser)
+        public void RemoveCleaner(int idOrder, int idUser)
         {
-            _orderRepository.RemoveCleaner(idOrderl, idUser);
+            var order = _orderRepository.GetOrderById(idOrder);
+            var cleaner = _userRepository.GetUserById(idUser);
+            if (order is null || cleaner is null)
+                return;
+            _orderRepository.RemoveCleaner(order, cleaner);
         }
 
-        public void DeleteOrder(int id) => _orderRepository.DeleteOrder(id);
+        public void DeleteOrder(int id)
+        {
+            var order = _orderRepository.GetOrderById(id);
+            if (order is null)
+                return;
+            _orderRepository.DeleteOrder(order);
+        }
 
-        public void RestoreOrder(int id) => _orderRepository.RestoreOrder(id);
+        public void RestoreOrder(int id)
+        {
+            var order = _orderRepository.GetOrderById(id);
+            if (order is null)
+                return;
+            _orderRepository.RestoreOrder(order);
+        }
     }
 }

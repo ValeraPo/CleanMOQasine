@@ -4,13 +4,13 @@ namespace CleanMOQasine.Data.Repositories
 {
     public interface IOrderRepository
     {
-        void AddCleaner(int idOrder, int idCleaner);
+        void AddCleaner(Order order, User cleaner);
         void AddOrder(Order order);
-        void DeleteOrder(int id);
+        void DeleteOrder(Order order);
         IEnumerable<Order> GetAllOrders();
         Order GetOrderById(int id);
-        void RemoveCleaner(int idOrder, int idCleaner);
-        void RestoreOrder(int id);
+        void RemoveCleaner(Order order, User cleaner);
+        void RestoreOrder(Order order);
         void UpdateOrder(int id, Order order);
     }
 }

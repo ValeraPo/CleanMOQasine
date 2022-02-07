@@ -11,12 +11,14 @@ namespace CleanMOQasine.API.Controllers
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
     {
-        private readonly OrderService _orderService;
+        private readonly IOrderService _orderService;
+        private readonly IAutoMapperFromApi _autoMapperFromApi;
         private readonly Mapper _autoMapperInstance;
         public OrdersController(IOrderService orderService)
         {
-            _orderService = (OrderService?)orderService;
-            _autoMapperInstance = AutoMapperFromApi.GetInstance();
+            _orderService = orderService;
+            _autoMapperFromApi = new AutoMapperFromApi();
+            _autoMapperInstance = _autoMapperFromApi.GetInstance();
         }
 
         //api/Orders
@@ -48,27 +50,27 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders/42
         [HttpPut("{id}")]
-        public ActionResult UpdateOrder(int id, [FromBody] OrderInsertInputModel order)
+        public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<OrderModel>(order);
+            var model = _autoMapperInstance.Map<OrderModel>(order);
             _orderService.UpdateOrder(id, model);
             return Ok($"Order with id = {id} was updated");
         }
 
-        //api/Orders/42/add-cleaner
-        [HttpPut("{id}/add-cleaner")]
-        public ActionResult AddCleaner(int id, [FromBody] OrderUpdateCleanerInputModel cleaner)
+        //api/Orders/42/cleaner
+        [HttpPut("{id}/cleaner")]
+        public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<OrderModel>(cleaner);
+            var model = _autoMapperInstance.Map<OrderModel>(cleaner);
             _orderService.AddCleaner(id, cleaner.CleanerId);
             return Ok($"Cleaner with id = {cleaner.CleanerId} was added");
         }
 
         //api/Orders/42/remove-cleaner
         [HttpPut("{id}/remove-cleaner")]
-        public ActionResult RemoveCleaner(int id, [FromBody] OrderUpdateCleanerInputModel cleaner)
+        public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<OrderModel>(cleaner);
+            var model = _autoMapperInstance.Map<OrderModel>(cleaner);
             _orderService.RemoveCleaner(id, cleaner.CleanerId);
             return Ok($"Cleaner with id = {cleaner.CleanerId} was removed");
         }

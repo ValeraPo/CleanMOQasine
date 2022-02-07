@@ -16,6 +16,7 @@ namespace CleanMOQasine.Data.Tests
     {
         private CleanMOQasineContext _context;
         private Mock<IGradeRepository> mock = new Mock<IGradeRepository>();
+
         [SetUp]
         public void Setup()
         {

@@ -1,8 +1,10 @@
 using CleanMOQasine.API.Configurations;
+using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,7 @@ builder.Services.AddDbContext<CleanMOQasineContext>(opt
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddScoped<IAutoMapperFromApi, AutoMapperFromApi>();
+builder.Services.AddAutoMapper(typeof(OrderMapper), typeof(AutoMapperToData));
 
 var app = builder.Build();
 

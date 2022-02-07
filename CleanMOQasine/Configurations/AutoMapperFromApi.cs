@@ -6,7 +6,7 @@ using CleanMOQasine.Business.Models;
 
 namespace CleanMOQasine.API.Configurations
 {
-    public class AutoMapperFromApi  : IAutoMapperFromApi
+    public class AutoMapperFromApi  : Profile
     {
         private static Mapper _instance;
         public AutoMapperFromApi() { }
@@ -24,11 +24,6 @@ namespace CleanMOQasine.API.Configurations
             {
                 cfg.CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
                 cfg.CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
-                cfg.CreateMap<OrderInsertInputModel, OrderModel>();
-                cfg.CreateMap<OrderUpdateInputModel, OrderModel>();
-                cfg.CreateMap<OrderCleanerInputModel, OrderModel>();
-                cfg.CreateMap<OrderModel, OrderOutputModel>();
-
             }));
         }
     }

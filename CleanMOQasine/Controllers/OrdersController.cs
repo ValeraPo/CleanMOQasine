@@ -12,13 +12,12 @@ namespace CleanMOQasine.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly IAutoMapperFromApi _autoMapperFromApi;
         private readonly Mapper _autoMapperInstance;
+
         public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
-            _autoMapperFromApi = new AutoMapperFromApi();
-            _autoMapperInstance = _autoMapperFromApi.GetInstance();
+            _autoMapperInstance = OrderMapper.GetInstance();
         }
 
         //api/Orders

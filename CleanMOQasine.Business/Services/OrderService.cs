@@ -11,39 +11,38 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IAutoMapperToData _autoMapperToData;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRpository, CleanMOQasineContext context)
+        public OrderService(IOrderRepository orderRpository, IUserRepository userRepository, IMapper mapper)
         {
             _orderRepository = orderRpository;
-            _autoMapperToData = new AutoMapperToData();
-            _autoMapperInstance = _autoMapperToData.GetInstance();
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public OrderModel GetOrderById(int id)
         {
             var entity = _orderRepository.GetOrderById(id);
-            return _autoMapperInstance.Map<OrderModel>(entity);
+            return _mapper.Map<OrderModel>(entity);
         }
 
         public List<OrderModel> GetAllOrders()
         {
             var entities = _orderRepository.GetAllOrders();
-            return _autoMapperInstance.Map<List<OrderModel>>(entities);
+            return _mapper.Map<List<OrderModel>>(entities);
         }
 
         public void UpdateOrder(int id, OrderModel orderModel)
         {
             if (GetOrderById(id) is null)
                 return;
-            var entity = _autoMapperInstance.Map<Order>(orderModel);
+            var entity = _mapper.Map<Order>(orderModel);
             _orderRepository.UpdateOrder(id, entity);
         }
 
         public void AddOrder(OrderModel orderModel)
         {
-            var entity = _autoMapperInstance.Map<Order>(orderModel);
+            var entity = _mapper.Map<Order>(orderModel);
             _orderRepository.AddOrder(entity);
         }
 

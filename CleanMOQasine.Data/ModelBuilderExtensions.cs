@@ -81,8 +81,7 @@ namespace CleanMOQasine.Data
             new CleaningAddition() { Id = 28, Name = "Помыть унитаз", Price = 500, Duration = new TimeSpan(0, 25, 0), IsDeleted = false },
             new CleaningAddition() { Id = 29, Name = "Помыть биде", Price = 300, Duration = new TimeSpan(0, 20, 0), IsDeleted = false },
             new CleaningAddition() { Id = 30, Name = "Помыть лоток", Price = 200, Duration = new TimeSpan(0, 10, 0), IsDeleted = false },
-            new CleaningAddition() { Id = 31, Name = "Убрать что-то ещё", Price = 400, Duration = new TimeSpan(0, 30, 0), IsDeleted = false },
-            new CleaningAddition() { Id = 32, Name = "Ебануть дробью", Price = 0, Duration = new TimeSpan(1, 0, 0), IsDeleted = false });
+            new CleaningAddition() { Id = 31, Name = "Убрать что-то ещё", Price = 400, Duration = new TimeSpan(0, 30, 0), IsDeleted = false });
         }
     }
 }

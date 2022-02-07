@@ -3,14 +3,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class CleaningAdditionRepository
+    public class CleaningAdditionRepository : ICleaningAdditionRepository
     {
         private readonly CleanMOQasineContext _context;
-        public CleaningAdditionRepository()
+
+        public CleaningAdditionRepository(CleanMOQasineContext context)
         {
-            _context = CleanMOQasineContext.GetInstance();
+            _context = context;
         }
-        public CleaningAddition GetCleaningAdditionById(int id)
+
+        public CleaningAddition? GetCleaningAdditionById(int id)
         {
             return _context.CleaningAdditions.Include(ca => ca.CleaningTypes)
                            .FirstOrDefault(ca => ca.Id == id && !ca.IsDeleted);

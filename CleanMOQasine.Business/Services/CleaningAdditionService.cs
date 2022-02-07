@@ -5,14 +5,14 @@ using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
 {
-    public class CleaningAdditionService
+    public class CleaningAdditionService : ICleaningAdditionService
     {
-        private readonly CleaningAdditionRepository _cleaningAdditionRepository;
+        private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly Mapper _autoMapperInstance;
 
-        public CleaningAdditionService()
+        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository)
         {
-            _cleaningAdditionRepository = new CleaningAdditionRepository();
+            _cleaningAdditionRepository = cleaningAdditionRepository;
             _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 

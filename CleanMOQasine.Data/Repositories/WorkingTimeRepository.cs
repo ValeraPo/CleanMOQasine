@@ -11,10 +11,11 @@ namespace CleanMOQasine.Data.Repositories
     {
         private readonly CleanMOQasineContext _context;
 
-        public WorkingTimeRepository()
+        public WorkingTimeRepository(CleanMOQasineContext context)
         {
-            _context = CleanMOQasineContext.GetInstance();
+            _context = context;
         }
+
         public WorkingTime? GetWorkingTimeById(int id)
            => _context.WorkingHours.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 

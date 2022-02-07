@@ -12,12 +12,12 @@ namespace CleanMOQasine.API.Controllers
     public class PaymentsController : Controller
     {
         private readonly IPaymentService _paymentService;
-        private Mapper _mapper;
+        private IMapper _mapper;
 
-        public PaymentsController(IPaymentService paymentService, IAutoMapperFromApi mapper)
+        public PaymentsController(IPaymentService paymentService, IMapper mapper)
         {
             _paymentService = paymentService;
-            _mapper = mapper.InitAutoMapperFromApi();
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]

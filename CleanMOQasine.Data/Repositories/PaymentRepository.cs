@@ -24,11 +24,9 @@ namespace CleanMOQasine.Data.Repositories
         public int DeletePayment(int id)
         {
             var oldPayment = _context.Payments.FirstOrDefault(p => p.Id == id);
-            if (oldPayment.IsDeleted == true)
-                return -1;
             oldPayment.IsDeleted = true;
             _context.SaveChanges();
-            return 0;
+            return 1;
         }
 
         public void UpdatePayment(Payment newPayment, int id)

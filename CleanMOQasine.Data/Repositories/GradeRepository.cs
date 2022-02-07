@@ -13,7 +13,6 @@ namespace CleanMOQasine.Data.Repositories
 
         public GradeRepository()
         {
-            _context = CleanMOQasineContext.GetInstance();
         }
 
         public IEnumerable<Grade> GetAllGrades() 

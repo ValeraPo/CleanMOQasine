@@ -1,4 +1,5 @@
-﻿using CleanMOQasine.Business.Configurations;
+﻿using AutoMapper;
+using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
@@ -13,39 +14,38 @@ namespace CleanMOQasine.Business.Services
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IMapper _mapper;
 
-        public PaymentService(IPaymentRepository paymentRepository)
+        public PaymentService(IPaymentRepository paymentRepository, IMapper mapper)
         {
             _paymentRepository = paymentRepository;
+            _mapper = mapper;
         }
 
         public PaymentModel GetPaymentById(int id)
         {
             var payment = _paymentRepository.GetPaymentById(id);
-            return AutoMapperToData.GetInstance().Map<PaymentModel>(payment);
+            return _mapper.Map<PaymentModel>(payment);
         }
 
         public IEnumerable<PaymentModel> GetAllPayments()
         {
             var payments = _paymentRepository.GetAllPayments();
-            return AutoMapperToData.GetInstance().Map<IEnumerable<PaymentModel>>(payments);
+            return _mapper.Map<IEnumerable<PaymentModel>>(payments);
         }
 
         public int DeletePayment(int id)
-        {
-            if (_paymentRepository.DeletePayment(id) == -1)
-                return -1;
-            return 0;
-        }
+            => (GetPaymentById(id) is null) ? -1 : _paymentRepository.DeletePayment(id);
+        
         public void UpdatePayment(PaymentModel payment, int id)
         {
-            var upd = AutoMapperToData.GetInstance().Map<Payment>(payment);
+            var upd = _mapper.Map<Payment>(payment);
             _paymentRepository.UpdatePayment(upd, id);
         }
 
         public void AddPayment(PaymentModel payment, int orderId)
         {
-            var newPayment = AutoMapperToData.GetInstance().Map<Payment>(payment);
+            var newPayment = _mapper.Map<Payment>(payment);
             _paymentRepository.AddPayment(newPayment, orderId);
         }
     }

@@ -19,7 +19,8 @@ builder.Services.AddDbContext<CleanMOQasineContext>(opt
 
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
-builder.Services.AddScoped<IAutoMapperFromApi, AutoMapperFromApi>();
+builder.Services.AddAutoMapper(typeof(AutoMapperFromApi)
+                             , typeof(AutoMapperToData));
 
 var app = builder.Build();
 

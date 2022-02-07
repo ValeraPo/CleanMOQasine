@@ -1,27 +1,15 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
-using CleanMOQasine.API.Models;
-using CleanMOQasine.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CleanMOQasine.Business.Configurations;
 
 namespace CleanMOQasine.API.Configurations
 {
-    public class AutoMapperFromApi : IAutoMapperFromApi
+    public class AutoMapperFromApi : Profile
     {
-        public AutoMapperFromApi() { }
-        public Mapper InitAutoMapperFromApi()
+        public AutoMapperFromApi() 
         {
-            return new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<PaymentModel, PaymentOutputModel>()
-                .ForMember(a => a.PaymentDate, b => b.MapFrom(src => src.PaymentDate.ToString())).ReverseMap();
-            }));
+            CreateMap<PaymentModel, PaymentOutputModel>();
+            CreateMap<PaymentInputModel, PaymentModel>();
         }
     }
 }

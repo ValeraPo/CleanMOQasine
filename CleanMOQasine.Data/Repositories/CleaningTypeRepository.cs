@@ -8,7 +8,6 @@ namespace CleanMOQasine.Data.Repositories
         private readonly CleanMOQasineContext _context;
         public CleaningTypeRepository()
         {
-            _context = CleanMOQasineContext.GetInstance();
         }
         public CleaningType GetCleaningTypeById(int id)
         {

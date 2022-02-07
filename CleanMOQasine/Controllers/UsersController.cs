@@ -65,10 +65,6 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult UpdateUser(int id, UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapperInstance.Map<UserModel>(userUpdateInputModel);
-
-            if (userModel is null)
-                return NotFound($"User with Id = {id} was not found");
-
             _userService.UpdateUser(id, userModel);
             return Ok($"User with Id = {id} was updated");
         }
@@ -80,6 +76,14 @@ namespace CleanMOQasine.API.Controllers
             var userModel = _autoMapperInstance.Map<UserModel>(userInsertInputModel);
             _userService.AddUser(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
+        }
+
+        //api/Users/23/Orders
+        [HttpPut("{id}/orders")]
+        public ActionResult<OrderModel> AddOrderToUser(UserUpdateOrderInputModel order, int userId)
+        {
+            _userService.AddOrderToUser(order.OrderId, userId);
+            return Ok($"Order with Id = {order.OrderId} was added to User with Id = {userId}");
         }
 
         //api/Users/23

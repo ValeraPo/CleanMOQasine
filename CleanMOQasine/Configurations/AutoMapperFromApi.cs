@@ -34,6 +34,8 @@ namespace CleanMOQasine.API.Configurations
                 cfg.CreateMap<UserInsertInputModel, UserModel>();
 
                 cfg.CreateMap<UserUpdateInputModel, UserModel>();
+
+                cfg.CreateMap<UserUpdateOrderInputModel, UserModel>(); 
             }));
         }
     }

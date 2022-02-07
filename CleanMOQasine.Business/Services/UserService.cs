@@ -10,11 +10,13 @@ namespace CleanMOQasine.Business.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly Mapper _autoMapperInstance;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IOrderRepository orderRepository)
         {
             _userRepository = userRepository;
+            _orderRepository = orderRepository;
             _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 
@@ -68,6 +70,18 @@ namespace CleanMOQasine.Business.Services
         {
             var mappedUser = AutoMapperToData.GetInstance().Map<User>(userModel);
             _userRepository.AddUser(mappedUser);
+        }
+
+        public void AddOrderToUser(int orderId, int userId)
+        {
+            var user = _userRepository.GetUserById(userId);
+            CheckUser(user, userId);
+            var order = _orderRepository.GetOrderById(orderId);
+
+            if (order is null)
+                throw new Exception($"Заказ с id = { orderId } не найден");
+
+            _userRepository.AddOrderToUser(orderId, userId);
         }
 
         public void DeleteUserById(int id)

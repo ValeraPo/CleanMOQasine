@@ -4,6 +4,7 @@ namespace CleanMOQasine.Business.Services
 {
     public interface IUserService
     {
+        void AddOrderToUser(int orderId, int userId);
         void AddUser(UserModel userModel);
         void DeleteUserById(int id);
         List<UserModel> GetAllAdmins();

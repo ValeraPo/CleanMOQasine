@@ -20,6 +20,14 @@ namespace CleanMOQasine.Data.Repositories
             _dbContext.SaveChanges();
         }
 
+        public void AddOrderToUser(int orderId, int userId)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+            var order = _dbContext.Orders.FirstOrDefault(o => o.Id == orderId);
+            user.Orders.Add(order);
+            _dbContext.SaveChanges();
+        }
+
         public void UpdateUser(User user)
         {
             var entity = GetUserById(user.Id);

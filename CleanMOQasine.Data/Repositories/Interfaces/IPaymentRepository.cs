@@ -4,7 +4,7 @@ namespace CleanMOQasine.Data.Repositories
 {
     public interface IPaymentRepository
     {
-        void AddPayment(Payment newPayment);
+        void AddPayment(Payment newPayment, int orderId);
         int DeletePayment(int id);
         IEnumerable<Payment> GetAllPayments();
         Payment GetPaymentById(int id);

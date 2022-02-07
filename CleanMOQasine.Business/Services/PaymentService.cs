@@ -46,7 +46,7 @@ namespace CleanMOQasine.Business.Services
         public void AddPayment(PaymentModel payment, int orderId)
         {
             var newPayment = AutoMapperToData.GetInstance().Map<Payment>(payment);
-            _paymentRepository.AddPayment(newPayment);
+            _paymentRepository.AddPayment(newPayment, orderId);
         }
     }
 }

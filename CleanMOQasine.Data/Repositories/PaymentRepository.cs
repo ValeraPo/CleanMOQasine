@@ -35,12 +35,15 @@ namespace CleanMOQasine.Data.Repositories
         {
             newPayment.Id = id;
             var oldPayment = _context.Payments.FirstOrDefault(p => p.Id == newPayment.Id);
-            oldPayment = newPayment;
+            oldPayment.Amount = newPayment.Amount;
+            oldPayment.PaymentDate = newPayment.PaymentDate;
             _context.SaveChanges();
         }
 
-        public void AddPayment(Payment newPayment)
+        public void AddPayment(Payment newPayment, int orderId)
         {
+            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            newPayment.Order = order;
             _context.Payments.Add(newPayment);
             _context.SaveChanges();
         }

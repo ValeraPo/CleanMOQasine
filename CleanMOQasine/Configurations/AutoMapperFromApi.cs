@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CleanMOQasine.API.Models.Outputs;
+using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business;

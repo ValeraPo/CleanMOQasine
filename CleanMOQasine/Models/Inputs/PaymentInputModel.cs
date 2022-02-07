@@ -1,4 +1,4 @@
-﻿namespace CleanMOQasine.API.Models.Inputs
+﻿namespace CleanMOQasine.API.Models
 {
     public class PaymentInputModel
     {

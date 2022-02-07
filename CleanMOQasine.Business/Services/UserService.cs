@@ -9,18 +9,19 @@ namespace CleanMOQasine.Business.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly Mapper _autoMapperInstance;
 
-        public UserService()
+        public UserService(IUserRepository userRepository)
         {
-            _userRepository = new UserRepository();
+            _userRepository = userRepository;
             _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 
         public UserModel GetUserById(int id)
         {
             var user = _userRepository.GetUserById(id);
+            CheckUser(user, id);
             return AutoMapperToData.GetInstance().Map<UserModel>(user);
         }
 
@@ -91,7 +92,7 @@ namespace CleanMOQasine.Business.Services
 
         private void CheckListOfUsers(List<User> users)
         {
-            if (users is null) 
+            if (users is null)
                 throw new Exception($"В базе данных нет ни одного пользователя");
         }
     }

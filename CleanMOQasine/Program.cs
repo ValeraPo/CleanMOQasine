@@ -17,10 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CleanMOQasineContext>(opt
     => opt.UseSqlServer(@"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23"));
 
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

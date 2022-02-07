@@ -17,7 +17,6 @@ namespace CleanMOQasine.Business.Services
         public CleaningAdditionService()
         {
             _cleaningAdditionRepository = new CleaningAdditionRepository();
-            _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 
         public CleaningAdditionModel GetCleaningAdditionById(int id)

@@ -13,7 +13,6 @@ namespace CleanMOQasine.Data.Repositories
 
         public WorkingTimeRepository()
         {
-            _context = CleanMOQasineContext.GetInstance();
         }
         public WorkingTime? GetWorkingTimeById(int id)
            => _context.WorkingHours.FirstOrDefault(g => g.Id == id && !g.IsDeleted);

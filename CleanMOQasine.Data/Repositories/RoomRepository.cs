@@ -7,7 +7,6 @@ namespace CleanMOQasine.Data.Repositories
     {
         private readonly CleanMOQasineContext _dbContext;
 
-        public RoomRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
         public Room? GetRoomById(int id) => _dbContext.Rooms.Include(r => r.Orders).FirstOrDefault(r => r.Id == id);
 

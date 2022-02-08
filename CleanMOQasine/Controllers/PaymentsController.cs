@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PaymentsController : Controller
     {
         [HttpGet("{id}")]

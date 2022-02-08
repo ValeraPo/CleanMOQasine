@@ -1,4 +1,4 @@
-using CleanMOQasine.API.Models.Inputs;
+using CleanMOQasine.API.Models;
 
 namespace CleanMOQasine.API.Models
 {

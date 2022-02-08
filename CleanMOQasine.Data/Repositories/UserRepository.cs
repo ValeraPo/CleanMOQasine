@@ -17,10 +17,11 @@ namespace CleanMOQasine.Data.Repositories
 
         public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
 
-        public void AddUser(User user)
+        public int AddUser(User user)
         {
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
+            return user.Id;
         }
 
         public void AddOrderToUser(int orderId, int userId)

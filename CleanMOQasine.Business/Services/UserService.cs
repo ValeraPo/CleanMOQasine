@@ -11,20 +11,20 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IOrderRepository _orderRepository;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _autoMapper;
 
-        public UserService(IUserRepository userRepository, IOrderRepository orderRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository, IOrderRepository orderRepository)
         {
             _userRepository = userRepository;
             _orderRepository = orderRepository;
-            _autoMapperInstance = AutoMapperToData.GetInstance();
+            _autoMapper = autoMapper;
         }
 
         public UserModel GetUserById(int id)
         {
             var user = _userRepository.GetUserById(id);
             CheckUser(user, id);
-            return AutoMapperToData.GetInstance().Map<UserModel>(user);
+            return _autoMapper.Map<UserModel>(user);
         }
 
         public UserModel GetUserByLogin(string login)
@@ -34,14 +34,14 @@ namespace CleanMOQasine.Business.Services
             if (user is null)
                 throw new Exception($"Пользователь с логином '{login}' не найден");
 
-            return AutoMapperToData.GetInstance().Map<UserModel>(user);
+            return _autoMapper.Map<UserModel>(user);
         }
 
         public void UpdateUser(int id, UserModel userModel)
         {
             var user = _userRepository.GetUserById(id);
             CheckUser(user, id);
-            var mappedUser = AutoMapperToData.GetInstance().Map<User>(userModel);
+            var mappedUser = _autoMapper.Map<User>(userModel);
             _userRepository.UpdateUser(mappedUser);
         }
 
@@ -49,26 +49,26 @@ namespace CleanMOQasine.Business.Services
         {
             var users = _userRepository.GetUsers();
             CheckListOfUsers(users);
-            return AutoMapperToData.GetInstance().Map<List<UserModel>>(users).Where(u => u.Role == Role.Admin).ToList();
+            return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Admin).ToList();
         }
 
         public List<UserModel> GetAllCleaners()
         {
             var users = _userRepository.GetUsers();
             CheckListOfUsers(users);
-            return AutoMapperToData.GetInstance().Map<List<UserModel>>(users).Where(u => u.Role == Role.Cleaner).ToList();
+            return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Cleaner).ToList();
         }
 
         public List<UserModel> GetAllClients()
         {
             var users = _userRepository.GetUsers();
             CheckListOfUsers(users);
-            return AutoMapperToData.GetInstance().Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
+            return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
         }
 
         public void AddUser(UserModel userModel)
         {
-            var mappedUser = AutoMapperToData.GetInstance().Map<User>(userModel);
+            var mappedUser = _autoMapper.Map<User>(userModel);
             _userRepository.AddUser(mappedUser);
         }
 

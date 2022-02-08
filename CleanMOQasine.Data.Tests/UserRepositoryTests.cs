@@ -107,10 +107,11 @@ namespace CleanMOQasine.Data.Tests
             var userForTest = _userTestData.GetUserForTests();
 
             //when
-            _userRepository.AddUser(userForTest);
+            var addedUserId = _userRepository.AddUser(userForTest);
 
             //then
-            //Assert.IsNotNull(actual);
+            var addedUser = _dbContext.Users.FirstOrDefault(u => u.Id == addedUserId);
+            Assert.AreEqual(userForTest, addedUser);
         }
     }
 }

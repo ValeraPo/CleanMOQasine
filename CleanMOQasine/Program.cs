@@ -20,7 +20,7 @@ builder.Services.AddDbContext<CleanMOQasineContext>(opt
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddAutoMapper(typeof(OrderMapper), typeof(AutoMapperToData));
+builder.Services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
 
 var app = builder.Build();
 

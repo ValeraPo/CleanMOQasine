@@ -20,6 +20,7 @@ builder.Services.AddDbContext<CleanMOQasineContext>(opt
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -8,27 +8,28 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Tests.TestData
 {
-    public class UpdateGradeTestCaseSource : IEnumerable
+    public class AddGradeTestCaseSource : IEnumerable
     {
         public IEnumerator GetEnumerator()
         {
-            Grade oldGrade = new Grade
+            Grade grade = new Grade
             {
-                Id = 1,
+                Id = 3,
                 IsAnonymous = false,
                 Comment = "Ok",
                 Rating = 5,
                 IsDeleted = false,
             };
-            Grade updatedGrade = new Grade
+            Order order = new Order
             {
                 Id = 1,
-                IsAnonymous = true,
-                Comment = "lol",
-                Rating = 5,
-                IsDeleted = false,
+                Client = null,
+                CleaningType = null,
+                Address = "qwe",
+                Date = DateTime.Now,
+                IsDeleted = false
             };
-            yield return new object[] { oldGrade, updatedGrade, 1 };
+            yield return new object[] { grade, order};
         }
     }
 }

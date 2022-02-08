@@ -19,7 +19,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Comment = "Ok",
                 Rating = 5,
                 IsDeleted = false,
-                OrderId = 1
             };
             yield return new object[] { grade1};
             Grade grade2 = new Grade
@@ -29,7 +28,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Comment = "NeOk",
                 Rating = 2,
                 IsDeleted = false,
-                OrderId = 1
             };
             yield return new object[] { grade2};
         }

@@ -19,5 +19,21 @@ namespace CleanMOQasine.Data.Entities
         public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; } 
         public virtual ICollection<User>? Cleaners { get; set; }
         public virtual ICollection<Payment>? Payments { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null || obj is not Order)
+                return false;
+            Order order = (Order)obj;
+            if (Id != order.Id
+                || Client != order.Client
+                || CleaningType != order.CleaningType
+                || Grade != order.Grade
+                || Address != order.Address
+                || Date != order.Date
+                || IsDeleted != order.IsDeleted)
+                return false;
+            return true;
+        }
     }
 }

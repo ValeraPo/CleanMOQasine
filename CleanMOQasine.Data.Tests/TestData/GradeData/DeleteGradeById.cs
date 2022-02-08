@@ -20,7 +20,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Comment = "Ok",
                 Rating = 5,
                 IsDeleted = false,
-                OrderId = 1
             };
             Grade grade2 = new Grade
             {
@@ -29,7 +28,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Comment = "NeOk",
                 Rating = 2,
                 IsDeleted = false,
-                OrderId = 2
             };
             Grade grade3 = new Grade
             {
@@ -38,7 +36,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Comment = "Ne",
                 Rating = 3,
                 IsDeleted = false,
-                OrderId = 3
             };
             Grade grade4 = new Grade
             {
@@ -47,7 +44,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Comment = "Ne",
                 Rating = 6,
                 IsDeleted = false,
-                OrderId = 4
             };
             List<Grade> grades = new();
             grades.Add(grade1);

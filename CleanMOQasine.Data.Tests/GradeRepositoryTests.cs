@@ -97,5 +97,23 @@ namespace CleanMOQasine.Data.Tests
             for(int i = 0; i < actual.Count; i++)
                 Assert.AreEqual(expected[i], actual[i]);
         }
+
+        [TestCaseSource(typeof(AddGradeTestCaseSource))]
+        public void AddGradeTests(Grade grade, Order order)
+        {
+            //given
+            mock.Setup(obj => obj.AddGrade(grade, order.Id));
+            var repo = new GradeRepository(_context);
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            //when
+            repo.AddGrade(grade, order.Id);
+
+            //then
+            var actual = _context.Grades.FirstOrDefault(g => g.Id == grade.Id);
+            Assert.AreEqual(grade, actual);
+            Assert.AreEqual(order, actual.Order);
+        }
     }
 }

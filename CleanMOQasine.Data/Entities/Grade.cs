@@ -14,14 +14,11 @@
             if (obj is null)
                 return false;
             Grade grade = (Grade)obj;
-            if (grade.Id != Id
-                || grade.IsAnonymous != IsAnonymous
-                || grade.Comment != Comment
-                || grade.Rating != Rating
-                || grade.IsDeleted != IsDeleted
-                )
-                return false;
-            return true;//ored eql
+            return grade.Id == Id
+                && grade.IsAnonymous == IsAnonymous
+                && grade.Comment == Comment
+                && grade.Rating == Rating
+                && grade.IsDeleted == IsDeleted;
         }
 
         public override string ToString()

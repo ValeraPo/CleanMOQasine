@@ -18,7 +18,7 @@ namespace CleanMOQasine.Data.Repositories
         public Payment GetPaymentById(int id)
             => _context.Payments.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
-        public IEnumerable<Payment> GetAllPayments()
+        public List<Payment> GetAllPayments()
             => _context.Payments.Where(p => !p.IsDeleted).ToList();
 
         public int DeletePayment(int id)

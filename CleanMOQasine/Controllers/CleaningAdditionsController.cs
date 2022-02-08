@@ -13,12 +13,12 @@ namespace CleanMOQasine.API.Controllers
     public class CleaningAdditionsController : ControllerBase
     {
         private readonly CleaningAdditionService _cleaningAdditionService;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionsController()
+        public CleaningAdditionsController(IMapper mapper)
         {
             _cleaningAdditionService = new();
-            _autoMapperInstance = GradeMapper.GetInstance();
+            _autoMapperInstance = mapper;
         }
 
         //api/CleaningAdditions/228
@@ -52,7 +52,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = GradeMapper.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.UpdateCleaningAddition(id, model);
             return Ok($"Cleaning type with {id} was updated");
         }

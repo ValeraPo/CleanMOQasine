@@ -43,10 +43,8 @@ namespace CleanMOQasine.API.Controllers
         [HttpDelete]
         public ActionResult DeleteGradeById(int id)
         {
-            if (_gradeService.DeleteGradeById(id) == -1)
-                return BadRequest();
-            else
-                return NoContent();
+            _gradeService.DeleteGradeById(id);
+            return NoContent();
         }
 
         [HttpPost]
@@ -65,6 +63,5 @@ namespace CleanMOQasine.API.Controllers
             _gradeService.UpdateGrade(model, id);
             return Ok();
         }
-
     }
 }

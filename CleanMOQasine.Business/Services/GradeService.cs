@@ -2,6 +2,7 @@
 using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
@@ -25,7 +26,7 @@ namespace CleanMOQasine.Business.Services
         public void UpdateGrade(GradeModel grade, int id)
         {
             if (GetGradeById(id) is null)
-                return;
+                throw new NotFoundException($"Grade with {id} not found");
             var updatedGrade = _mapper.Map<Grade>(grade);
             updatedGrade.Id = id;
             _gradeRepository.UpdateGradeById(updatedGrade);
@@ -43,7 +44,11 @@ namespace CleanMOQasine.Business.Services
             _gradeRepository.AddGrade(newGrade, orderId);
         }
 
-        public int DeleteGradeById(int id) 
-            => (GetGradeById(id) is null) ? -1 : _gradeRepository.DeleteGradeById(id);
+        public void DeleteGradeById(int id)
+        {
+            if (GetGradeById(id) is null)
+                throw new NotFoundException($"Grade with {id} not found");
+            _gradeRepository.DeleteGradeById(id);
+        }
     }
 }

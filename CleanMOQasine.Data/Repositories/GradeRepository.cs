@@ -1,10 +1,4 @@
 ﻿using CleanMOQasine.Data.Entities;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -32,14 +26,11 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public int DeleteGradeById(int id)
+        public void DeleteGradeById(int id)
         {
             var oldGrade = _context.Grades.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
-            if (oldGrade is null)
-                return -1;
             oldGrade.IsDeleted = true;
             _context.SaveChanges();
-            return 1;
         }
 
         public void AddGrade(Grade grade, int orderId)

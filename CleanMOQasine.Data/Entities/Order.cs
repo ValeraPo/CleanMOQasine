@@ -25,15 +25,13 @@ namespace CleanMOQasine.Data.Entities
             if (obj is null || obj is not Order)
                 return false;
             Order order = (Order)obj;
-            if (Id != order.Id
-                || Client != order.Client
-                || CleaningType != order.CleaningType
-                || Grade != order.Grade
-                || Address != order.Address
-                || Date != order.Date
-                || IsDeleted != order.IsDeleted)
-                return false;
-            return true;
+            return (Id == order.Id
+                && Client == order.Client
+                && CleaningType == order.CleaningType
+                && Grade == order.Grade
+                && Address == order.Address
+                && Date == order.Date
+                && IsDeleted == order.IsDeleted);
         }
     }
 }

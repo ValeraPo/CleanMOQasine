@@ -5,7 +5,7 @@ namespace CleanMOQasine.Business.Services
     public interface IGradeService
     {
         void AddGrade(GradeModel grade, int orderId);
-        int DeleteGradeById(int id);
+        void DeleteGradeById(int id);
         List<GradeModel> GetAllGrades();
         GradeModel GetGradeById(int id);
         void UpdateGrade(GradeModel grade, int id);

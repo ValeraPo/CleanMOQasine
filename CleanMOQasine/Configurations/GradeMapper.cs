@@ -19,11 +19,5 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<GradeModel, GradeBaseOutputModel>();
             CreateMap<GradeBaseInputModel, GradeModel>();
         }
-
-        public static Mapper GetInstance()
-        {
-            return null;
-        }
-        
     }
 }

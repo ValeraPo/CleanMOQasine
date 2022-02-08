@@ -11,14 +11,14 @@ namespace CleanMOQasine.API.Configurations
         private static Mapper _instance;
         public AutoMapperFromApi() { }
 
-        public  Mapper GetInstance()
+        public  static Mapper GetInstance()
         {
             if (_instance == null)
                 _instance = InitAutoMapperFromApi();
             return _instance;
         }
 
-        public Mapper InitAutoMapperFromApi()
+        public static Mapper InitAutoMapperFromApi()
         {
             return new Mapper(new MapperConfiguration(cfg =>
             {

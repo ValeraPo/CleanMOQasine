@@ -18,7 +18,7 @@ namespace CleanMOQasine.API.Controllers
         public CleaningAdditionsController()
         {
             _cleaningAdditionService = new();
-            _autoMapperInstance = OrderMapper.GetInstance();
+            _autoMapperInstance = AutoMapperFromApi.GetInstance();
         }
 
         //api/CleaningAdditions/228

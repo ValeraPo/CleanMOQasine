@@ -24,6 +24,7 @@ namespace CleanMOQasine.Data.Tests
             _dbContext = new CleanMOQasineContext(opt);
             _dbContext.Database.EnsureDeleted();
             _dbContext.Database.EnsureCreated();
+            _userTestData = new UserTestData();
             _userRepository = new UserRepository(_dbContext);
     }
 

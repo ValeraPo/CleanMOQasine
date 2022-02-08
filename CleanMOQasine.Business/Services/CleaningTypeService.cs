@@ -28,16 +28,16 @@ namespace CleanMOQasine.Business.Services
             return _autoMapperInstance.Map<List<CleaningTypeModel>>(entities);
         }
 
-        public void AddCleaningType(CleaningTypeModel cleaningTypeModel)
+        public int AddCleaningType(CleaningTypeModel cleaningTypeModel)
         {
             var entity = _autoMapperInstance.Map<CleaningType>(cleaningTypeModel);
-            _cleaningTypeRepository.AddCleaningType(entity);
+            return _cleaningTypeRepository.AddCleaningType(entity);
         }
 
-        public void UpdateCleaningType(int id, CleaningTypeModel updatedCleaningTypeModel)
+        public bool UpdateCleaningType(int id, CleaningTypeModel updatedCleaningTypeModel)
         {
             var entity = _autoMapperInstance.Map<CleaningType>(updatedCleaningTypeModel);
-            _cleaningTypeRepository.UpdateCleaningType(id, entity);
+            return _cleaningTypeRepository.UpdateCleaningType(id, entity);
         }
 
         public void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)

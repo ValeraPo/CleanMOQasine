@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CleanMOQasine.API.Configurations;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
@@ -12,12 +11,12 @@ namespace CleanMOQasine.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _autoMapper;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IMapper autoMapper)
         {
             _userService = userService;
-            _autoMapperInstance = AutoMapperFromApi.GetInstance();
+            _autoMapper = autoMapper;
         }
 
         //api/Users/23
@@ -29,7 +28,7 @@ namespace CleanMOQasine.API.Controllers
             if (userModel is null)
                 return NotFound($"User with Id = {id} was not found");
 
-            var output = _autoMapperInstance.Map<UserOutputModel>(userModel);
+            var output = _autoMapper.Map<UserOutputModel>(userModel);
             return Ok(output);
         }
 
@@ -38,7 +37,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
-            var outputs = _autoMapperInstance.Map<List<CleaningAdditionOutputModel>>(userModels);
+            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(userModels);
             return Ok(outputs);
         }
 
@@ -47,7 +46,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<UserOutputModel>> GetAllCleaners()
         {
             var userModels = _userService.GetAllCleaners();
-            var outputs = _autoMapperInstance.Map<List<CleaningAdditionOutputModel>>(userModels);
+            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(userModels);
             return Ok(outputs);
         }
 
@@ -56,7 +55,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();
-            var outputs = _autoMapperInstance.Map<List<CleaningAdditionOutputModel>>(userModels);
+            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(userModels);
             return Ok(outputs);
         }
 
@@ -64,7 +63,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateUser(int id, UserUpdateInputModel userUpdateInputModel)
         {
-            var userModel = _autoMapperInstance.Map<UserModel>(userUpdateInputModel);
+            var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);
             _userService.UpdateUser(id, userModel);
             return Ok($"User with Id = {id} was updated");
         }
@@ -73,17 +72,17 @@ namespace CleanMOQasine.API.Controllers
         [HttpPost]
         public ActionResult<UserModel> AddUser(UserInsertInputModel userInsertInputModel)
         {
-            var userModel = _autoMapperInstance.Map<UserModel>(userInsertInputModel);
+            var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
             _userService.AddUser(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
 
-        //api/Users/23/Orders
+        //api/Users/23/Orders/42
         [HttpPut("{id}/orders")]
-        public ActionResult<OrderModel> AddOrderToUser(UserUpdateOrderInputModel order, int userId)
+        public ActionResult<OrderModel> AddOrderToUser(int orderId, int userId)
         {
-            _userService.AddOrderToUser(order.OrderId, userId);
-            return Ok($"Order with Id = {order.OrderId} was added to User with Id = {userId}");
+            _userService.AddOrderToUser(orderId, userId);
+            return Ok($"Order with Id = {orderId} was added to User with Id = {userId}");
         }
 
         //api/Users/23

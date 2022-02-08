@@ -5,32 +5,15 @@ using CleanMOQasine.Business.Models;
 
 namespace CleanMOQasine.API.Configurations
 {
-    public class AutoMapperFromApi
+    public class AutoMapperFromApi : Profile
     {
-        private static Mapper _instance;
-        private AutoMapperFromApi() { }
-        public static Mapper GetInstance()
+        public AutoMapperFromApi()
         {
-            if (_instance == null)
-            {
-                InitAutoMapperFromApi();
-            }
-            return _instance;
-        }
-        public static void InitAutoMapperFromApi()
-        {
-            _instance = new Mapper(new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
-
-                cfg.CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
-
-                cfg.CreateMap<UserInsertInputModel, UserModel>();
-
-                cfg.CreateMap<UserUpdateInputModel, UserModel>();
-
-                cfg.CreateMap<UserUpdateOrderInputModel, UserModel>(); 
-            }));
+            CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
+            CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
+            CreateMap<UserInsertInputModel, UserModel>();
+            CreateMap<UserUpdateInputModel, UserModel>();
+            CreateMap<UserModel, UserOutputModel>();
         }
     }
 }

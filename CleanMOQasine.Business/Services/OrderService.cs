@@ -51,7 +51,7 @@ namespace CleanMOQasine.Business.Services
             var order = _orderRepository.GetOrderById(idOrder);
             var cleaner = _userRepository.GetUserById(idUser);
             if (order is null || cleaner is null)
-                return;
+                throw new Exception();
             _orderRepository.AddCleaner(order, cleaner);
         }
 
@@ -60,7 +60,7 @@ namespace CleanMOQasine.Business.Services
             var order = _orderRepository.GetOrderById(idOrder);
             var cleaner = _userRepository.GetUserById(idUser);
             if (order is null || cleaner is null)
-                return;
+                throw new Exception();
             _orderRepository.RemoveCleaner(order, cleaner);
         }
 

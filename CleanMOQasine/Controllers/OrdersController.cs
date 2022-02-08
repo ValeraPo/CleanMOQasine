@@ -12,12 +12,12 @@ namespace CleanMOQasine.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _mapper;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService, IMapper maper)
         {
             _orderService = orderService;
-            _autoMapperInstance = OrderMapper.GetInstance();
+            _mapper = maper;
         }
 
         //api/Orders
@@ -25,7 +25,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
             var models = _orderService.GetAllOrders();
-            var outputs = _autoMapperInstance.Map<List<OrderOutputModel>>(models);
+            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
             return Ok(outputs);
         }
 
@@ -34,7 +34,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<OrderOutputModel> GetOrderById(int id)
         {
             var model = _orderService.GetOrderById(id);
-            var output = _autoMapperInstance.Map<OrderOutputModel>(model);
+            var output = _mapper.Map<OrderOutputModel>(model);
             return Ok(output);
         }
 
@@ -42,7 +42,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPost]
         public ActionResult AddOrder([FromBody]OrderInsertInputModel order)
         {
-            var model = _autoMapperInstance.Map<OrderModel>(order);
+            var model = _mapper.Map<OrderModel>(order);
             _orderService.AddOrder(model);
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -51,7 +51,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
-            var model = _autoMapperInstance.Map<OrderModel>(order);
+            var model = _mapper.Map<OrderModel>(order);
             _orderService.UpdateOrder(id, model);
             return Ok($"Order with id = {id} was updated");
         }
@@ -60,7 +60,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}/cleaner")]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
-            var model = _autoMapperInstance.Map<OrderModel>(cleaner);
+            var model = _mapper.Map<OrderModel>(cleaner);
             _orderService.AddCleaner(id, cleaner.CleanerId);
             return Ok($"Cleaner with id = {cleaner.CleanerId} was added");
         }
@@ -69,7 +69,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}/remove-cleaner")]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
-            var model = _autoMapperInstance.Map<OrderModel>(cleaner);
+            var model = _mapper.Map<OrderModel>(cleaner);
             _orderService.RemoveCleaner(id, cleaner.CleanerId);
             return Ok($"Cleaner with id = {cleaner.CleanerId} was removed");
         }

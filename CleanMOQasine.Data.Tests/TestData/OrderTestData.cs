@@ -11,6 +11,7 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             var order = new Order
             {
+                Id = 1,
                 Address = "Ул. Ленина, 1",
                 Date = new DateTime(2008, 5, 1, 8, 30, 52),
                 IsDeleted = false,
@@ -95,9 +96,9 @@ namespace CleanMOQasine.Data.Tests.TestData
             return order;
         }
 
-        public List<Order> GetListOfOrdersForTests()
-        {
-            List<Order> orders = new List<Order>
+    public List<Order> GetListOfOrdersForTests()
+    {
+        List<Order> orders = new List<Order>
             {
             GetOrderForTests(),
                 new Order
@@ -188,7 +189,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             }
         };
 
-            return orders;
-        }
+        return orders;
     }
+}
 }

@@ -34,11 +34,12 @@ namespace CleanMOQasine.Data.Tests
             //given
             mock.Setup(obj => obj.GetCleaningTypeById(cleaningType.Id)).Returns(cleaningType);
             _context.CleaningTypes.Add(cleaningType);
-            _context.SaveChanges();
+           
             //when
             var repo = new CleaningTypeRepository(_context);
             var actual = repo.GetCleaningTypeById(cleaningType.Id);
             var expected = _context.CleaningTypes.FirstOrDefault(ct => ct.Id == cleaningType.Id);
+
             //then
             Assert.AreEqual(expected, actual);
         }
@@ -48,9 +49,11 @@ namespace CleanMOQasine.Data.Tests
         {
             //given
             var expected = GetEntitiesForGetAllCleaningTypesTest();
+
             //when
             var repo = new CleaningTypeRepository(_context);
             var actual = repo.GetAllCleaningTypes();
+
             //then
             CollectionAssert.AreEqual(actual, actual);
         }
@@ -63,9 +66,9 @@ namespace CleanMOQasine.Data.Tests
             //when
             var repo = new CleaningTypeRepository(_context);
             int id = repo.AddCleaningType(cleaningTypeAdd);
-            _context.SaveChanges();
             int expectedLength = _context.CleaningTypes.Count();
             var expectedCleaningTypeAdd = _context.CleaningTypes.FirstOrDefault(ecta => ecta.Id == id);
+
             //then
             Assert.AreEqual(cleaningTypeAdd, expectedCleaningTypeAdd);
             Assert.AreEqual(oldLength+1, expectedLength);
@@ -80,7 +83,6 @@ namespace CleanMOQasine.Data.Tests
             //when
             var repo = new CleaningTypeRepository(_context);
             bool resultUpdated = repo.UpdateCleaningType(id, cleaningTypeUpdate);
-            _context.SaveChanges();
             var newCleaningType = _context.CleaningTypes.FirstOrDefault(ct => ct.Id == id);
             
             //then
@@ -98,7 +100,6 @@ namespace CleanMOQasine.Data.Tests
             //when
             var repo = new CleaningTypeRepository(_context);
             repo.DeleteCleaningType(id);
-            _context.SaveChanges();
             var deletedCleaningType = _context.CleaningTypes.FirstOrDefault(ct => ct.Id == id);
 
             //then
@@ -115,7 +116,6 @@ namespace CleanMOQasine.Data.Tests
             //when
             var repo = new CleaningTypeRepository(_context);
             repo.RestoreCleaningType(id);
-            _context.SaveChanges();
             var restoredCleaningType = _context.CleaningTypes.FirstOrDefault(ct => ct.Id == id);
 
             //then
@@ -132,7 +132,6 @@ namespace CleanMOQasine.Data.Tests
             //when
             var repo = new CleaningTypeRepository(_context);
             repo.AddCleaningAdditionToCleaningType(cleaningTypeId, cleaningAdditionId);
-            _context.SaveChanges();
             var cleaningType = _context.CleaningTypes.FirstOrDefault(ct => ct.Id == cleaningTypeId);
 
             //then

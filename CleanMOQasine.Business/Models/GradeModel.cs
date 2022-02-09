@@ -1,6 +1,4 @@
-﻿using CleanMOQasine.Data.Entities;
-
-namespace CleanMOQasine.Business.Models
+﻿namespace CleanMOQasine.Business.Models
 {
     public class GradeModel
     {

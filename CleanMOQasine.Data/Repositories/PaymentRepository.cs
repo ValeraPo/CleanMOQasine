@@ -1,9 +1,4 @@
 ﻿using CleanMOQasine.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -14,10 +9,10 @@ namespace CleanMOQasine.Data.Repositories
         {
         }
 
-        public Payment GetPaymentById (int id) 
+        public Payment GetPaymentById(int id)
             => _context.Payments.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
-        public IEnumerable<Payment> GetAllPayments () 
+        public IEnumerable<Payment> GetAllPayments()
             => _context.Payments.Where(p => !p.IsDeleted).ToList();
 
         public void DeletePayment(int id)
@@ -34,7 +29,7 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void AddPayment (Payment newPayment)
+        public void AddPayment(Payment newPayment)
         {
             _context.Payments.Add(newPayment);
             _context.SaveChanges();

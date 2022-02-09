@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanMOQasine.Data.Entities
 {
@@ -16,7 +15,7 @@ namespace CleanMOQasine.Data.Entities
 
 
         public virtual ICollection<Room>? Rooms { get; set; }
-        public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; } 
+        public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; }
         public virtual ICollection<User>? Cleaners { get; set; }
         public virtual ICollection<Payment>? Payments { get; set; }
 

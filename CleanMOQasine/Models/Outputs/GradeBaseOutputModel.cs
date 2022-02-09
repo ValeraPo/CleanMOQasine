@@ -1,6 +1,4 @@
-﻿using CleanMOQasine.API.Models;
-
-namespace CleanMOQasine.API.Models
+﻿namespace CleanMOQasine.API.Models
 {
     public class GradeBaseOutputModel
     {

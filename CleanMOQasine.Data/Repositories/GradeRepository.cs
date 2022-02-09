@@ -14,7 +14,7 @@ namespace CleanMOQasine.Data.Repositories
         public IEnumerable<Grade> GetAllGrades()
             => _context.Grades.Where(g => !g.IsDeleted).ToList();
 
-        public Grade? GetGradeById(int id) 
+        public Grade? GetGradeById(int id)
             => _context.Grades.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public void UpdateGradeById(Grade grade)

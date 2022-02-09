@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Exceptions;
@@ -9,7 +8,7 @@ namespace CleanMOQasine.Business.Services
 {
     public class GradeService : IGradeService
     {
-        private readonly IGradeRepository   _gradeRepository;
+        private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
         public GradeService(IGradeRepository gradeRpository, IMapper mapper)
         {

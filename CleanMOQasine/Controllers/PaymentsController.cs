@@ -12,9 +12,9 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
             //if () payment is null
-                return BadRequest();
+            return BadRequest();
             //else
-                return Ok();
+            return Ok();
 
         }
 

@@ -10,7 +10,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
-        public Order GetOrderById(int id) => _dbContext.Orders.Include(o=>o.Grade).FirstOrDefault(o => o.Id == id);
+        public Order GetOrderById(int id) => _dbContext.Orders.Include(o => o.Grade).FirstOrDefault(o => o.Id == id);
 
         public void UpdateOrder(Order order)
         {
@@ -21,7 +21,7 @@ namespace CleanMOQasine.Data.Repositories
             oldOrder.Date = order.Date;
             oldOrder.Rooms = order.Rooms;
             oldOrder.CleaningAdditions = order.CleaningAdditions;
-            Save(); 
+            Save();
         }
 
         public void AddCleaner(Order order, User cleaner)

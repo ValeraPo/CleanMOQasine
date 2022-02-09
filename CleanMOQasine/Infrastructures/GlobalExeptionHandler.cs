@@ -24,7 +24,7 @@ namespace CleanMOQasine.API.Infrastructures
             }
         }
 
-        private async Task ConstructResponse (HttpContext context, HttpStatusCode code, string message)
+        private async Task ConstructResponse(HttpContext context, HttpStatusCode code, string message)
         {
             context.Response.ContentType = "applications/json";
             context.Response.StatusCode = (int)code;

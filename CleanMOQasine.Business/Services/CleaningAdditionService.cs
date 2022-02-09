@@ -1,12 +1,6 @@
-﻿using CleanMOQasine.Data.Repositories;
-using CleanMOQasine.Business.Configurations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using CleanMOQasine.Data.Entities;
-using AutoMapper;
+using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -17,7 +11,6 @@ namespace CleanMOQasine.Business.Services
         public CleaningAdditionService()
         {
             _cleaningAdditionRepository = new CleaningAdditionRepository();
-            _autoMapperInstance = AutoMapperToData.GetInstance();
         }
 
         public CleaningAdditionModel GetCleaningAdditionById(int id)

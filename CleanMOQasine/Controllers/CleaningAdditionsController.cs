@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using CleanMOQasine.Business;
+﻿using AutoMapper;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business;
 using CleanMOQasine.Business.Services;
-using CleanMOQasine.API.Configurations;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -13,12 +11,12 @@ namespace CleanMOQasine.API.Controllers
     public class CleaningAdditionsController : ControllerBase
     {
         private readonly CleaningAdditionService _cleaningAdditionService;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionsController()
+        public CleaningAdditionsController(IMapper mapper)
         {
             _cleaningAdditionService = new();
-            _autoMapperInstance = AutoMapperFromApi.GetInstance();
+            _autoMapperInstance = mapper;
         }
 
         //api/CleaningAdditions/228
@@ -41,7 +39,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
-        public ActionResult AddCleaningAddition([FromBody]CleaningAdditionInputModel cleaningAdditionInputModel)
+        public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.AddCleaningAddition(model);
@@ -52,7 +50,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = AutoMapperFromApi.GetInstance().Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.UpdateCleaningAddition(id, model);
             return Ok($"Cleaning type with {id} was updated");
         }
@@ -73,6 +71,6 @@ namespace CleanMOQasine.API.Controllers
             return Ok($"Cleaning type with {id} was restored");
         }
 
-        
+
     }
 }

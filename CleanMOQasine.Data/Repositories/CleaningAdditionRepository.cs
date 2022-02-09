@@ -8,7 +8,6 @@ namespace CleanMOQasine.Data.Repositories
         private readonly CleanMOQasineContext _context;
         public CleaningAdditionRepository()
         {
-            _context = CleanMOQasineContext.GetInstance();
         }
         public CleaningAddition GetCleaningAdditionById(int id)
         {

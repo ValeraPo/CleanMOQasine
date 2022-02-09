@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220204200050_Initial")]
-    partial class Initial
+    [Migration("20220206123248_NewTablesName")]
+    partial class NewTablesName
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

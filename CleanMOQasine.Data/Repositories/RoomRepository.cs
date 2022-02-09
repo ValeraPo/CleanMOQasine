@@ -7,15 +7,14 @@ namespace CleanMOQasine.Data.Repositories
     {
         private readonly CleanMOQasineContext _dbContext;
 
-        public RoomRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
-        public Room? GetRoomById(int id) => _dbContext.Room.Include(r => r.Orders).FirstOrDefault(r => r.Id == id);
+        public Room? GetRoomById(int id) => _dbContext.Rooms.Include(r => r.Orders).FirstOrDefault(r => r.Id == id);
 
-        public List<Room> GetRooms() => _dbContext.Room.Where(r => !r.IsDeleted).ToList();
+        public List<Room> GetRooms() => _dbContext.Rooms.Where(r => !r.IsDeleted).ToList();
 
         public void AddRoom(Room room)
         {
-            _dbContext.Room.Add(room);
+            _dbContext.Rooms.Add(room);
             _dbContext.SaveChanges();
         }
 
@@ -29,7 +28,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public void UpdateRoom(int id, bool isDeleted)
         {
-            var room = _dbContext.Room.FirstOrDefault(r => r.Id == id);
+            var room = _dbContext.Rooms.FirstOrDefault(r => r.Id == id);
             room.IsDeleted = isDeleted;
             _dbContext.SaveChanges();
         }

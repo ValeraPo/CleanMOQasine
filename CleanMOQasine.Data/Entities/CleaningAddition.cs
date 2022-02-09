@@ -14,7 +14,7 @@ namespace CleanMOQasine.Data.Entities
         public TimeSpan Duration { get; set; }
         public bool IsDeleted { get; set; }
         public virtual ICollection<User>? Users { get; set; }
-        public virtual ICollection<Order>? Orders { get; set; } 
+        public virtual ICollection<Order>? Orders { get; set; }
         public virtual ICollection<CleaningType>? CleaningTypes { get; set; }
     }
 }

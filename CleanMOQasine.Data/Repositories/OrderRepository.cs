@@ -18,9 +18,9 @@ namespace CleanMOQasine.Data.Repositories
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
-        public void UpdateOrder(int id, Order order)
+        public void UpdateOrder(Order order)
         {
-            var oldOrder = _dbContext.Orders.FirstOrDefault(o => o.Id == id);
+            var oldOrder = GetOrderById(order.Id);
             oldOrder.CleaningType = order.CleaningType;
             oldOrder.Grade = order.Grade;
             oldOrder.Address = order.Address;

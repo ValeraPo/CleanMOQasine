@@ -37,7 +37,7 @@ namespace CleanMOQasine.Business.Services
             if (GetOrderById(id) is null)
                 return;
             var entity = _mapper.Map<Order>(orderModel);
-            _orderRepository.UpdateOrder(id, entity);
+            _orderRepository.UpdateOrder(entity);
         }
 
         public void AddOrder(OrderModel orderModel)

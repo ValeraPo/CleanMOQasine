@@ -11,6 +11,6 @@ namespace CleanMOQasine.Data.Repositories
         Order GetOrderById(int id);
         void RemoveCleaner(Order order, User cleaner);
         void RestoreOrder(Order order);
-        void UpdateOrder(int id, Order order);
+        void UpdateOrder(Order order);
     }
 }

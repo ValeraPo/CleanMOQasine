@@ -1,10 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Tests.TestData.CleaningTypeData
 {
@@ -18,7 +13,7 @@ namespace CleanMOQasine.Data.Tests.TestData.CleaningTypeData
                 Price = 666,
                 IsDeleted = false
             };
-            yield return new object[] { entity1 , 1};
+            yield return new object[] { entity1, 1 };
             CleaningType entity2 = new CleaningType
             {
                 Name = "Выйти в окно",

@@ -1,6 +1,5 @@
 using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using NUnit.Framework;
 using CleanMOQasine.Data.Tests.TestData;
 using CleanMOQasine.Data.Entities;
@@ -12,7 +11,7 @@ namespace CleanMOQasine.Data.Tests
     public class Tests
     {
         private CleanMOQasineContext _context;
-        private Mock<IPaymentRepository> mock = new Mock<IPaymentRepository>();
+        private PaymentRepository _paymentRepository;
 
         [SetUp]
         public void Setup()
@@ -21,18 +20,19 @@ namespace CleanMOQasine.Data.Tests
                 .UseInMemoryDatabase(databaseName: "Test")
                 .Options;
             _context = new CleanMOQasineContext(opt);
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+            _paymentRepository = new PaymentRepository(_context);
         }
 
         [TestCaseSource(typeof(GetPaymentByIdTestCaseSource))]
         public void GetPaymentByIdTest(Payment payment, Payment expected )
         {
             //given
-            mock.Setup(obj => obj.GetPaymentById(payment.Id)).Returns(payment);
             _context.Payments.Add(payment);
             _context.SaveChanges();
             //when
-            var repo = new PaymentRepository(_context);
-            var actual = repo.GetPaymentById(payment.Id);
+            var actual = _paymentRepository.GetPaymentById(payment.Id);
             //then
             Assert.AreEqual(expected, actual);
         }
@@ -41,13 +41,12 @@ namespace CleanMOQasine.Data.Tests
         public void GetAllPayments(List<Payment> payments, List<Payment> expected)
         {
             //given
-            mock.Setup(obj => obj.GetAllPayments()).Returns(expected);
-            foreach (var pay in payments)
-                _context.Payments.Add(pay);
+            _context.AddRange(payments);
             _context.SaveChanges();
+
             //when
-            var repo = new PaymentRepository(_context);
-            var actual = repo.GetAllPayments();
+            var actual = _paymentRepository.GetAllPayments();
+
             //then
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -56,14 +55,13 @@ namespace CleanMOQasine.Data.Tests
         public void UpdatePayment(List<Payment> payments, Payment expected)
         {
             //given
-            mock.Setup(obj => obj.UpdatePayment(expected, expected.Id));
-            foreach (var pay in payments)
-                _context.Payments.Add(pay);
+            _context.AddRange(payments);
             _context.SaveChanges();
+
             //when
-            var repo = new PaymentRepository(_context);
-            repo.UpdatePayment(expected, expected.Id);
+            _paymentRepository.UpdatePayment(expected, expected.Id);
             var actual = _context.Payments.FirstOrDefault(p => p.Id == expected.Id);
+
             //then
             Assert.AreEqual(expected, actual);
         }

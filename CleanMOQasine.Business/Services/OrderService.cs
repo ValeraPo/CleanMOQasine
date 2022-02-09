@@ -49,35 +49,45 @@ namespace CleanMOQasine.Business.Services
         public void AddCleaner(int idOrder, int idUser)
         {
             var order = _orderRepository.GetOrderById(idOrder);
+            NullCheck(order);
             var cleaner = _userRepository.GetUserById(idUser);
-            if (order is null || cleaner is null)
-                throw new Exception();
+            NullCheck(cleaner);
             _orderRepository.AddCleaner(order, cleaner);
         }
 
         public void RemoveCleaner(int idOrder, int idUser)
         {
             var order = _orderRepository.GetOrderById(idOrder);
+            NullCheck(order);
             var cleaner = _userRepository.GetUserById(idUser);
-            if (order is null || cleaner is null)
-                throw new Exception();
+            NullCheck(cleaner);
             _orderRepository.RemoveCleaner(order, cleaner);
         }
 
         public void DeleteOrder(int id)
         {
             var order = _orderRepository.GetOrderById(id);
-            if (order is null)
-                return;
+            NullCheck(order);
             _orderRepository.DeleteOrder(order);
         }
 
         public void RestoreOrder(int id)
         {
             var order = _orderRepository.GetOrderById(id);
-            if (order is null)
-                return;
+            NullCheck(order);
             _orderRepository.RestoreOrder(order);
+        }
+
+        private void NullCheck(Order order)
+        {
+            if (order is null)
+                throw new KeyNotFoundException(@"Order id = {id} cannot be found");
+        }
+
+        private void NullCheck(User cleaner)
+        {
+            if (cleaner is null)
+                throw new KeyNotFoundException(@"Cleaner id = {id} cannot be found");
         }
     }
 }

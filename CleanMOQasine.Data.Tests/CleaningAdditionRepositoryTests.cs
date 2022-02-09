@@ -15,6 +15,7 @@ namespace CleanMOQasine.Data.Tests
     public class CleaningAdditionRepositoryTests
     {
         private CleanMOQasineContext _context;
+        private ICleaningAdditionRepository _repository;
 
         [SetUp]
         public void Setup()
@@ -26,6 +27,7 @@ namespace CleanMOQasine.Data.Tests
             _context = new CleanMOQasineContext(opt);
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
+            _repository = new CleaningAdditionRepository(_context);
         }
 
         [Test]
@@ -33,9 +35,10 @@ namespace CleanMOQasine.Data.Tests
         {
             //given
             var expected = _context.CleaningAdditions.Where(ca => !ca.IsDeleted);
+
             //when
-            var repo = new CleaningAdditionRepository(_context);
-            var actual = repo.GetAllCleaningAdditions();
+            var actual = _repository.GetAllCleaningAdditions();
+
             //then
             Assert.IsNotNull(actual);
             Assert.IsTrue(actual.Count > 0);
@@ -48,9 +51,10 @@ namespace CleanMOQasine.Data.Tests
         {
             //given
             var expected = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id);
+            
             //when
-            var repo = new CleaningAdditionRepository(_context);
-            var actual = repo.GetCleaningAdditionById(id);
+            var actual = _repository.GetCleaningAdditionById(id);
+            
             //then
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -64,11 +68,12 @@ namespace CleanMOQasine.Data.Tests
         {
             //given
             var entity = CleaningAdditionTestData.GetCleaningAdditionForTest(entityNumber);
+            
             //when
-            var repo = new CleaningAdditionRepository(_context);
-            var id = repo.AddCleaningAddition(entity);
+            var id = _repository.AddCleaningAddition(entity);
             _context.SaveChanges();
             var expected = _context.CleaningAdditions.FirstOrDefault(entity => entity.Id == id);
+            
             //then
             Assert.True(id != 0);
             Assert.IsNotNull(expected);
@@ -85,8 +90,7 @@ namespace CleanMOQasine.Data.Tests
             var entity = _context.CleaningAdditions.FirstOrDefault(entity => entity.Id == id);
             
             //when
-            var repo = new CleaningAdditionRepository(_context);
-            repo.UpdateCleaningAddition(id, entityUpdated);
+            _repository.UpdateCleaningAddition(id, entityUpdated);
 
             //then
             Assert.AreEqual(entity.Name, entityUpdated.Name);
@@ -102,12 +106,11 @@ namespace CleanMOQasine.Data.Tests
         public void DeleteCleaningAdditionTest(int id)
         {
             //given
-            var repo = new CleaningAdditionRepository(_context);
             var entity = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id);
 
             //when
             entity.IsDeleted = false;
-            repo.DeleteCleaningAddition(id);
+            _repository.DeleteCleaningAddition(id);
             bool expected = entity.IsDeleted;
 
             //then
@@ -121,13 +124,12 @@ namespace CleanMOQasine.Data.Tests
         public void RestoreCleaningAdditionTest(int id)
         {
             //given
-            var repo = new CleaningAdditionRepository(_context);
             var entity = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id);
 
             //when
             entity.IsDeleted = true;
             _context.SaveChanges();
-            repo.RestoreCleaningAddition(id);
+            _repository.RestoreCleaningAddition(id);
             bool expected = entity.IsDeleted;
 
             //then

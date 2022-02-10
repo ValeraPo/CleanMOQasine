@@ -1,28 +1,15 @@
 using CleanMOQasine.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CleanMOQasine.Data
 {
-    public class CleanMOQasineContext: DbContext
+    public class CleanMOQasineContext : DbContext
     {
-        //private readonly string _connectionString = @"Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23";
-        //private readonly string _connectionString = @"Data Source=LAPTOP-7HPLQHLI\TEW_SQLEXPRESS;Initial Catalog=CleanMOQasine;Integrated Security=True";
 
-        private static CleanMOQasineContext _instance;
         public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options) : base(options)
         {
 
         }
-
-        public static CleanMOQasineContext GetInstance()
-        {
-            if (null == null)
-                _instance = null;
-            return _instance;
-        }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

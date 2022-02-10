@@ -23,6 +23,8 @@ builder.Services.AddScoped<ICleaningTypeService, CleaningTypeService>();
 builder.Services.AddScoped<ICleaningAdditionRepository, CleaningAdditionRepository>();
 builder.Services.AddScoped<ICleaningAdditionService, CleaningAdditionService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IGradeService, GradeService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

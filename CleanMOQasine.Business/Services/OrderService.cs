@@ -34,10 +34,10 @@ namespace CleanMOQasine.Business.Services
 
         public void UpdateOrder(int id, OrderModel orderModel)
         {
-            if (GetOrderById(id) is null)
-                return;
+            var order = _orderRepository.GetOrderById(id);
+            ThrowEntityException.ThrowEntityNotFound(id, order);
             var entity = _mapper.Map<Order>(orderModel);
-            _orderRepository.UpdateOrder(entity);
+            _orderRepository.UpdateOrder(order, entity);
         }
 
         public void AddOrder(OrderModel orderModel)
@@ -49,45 +49,33 @@ namespace CleanMOQasine.Business.Services
         public void AddCleaner(int idOrder, int idUser)
         {
             var order = _orderRepository.GetOrderById(idOrder);
-            NullCheck(order);
+            ThrowEntityException.ThrowEntityNotFound(idOrder, order);
             var cleaner = _userRepository.GetUserById(idUser);
-            NullCheck(cleaner);
+            ThrowEntityException.ThrowEntityNotFound(idUser, cleaner);
             _orderRepository.AddCleaner(order, cleaner);
         }
 
         public void RemoveCleaner(int idOrder, int idUser)
         {
             var order = _orderRepository.GetOrderById(idOrder);
-            NullCheck(order);
+            ThrowEntityException.ThrowEntityNotFound(idOrder, order);
             var cleaner = _userRepository.GetUserById(idUser);
-            NullCheck(cleaner);
+            ThrowEntityException.ThrowEntityNotFound(idUser, cleaner);
             _orderRepository.RemoveCleaner(order, cleaner);
         }
 
         public void DeleteOrder(int id)
         {
             var order = _orderRepository.GetOrderById(id);
-            NullCheck(order);
+            ThrowEntityException.ThrowEntityNotFound(id, order);
             _orderRepository.DeleteOrder(order);
         }
 
         public void RestoreOrder(int id)
         {
             var order = _orderRepository.GetOrderById(id);
-            NullCheck(order);
+            ThrowEntityException.ThrowEntityNotFound(id, order);
             _orderRepository.RestoreOrder(order);
-        }
-
-        private void NullCheck(Order order)
-        {
-            if (order is null)
-                throw new KeyNotFoundException(@"Order id = {id} cannot be found");
-        }
-
-        private void NullCheck(User cleaner)
-        {
-            if (cleaner is null)
-                throw new KeyNotFoundException(@"Cleaner id = {id} cannot be found");
         }
     }
 }

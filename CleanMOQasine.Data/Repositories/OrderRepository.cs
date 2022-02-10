@@ -18,15 +18,15 @@ namespace CleanMOQasine.Data.Repositories
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
-        public void UpdateOrder(Order order)
+        public void UpdateOrder(Order oldOrder, Order newOrder)
         {
-            var oldOrder = GetOrderById(order.Id);
-            oldOrder.CleaningType = order.CleaningType;
-            oldOrder.Grade = order.Grade;
-            oldOrder.Address = order.Address;
-            oldOrder.Date = order.Date;
-            oldOrder.Rooms = order.Rooms;
-            oldOrder.CleaningAdditions = order.CleaningAdditions;
+            //var oldOrder = GetOrderById(newOrder.Id);
+            oldOrder.CleaningType = newOrder.CleaningType;
+            oldOrder.Grade = newOrder.Grade;
+            oldOrder.Address = newOrder.Address;
+            oldOrder.Date = newOrder.Date;
+            oldOrder.Rooms = newOrder.Rooms;
+            oldOrder.CleaningAdditions = newOrder.CleaningAdditions;
             Save();
         }
 

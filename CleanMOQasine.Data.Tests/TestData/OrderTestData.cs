@@ -11,7 +11,6 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             var order = new Order
             {
-                Id = 1,
                 Address = "Ул. Ленина, 1",
                 Date = new DateTime(2008, 5, 1, 8, 30, 52),
                 IsDeleted = false,
@@ -96,9 +95,10 @@ namespace CleanMOQasine.Data.Tests.TestData
             return order;
         }
 
-    public List<Order> GetListOfOrdersForTests()
-    {
-        List<Order> orders = new List<Order>
+
+        public List<Order> GetListOfOrdersForTests()
+        {
+            List<Order> orders = new List<Order>
             {
             GetOrderForTests(),
                 new Order
@@ -189,7 +189,52 @@ namespace CleanMOQasine.Data.Tests.TestData
             }
         };
 
-        return orders;
+            return orders;
+        }
+        public Order GetOrderForUpdateTests()
+        {
+            Order order = GetOrderForTests();
+            order.Address = "другой";
+            order.CleaningType = new CleaningType { Name = "После пьянки", IsDeleted = false };
+            order.Date = System.DateTime.Now;
+            order.Grade = new Grade
+            {
+                IsAnonymous = true,
+                Comment = "пфр",
+                Rating = 3,
+                IsDeleted = false,
+            };
+            order.Rooms.Add(new Room
+            {
+                Name = "Опочивальня",
+                IsDeleted = false,
+                Price = 300
+            });
+            order.CleaningAdditions.Add(new CleaningAddition
+            {
+                Name = "Убить паука",
+                Price = 360,
+                Duration = TimeSpan.FromDays(1),
+                IsDeleted = false
+            });
+            
+            return order;
+        }
+
+        public User GetUserForTests()
+        {
+            return new User
+            {
+                Email = "kusin@kmail.com",
+                FirstName = "Петр",
+                LastName = "Кузин",
+                Login = "kusin",
+                Password = "123qwe",
+                PhoneNumber = "+7(917)234-44-55",
+                IsDeleted = false,
+                Role = Enums.Role.Cleaner,
+            };
+        }
+
     }
-}
 }

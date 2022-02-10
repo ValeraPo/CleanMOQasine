@@ -1,5 +1,4 @@
-﻿using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Repositories;
+﻿using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -62,37 +61,14 @@ namespace CleanMOQasine.Data.Tests
         public void UpdateOrderTest()
         {
             // given
-            var expected = _orderTestData.GetOrderForTests();
-            _context.Orders.Add(expected);
+            var prepared = _orderTestData.GetOrderForTests();
+            _context.Orders.Add(prepared);
             _context.SaveChanges();
+            var expected = _orderTestData.GetOrderForUpdateTests();
 
             // when
-            expected.Address = "другой";
-            expected.CleaningType = new CleaningType { Name = "После пьянки", IsDeleted = false };
-            expected.Date = System.DateTime.Now;
-            expected.Grade = new Grade
-            {
-                IsAnonymous = true,
-                Comment = "пфр",
-                Rating = 3,
-                IsDeleted = false,
-            };
-            expected.Rooms.Add(new Room
-            {
-                Name = "Опочивальня",
-                IsDeleted = false,
-                Price = 300
-            });
-            expected.CleaningAdditions.Add(new CleaningAddition
-            {
-                Name = "Убить паука",
-                Price = 360,
-                Duration = TimeSpan.FromDays(1),
-                IsDeleted = false
-            });
-            
-            _repository.UpdateOrder(expected);
-            var actual = _context.Orders.FirstOrDefault(o => o.Id == expected.Id);
+            _repository.UpdateOrder(prepared, expected);
+            var actual = _context.Orders.FirstOrDefault(o => o.Id == prepared.Id);
 
             // then
             Assert.AreEqual(expected, actual);
@@ -105,17 +81,7 @@ namespace CleanMOQasine.Data.Tests
             var expected = _orderTestData.GetOrderForTests();
             _context.Orders.Add(expected);
             _context.SaveChanges();
-            var cleaner = new User
-            {
-                Email = "kusin@kmail.com",
-                FirstName = "Петр",
-                LastName = "Кузин",
-                Login = "kusin",
-                Password = "123qwe",
-                PhoneNumber = "+7(917)234-44-55",
-                IsDeleted = false,
-                Role = Enums.Role.Cleaner,
-            };
+            var cleaner = _orderTestData.GetUserForTests();
 
             // when
             _repository.AddCleaner(expected, cleaner);
@@ -131,17 +97,7 @@ namespace CleanMOQasine.Data.Tests
         {
             // given
             var expected = _orderTestData.GetOrderForTests();
-            var cleaner = new User
-            {
-                Email = "kusin@kmail.com",
-                FirstName = "Петр",
-                LastName = "Кузин",
-                Login = "kusin",
-                Password = "123qwe",
-                PhoneNumber = "+7(917)234-44-55",
-                IsDeleted = false,
-                Role = Enums.Role.Cleaner,
-            };
+            var cleaner = _orderTestData.GetUserForTests();
             expected.Cleaners.Add(cleaner);
             _context.Orders.Add(expected);
             _context.SaveChanges();
@@ -204,5 +160,6 @@ namespace CleanMOQasine.Data.Tests
             //then
             Assert.AreEqual(expected, actual);
         }
+        
     }
 }

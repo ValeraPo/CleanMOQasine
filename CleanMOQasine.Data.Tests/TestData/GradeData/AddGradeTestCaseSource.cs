@@ -14,7 +14,6 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             Grade grade = new Grade
             {
-                Id = 3,
                 IsAnonymous = false,
                 Comment = "Ok",
                 Rating = 5,
@@ -22,7 +21,6 @@ namespace CleanMOQasine.Data.Tests.TestData
             };
             Order order = new Order
             {
-                Id = 1,
                 Client = null,
                 CleaningType = null,
                 Address = "qwe",

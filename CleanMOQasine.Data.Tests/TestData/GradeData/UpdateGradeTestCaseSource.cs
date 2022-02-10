@@ -14,7 +14,6 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             Grade oldGrade = new Grade
             {
-                Id = 1,
                 IsAnonymous = false,
                 Comment = "Ok",
                 Rating = 5,
@@ -28,7 +27,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Rating = 5,
                 IsDeleted = false,
             };
-            yield return new object[] { oldGrade, updatedGrade, 1 };
+            yield return new object[] { oldGrade, updatedGrade, updatedGrade.Id };
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 

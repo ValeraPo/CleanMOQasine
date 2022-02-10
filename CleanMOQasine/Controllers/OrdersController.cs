@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CleanMOQasine.Business.Models;
+﻿using CleanMOQasine.Business.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {

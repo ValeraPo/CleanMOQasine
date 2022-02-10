@@ -1,10 +1,9 @@
+using CleanMOQasine.API.Configurations;
+using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using CleanMOQasine.Business.Configurations;
-using CleanMOQasine.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +20,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IGradeService, GradeService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

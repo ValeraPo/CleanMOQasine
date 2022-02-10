@@ -60,9 +60,11 @@ namespace CleanMOQasine.Data.Tests
         {
             //given
             int oldLength = _context.CleaningTypes.Count();
+            int expectedLength = _context.CleaningTypes.Count();
+            
+
             //when
             int id = _repository.AddCleaningType(cleaningTypeAdd);
-            int expectedLength = _context.CleaningTypes.Count();
             var expectedCleaningTypeAdd = _context.CleaningTypes.FirstOrDefault(ecta => ecta.Id == id);
 
             //then

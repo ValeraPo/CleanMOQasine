@@ -10,6 +10,7 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly ICleaningTypeRepository _cleaningTypeRepository;
         private readonly IMapper _autoMapperInstance;
+
         public CleaningTypeService(ICleaningTypeRepository cleaningTypeRepository, IMapper mapper)
         {
             _cleaningTypeRepository = cleaningTypeRepository;

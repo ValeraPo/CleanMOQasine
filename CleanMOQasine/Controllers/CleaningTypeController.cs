@@ -71,14 +71,14 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult DeleteCleaningType(int id)
         {
             _cleaningTypeService.DeleteCleaningType(id);
-            return Accepted($"Cleaning type with {id} was deleted");
+            return NoContent();
         }
 
         [HttpPatch("{id}")]
         public ActionResult RestoreCleaningType(int id)
         {
             _cleaningTypeService.RestoreCleaningType(id);
-            return Accepted($"Cleaning type with {id} was deleted");
+            return NoContent();
         }
     }
 }

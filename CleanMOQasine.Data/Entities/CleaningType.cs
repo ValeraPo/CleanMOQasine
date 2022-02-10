@@ -15,8 +15,6 @@
                    Id == type.Id &&
                    Name == type.Name &&
                    Price == type.Price &&
-                   //EqualityComparer<ICollection<Order>?>.Default.Equals(Order, type.Order) &&
-                   //EqualityComparer<ICollection<CleaningAddition>?>.Default.Equals(CleaningAdditions, type.CleaningAdditions) &&
                    IsDeleted == type.IsDeleted;
         }
     }

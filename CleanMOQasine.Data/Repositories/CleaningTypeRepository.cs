@@ -47,7 +47,7 @@ namespace CleanMOQasine.Data.Repositories
         public void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)
         {
             var interstedCleaningType = GetCleaningTypeById(cleaningTypeId);
-            var cleaningAddition = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == cleaningAdditionId);
+            var cleaningAddition = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == cleaningAdditionId && !ca.IsDeleted);
             interstedCleaningType.CleaningAdditions.Add(cleaningAddition);
             _context.SaveChanges();
         }

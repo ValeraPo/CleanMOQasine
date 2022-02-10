@@ -2,10 +2,14 @@
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly CleanMOQasineContext _dbContext;
 
+        public UserRepository(CleanMOQasineContext context)
+        {
+            _dbContext = context;
+        }
 
         public User? GetUserById(int id) => _dbContext.Users.FirstOrDefault(u => u.Id == id);
 
@@ -35,6 +39,12 @@ namespace CleanMOQasine.Data.Repositories
             var user = GetUserById(id);
             user.IsDeleted = isDeleted;
             _dbContext.SaveChanges();
+        }
+
+        public User Login(string login, string password)
+        {
+            var user = _dbContext.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
+            return user;
         }
     }
 }

@@ -50,14 +50,16 @@ namespace CleanMOQasine.Data.Tests
         public void GetCleaningAdditionByIdTest(int id)
         {
             //given
-            var expected = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id);
+            var expected = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id && !ca.IsDeleted);
             
             //when
             var actual = _repository.GetCleaningAdditionById(id);
             
             //then
             Assert.IsNotNull(actual);
+            Assert.False(actual.IsDeleted);
             Assert.AreEqual(expected, actual);
+
         }
 
 
@@ -88,6 +90,7 @@ namespace CleanMOQasine.Data.Tests
             //given
             var entityUpdated = CleaningAdditionTestData.GetCleaningAdditionForTest(entityNumber);
             var entity = _context.CleaningAdditions.FirstOrDefault(entity => entity.Id == id);
+            bool isDeletedBeforeUpdate = entity.IsDeleted;
             
             //when
             _repository.UpdateCleaningAddition(id, entityUpdated);
@@ -96,6 +99,7 @@ namespace CleanMOQasine.Data.Tests
             Assert.AreEqual(entity.Name, entityUpdated.Name);
             Assert.AreEqual(entity.Price, entityUpdated.Price);
             Assert.AreEqual(entity.Duration, entityUpdated.Duration);
+            Assert.AreEqual(isDeletedBeforeUpdate,entity.IsDeleted);
             Assert.AreNotEqual(entity, entityUpdated);
             Assert.True(_context.CleaningAdditions.Contains(entity));
         }

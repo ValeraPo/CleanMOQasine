@@ -7,12 +7,12 @@ namespace CleanMOQasine.Business.Services
     public class CleaningAdditionService : ICleaningAdditionService
     {
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
-        private readonly Mapper _autoMapperInstance;
+        private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository)
+        public CleaningAdditionService(IMapper automapper, ICleaningAdditionRepository cleaningAdditionRepository)
         {
             _cleaningAdditionRepository = cleaningAdditionRepository;
-            _autoMapperInstance = AutoMapperToData.GetInstance();
+            _autoMapperInstance = automapper;
         }
 
         public CleaningAdditionModel GetCleaningAdditionById(int id)

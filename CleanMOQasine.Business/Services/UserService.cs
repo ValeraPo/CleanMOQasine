@@ -10,13 +10,11 @@ namespace CleanMOQasine.Business.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IOrderRepository _orderRepository;
         private readonly IMapper _autoMapper;
 
-        public UserService(IMapper autoMapper, IUserRepository userRepository, IOrderRepository orderRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _orderRepository = orderRepository;
             _autoMapper = autoMapper;
         }
 
@@ -48,21 +46,18 @@ namespace CleanMOQasine.Business.Services
         public List<UserModel> GetAllAdmins()
         {
             var users = _userRepository.GetUsers();
-            CheckListOfUsers(users);
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Admin).ToList();
         }
 
         public List<UserModel> GetAllCleaners()
         {
             var users = _userRepository.GetUsers();
-            CheckListOfUsers(users);
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Cleaner).ToList();
         }
 
         public List<UserModel> GetAllClients()
         {
             var users = _userRepository.GetUsers();
-            CheckListOfUsers(users);
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
         }
 
@@ -70,18 +65,6 @@ namespace CleanMOQasine.Business.Services
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
             _userRepository.AddUser(mappedUser);
-        }
-
-        public void AddOrderToUser(int orderId, int userId)
-        {
-            var user = _userRepository.GetUserById(userId);
-            CheckUser(user, userId);
-            var order = _orderRepository.GetOrderById(orderId);
-
-            if (order is null)
-                throw new Exception($"Заказ с id = { orderId } не найден");
-
-            _userRepository.AddOrderToUser(orderId, userId);
         }
 
         public void DeleteUserById(int id)
@@ -102,12 +85,6 @@ namespace CleanMOQasine.Business.Services
         {
             if (user is null)
                 throw new Exception($"Пользователь с id = {id} не найден");
-        }
-
-        private void CheckListOfUsers(List<User> users)
-        {
-            if (users is null)
-                throw new Exception($"В базе данных нет ни одного пользователя");
         }
     }
 }

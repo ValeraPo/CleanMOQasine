@@ -7,7 +7,7 @@ namespace CleanMOQasine.Business.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public virtual List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

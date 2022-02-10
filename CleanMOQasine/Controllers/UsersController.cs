@@ -61,7 +61,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpPut("{id}")]
-        public ActionResult UpdateUser(int id, UserUpdateInputModel userUpdateInputModel)
+        public ActionResult UpdateUser(int id, [FromBody] UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);
             _userService.UpdateUser(id, userModel);
@@ -70,19 +70,11 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost]
-        public ActionResult<UserModel> AddUser(UserInsertInputModel userInsertInputModel)
+        public ActionResult<UserModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
             _userService.AddUser(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
-        }
-
-        //api/Users/23/Orders/42
-        [HttpPut("{id}/orders")]
-        public ActionResult<OrderModel> AddOrderToUser(int orderId, int userId)
-        {
-            _userService.AddOrderToUser(orderId, userId);
-            return Ok($"Order with Id = {orderId} was added to User with Id = {userId}");
         }
 
         //api/Users/23

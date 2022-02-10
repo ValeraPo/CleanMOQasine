@@ -4,7 +4,6 @@ namespace CleanMOQasine.Data.Repositories
 {
     public interface IUserRepository
     {
-        void AddOrderToUser(int orderId, int userId);
         int AddUser(User user);
         User? GetUserById(int id);
         User? GetUserByLogin(string login);

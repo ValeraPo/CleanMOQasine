@@ -11,8 +11,8 @@ namespace CleanMOQasine.Business.Configurations
             CreateMap<Grade, GradeModel>().ReverseMap();
             CreateMap<Order, OrderModel>().ReverseMap();
             CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
+            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<Room, RoomModel>().ReverseMap();
         }
-                cfg.CreateMap<User, UserModel>().ReverseMap();
-                cfg.CreateMap<Room, RoomModel>().ReverseMap();
     }
 }

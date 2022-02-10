@@ -9,7 +9,7 @@ namespace CleanMOQasine.Business
         public decimal Price { get; set; }
         public TimeSpan Duration { get; set; }
         public List<OrderModel> Orders { get; set; }
-        public List<CleaningTypeModel> CleaningTypes { get; set; } 
+        public List<CleaningTypeModel> CleaningTypes { get; set; }
         public bool IsDeleted { get; set; }
 
         //TODO:

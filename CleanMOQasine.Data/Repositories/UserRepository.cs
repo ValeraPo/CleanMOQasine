@@ -6,7 +6,6 @@ namespace CleanMOQasine.Data.Repositories
     {
         private readonly CleanMOQasineContext _dbContext;
 
-        public UserRepository() => _dbContext = CleanMOQasineContext.GetInstance();
 
         public User? GetUserById(int id) => _dbContext.Users.FirstOrDefault(u => u.Id == id);
 

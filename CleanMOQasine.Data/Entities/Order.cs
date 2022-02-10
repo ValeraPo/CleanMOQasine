@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanMOQasine.Data.Entities
 {
@@ -16,8 +15,22 @@ namespace CleanMOQasine.Data.Entities
 
 
         public virtual ICollection<Room>? Rooms { get; set; }
-        public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; } 
+        public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; }
         public virtual ICollection<User>? Cleaners { get; set; }
         public virtual ICollection<Payment>? Payments { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null || obj is not Order)
+                return false;
+            Order order = (Order)obj;
+            return (Id == order.Id
+                && Client == order.Client
+                && CleaningType == order.CleaningType
+                && Grade == order.Grade
+                && Address == order.Address
+                && Date == order.Date
+                && IsDeleted == order.IsDeleted);
+        }
     }
 }

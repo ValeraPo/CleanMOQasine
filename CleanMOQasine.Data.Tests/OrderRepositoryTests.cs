@@ -37,6 +37,8 @@ namespace CleanMOQasine.Data.Tests
 
             // when
             var actual = _repository.GetOrderById(expected.Id);
+            expected = _orderTestData.GetOrderForTests();
+
 
             // then
             Assert.AreEqual(expected, actual);
@@ -46,15 +48,15 @@ namespace CleanMOQasine.Data.Tests
         public void GetAllOrdersTest()
         {
             // given
-            var expected = _orderTestData.GetListOfOrdersForTests();
-            _context.Orders.AddRange(expected);
+            _context.Orders.AddRange(_orderTestData.GetListOfOrdersForTests());
             _context.SaveChanges();
+            var expected = _orderTestData.GetListOfOrdersForTests();
 
             // when
             var actual = _repository.GetAllOrders();
 
             // then
-            CollectionAssert.AreEqual(expected.Where(o => !o.IsDeleted), actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [Test]
@@ -72,6 +74,8 @@ namespace CleanMOQasine.Data.Tests
 
             // then
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Client.FirstName, actual.Client.FirstName); //TODO
+            CollectionAssert.AreEqual(expected.Payments.Select(p => p.Amount), actual.Payments.Select(p => p.Amount)); //TODO переделать когда у Payment будет Equals
         }
 
         [Test]
@@ -85,8 +89,9 @@ namespace CleanMOQasine.Data.Tests
 
             // when
             _repository.AddCleaner(expected, cleaner);
-            expected.Cleaners.Add(cleaner);
             var actual = _context.Orders.FirstOrDefault(o => o.Id == expected.Id);
+            expected = _orderTestData.GetOrderForTests();
+            expected.Cleaners.Add(cleaner);
 
             // then
             Assert.AreEqual(expected, actual);
@@ -105,8 +110,8 @@ namespace CleanMOQasine.Data.Tests
 
             // when
             _repository.RemoveCleaner(expected, cleaner);
-            expected.Cleaners.Remove(cleaner);
             var actual = _context.Orders.FirstOrDefault(o => o.Id == expected.Id);
+            expected = _orderTestData.GetOrderForTests();
 
             // then
             Assert.AreEqual(expected, actual);
@@ -121,6 +126,7 @@ namespace CleanMOQasine.Data.Tests
             //when
             _repository.AddOrder(expected);
             var actual = _context.Orders.FirstOrDefault(o => o.Id == expected.Id);
+            expected = _orderTestData.GetOrderForTests();
 
             //then
             Assert.AreEqual(expected, actual);
@@ -136,9 +142,10 @@ namespace CleanMOQasine.Data.Tests
 
             //when
             _repository.DeleteOrder(expected);
-            expected.IsDeleted = true;
             var actual = _context.Orders.FirstOrDefault(o => o.Id == expected.Id);
-
+            expected = _orderTestData.GetOrderForTests();
+            expected.IsDeleted = true;
+            
             //then
             Assert.AreEqual(expected, actual);
         }
@@ -154,8 +161,8 @@ namespace CleanMOQasine.Data.Tests
 
             //when
             _repository.RestoreOrder(expected);
-            expected.IsDeleted = false;
             var actual = _context.Orders.FirstOrDefault(o => o.Id == expected.Id);
+            expected = _orderTestData.GetOrderForTests();
 
             //then
             Assert.AreEqual(expected, actual);

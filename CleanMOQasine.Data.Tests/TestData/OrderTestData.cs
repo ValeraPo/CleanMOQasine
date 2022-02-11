@@ -106,6 +106,23 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Address = "Ул. Ленина, 1",
                 Date = new DateTime(2008, 5, 1, 8, 30, 52),
                 IsDeleted = false,
+                CleaningType = new CleaningType
+                {
+                    Name = "После ремонта",
+                    Price = 1080,
+                    IsDeleted = false
+                },
+                Client = new User
+                {
+                    Email = "bugaga@mail.com",
+                    FirstName = "Сергей",
+                    LastName = "Бугаев",
+                    Login = "Bugai",
+                    Password = "fhryr352",
+                    PhoneNumber = "+7(921)765-45-23",
+                    IsDeleted = false,
+                    Role = Enums.Role.Client,
+                },
                 Rooms = new List<Room> {
                     new Room
                     {
@@ -140,37 +157,17 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Cleaners = new List<User>
                 {
                     new User
-            {
-                Email = "kusin@kmail.com",
-                FirstName = "Петр",
-                LastName = "Кузин",
-                Login = "kusin",
-                Password = "123qwe",
-                PhoneNumber = "+7(917)234-44-55",
-                IsDeleted = false,
-                Role = Enums.Role.Cleaner,
-            }
+                    {
+                        Email = "kusin@kmail.com",
+                        FirstName = "Петр",
+                        LastName = "Кузин",
+                        Login = "kusin",
+                        Password = "123qwe",
+                        PhoneNumber = "+7(917)234-44-55",
+                        IsDeleted = false,
+                        Role = Enums.Role.Cleaner,
+                    }
                 },
-                Payments = new List<Payment>()
-            },
-                new Order
-            {
-                Address = "Ул. Матросова, 2",
-                Date = new DateTime(2022, 2, 1, 8, 30, 52),
-                IsDeleted = true,
-                Rooms = new List<Room>(),
-                CleaningAdditions = new List<CleaningAddition>(),
-                Cleaners = new List<User>(),
-                Payments = new List<Payment>()
-            },
-                new Order
-            {
-                Address = "Ул. Ленина, 1",
-                Date = new DateTime(2022, 2, 2, 8, 30, 52),
-                IsDeleted = false,
-                Rooms = new List<Room>(),
-                CleaningAdditions = new List<CleaningAddition>(),
-                Cleaners = new List<User>(),
                 Payments = new List<Payment>
                 {
                     new Payment
@@ -186,7 +183,85 @@ namespace CleanMOQasine.Data.Tests.TestData
                         IsDeleted = false
                     },
                 }
-            }
+            },
+
+                new Order
+            {
+                Address = "Ул. Матросова, 2",
+                Date = new DateTime(2022, 2, 1, 8, 30, 52),
+                IsDeleted = false,
+                CleaningType = new CleaningType
+                {
+                    Name = "Самая простая",
+                    Price = 100,
+                    IsDeleted = false
+                },
+                Client = new User
+                {
+                    Email = "fluffy@mail.com",
+                    FirstName = "Валентин",
+                    LastName = "Петров",
+                    Login = "fluffy",
+                    Password = "fluffy",
+                    PhoneNumber = "+7(921)765-45-23",
+                    IsDeleted = false,
+                    Role = Enums.Role.Client,
+                },
+                Rooms = new List<Room> {
+                    new Room
+                    {
+                        Name = "Бильярд",
+                        Price = 300,
+                        IsDeleted = false
+                    },
+                    new Room
+                    {
+                        Name = "Собачья будка",
+                        Price = 387,
+                        IsDeleted = false
+                    }
+                },
+                CleaningAdditions = new List<CleaningAddition>
+                {
+                    new CleaningAddition
+                    {
+                        Name = "Вымыть стены",
+                        Price = 500,
+                        Duration = TimeSpan.FromDays(2),
+                        IsDeleted = false
+                    },
+                    new CleaningAddition
+                    {
+                        Name = "Пропылесосить",
+                        Price = 322,
+                        Duration = TimeSpan.FromDays(3),
+                        IsDeleted = false
+                    }
+                },
+                Cleaners = new List<User>
+                {
+                    new User
+                    {
+                        Email = "kusin@kmail.com",
+                        FirstName = "Петр",
+                        LastName = "Кузин",
+                        Login = "kusin",
+                        Password = "123qwe",
+                        PhoneNumber = "+7(917)234-44-55",
+                        IsDeleted = false,
+                        Role = Enums.Role.Cleaner,
+                    }
+                },
+                Payments = new List<Payment>
+                {
+                    new Payment
+                    {
+                        Amount = 100,
+                        PaymentDate = new DateTime(2022, 1, 9),
+                        IsDeleted = false
+                    },
+                }
+            },
         };
 
             return orders;
@@ -217,7 +292,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Duration = TimeSpan.FromDays(1),
                 IsDeleted = false
             });
-            
+
             return order;
         }
 

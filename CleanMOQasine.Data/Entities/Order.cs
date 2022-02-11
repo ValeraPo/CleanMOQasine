@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CleanMOQasine.Data.Entities
 {
@@ -20,24 +21,24 @@ namespace CleanMOQasine.Data.Entities
         public virtual ICollection<User>? Cleaners { get; set; }
         public virtual ICollection<Payment>? Payments { get; set; }
 
+        public bool Equals(Order order)
+        {
+            return order.Client.FirstName.Equals(Client.FirstName) // TODO заменить на order.Client.Equals(Client) когда будет написано для Equals for User
+                && order.CleaningType.Name.Equals(CleaningType.Name) // TODO
+                && order.Address.Equals(Address)
+                && order.Date.Equals(Date)
+                && order.IsDeleted.Equals(IsDeleted)
+                && order.Rooms.Select(r => r.Name).SequenceEqual<string>(Rooms.Select(r => r.Name)) //TODO
+                && order.CleaningAdditions.Select(r => r.Name).SequenceEqual<string>(CleaningAdditions.Select(r => r.Name)) //TODO
+                && order.Cleaners.Select(r => r.FirstName).SequenceEqual<string>(Cleaners.Select(r => r.FirstName)) //TODO
+                && order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount)); //TODO
+        }
         public override bool Equals(object? obj)
         {
             if (obj is null)
                 return false;
-            Order order = (Order)obj;
-            if (order.Id.Equals(Id)
-                && order.Client.Equals(Client)
-                && order.CleaningType.Equals(CleaningType)
-                && order.Grade.Equals(Grade)
-                && order.Address.Equals(Address)
-                && order.Date.Equals(Date)
-                && order.IsDeleted.Equals(IsDeleted)
-                && order.Rooms.SequenceEqual<Room>(Rooms)
-                && order.CleaningAdditions.SequenceEqual<CleaningAddition>(CleaningAdditions)
-                && order.Cleaners.SequenceEqual<User>(Cleaners)
-                && order.Payments.SequenceEqual<Payment>(Payments))
-                return false;
-            return true;
+            
+            return obj.GetType() == GetType() && Equals((Order)obj);
         }
     }
 }

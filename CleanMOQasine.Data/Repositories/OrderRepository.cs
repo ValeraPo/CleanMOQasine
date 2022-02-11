@@ -56,7 +56,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public void RestoreOrder(Order order)
         {
-            order.IsDeleted = true;
+            order.IsDeleted = false;
             Save();
         }
 

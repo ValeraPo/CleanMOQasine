@@ -8,10 +8,10 @@ namespace CleanMOQasine.Business.Services
 {
     public static class ThrowEntityException
     {
-        public static void ThrowEntityNotFound(int id, object? obj)
+        public static void ThrowEntityNotFound<T>(int id, T entity)
         {
-            if (obj is null)
-                throw new EntityNotFoundException(id, obj);
+            if (entity is null)
+                throw new EntityNotFoundException(id, typeof(T).Name);
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using CleanMOQasine.Business;
+﻿using AutoMapper;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business;
 using CleanMOQasine.Business.Services;
-using CleanMOQasine.API.Configurations;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -12,13 +10,13 @@ namespace CleanMOQasine.API.Controllers
     [ApiController]
     public class CleaningAdditionsController : ControllerBase
     {
-        private readonly CleaningAdditionService _cleaningAdditionService;
-        private readonly Mapper _autoMapperInstance;
+        private readonly ICleaningAdditionService _cleaningAdditionService;
+        private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionsController()
+        public CleaningAdditionsController(ICleaningAdditionService cleaningAdditionService, IMapper mapper)
         {
-            _cleaningAdditionService = new();
-            _autoMapperInstance = AutoMapperFromApi.GetInstance();
+            _cleaningAdditionService = cleaningAdditionService;
+            _autoMapperInstance = mapper;
         }
 
         //api/CleaningAdditions/228
@@ -41,7 +39,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
-        public ActionResult AddCleaningAddition([FromBody]CleaningAdditionInputModel cleaningAdditionInputModel)
+        public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.AddCleaningAddition(model);
@@ -73,6 +71,6 @@ namespace CleanMOQasine.API.Controllers
             return Ok($"Cleaning type with {id} was restored");
         }
 
-        
+
     }
 }

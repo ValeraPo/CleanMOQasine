@@ -1,22 +1,16 @@
-﻿using CleanMOQasine.Data.Repositories;
-using CleanMOQasine.Business.Configurations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using CleanMOQasine.Data.Entities;
-using AutoMapper;
+using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
 {
-    public class CleaningAdditionService
+    public class CleaningAdditionService : ICleaningAdditionService
     {
-        private readonly CleaningAdditionRepository _cleaningAdditionRepository;
+        private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapperInstance;
-        public CleaningAdditionService(IMapper mapper)
+        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
         {
-            _cleaningAdditionRepository = new CleaningAdditionRepository();
+            _cleaningAdditionRepository = cleaningAdditionRepository;
             _autoMapperInstance = mapper;
         }
 
@@ -55,5 +49,6 @@ namespace CleanMOQasine.Business.Services
         }
 
         //TODO: GetCleaningAdditionsByCleaningType
+
     }
 }

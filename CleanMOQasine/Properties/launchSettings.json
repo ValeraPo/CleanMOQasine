@@ -26,6 +26,32 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+
+    "Antoshka": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7129;http://localhost:5129",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CONNECTION_STRING": "Data Source=LAPTOP-7HPLQHLI\\TEW_SQLEXPRESS;Initial Catalog=CleanMOQasine;Integrated Security=True"
+      }
+
+    },
+    "Remote": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7129;http://localhost:5129",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CONNECTION_STRING": "Data Source=80.78.240.16;Initial Catalog=CleanMOQasine;User ID=student;Password=qwe!23"
+      }
+
     }
+
   }
 }

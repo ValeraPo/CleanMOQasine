@@ -8,11 +8,10 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapperInstance;
-
-        public CleaningAdditionService(IMapper automapper, ICleaningAdditionRepository cleaningAdditionRepository)
+        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
         {
             _cleaningAdditionRepository = cleaningAdditionRepository;
-            _autoMapperInstance = automapper;
+            _autoMapperInstance = mapper;
         }
 
         public CleaningAdditionModel GetCleaningAdditionById(int id)
@@ -50,5 +49,6 @@ namespace CleanMOQasine.Business.Services
         }
 
         //TODO: GetCleaningAdditionsByCleaningType
+
     }
 }

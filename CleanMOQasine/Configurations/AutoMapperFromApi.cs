@@ -14,10 +14,9 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<UserInsertInputModel, UserModel>();
             CreateMap<UserUpdateInputModel, UserModel>();
             CreateMap<UserModel, UserOutputModel>();
-        }
-    }
-}
-
             CreateMap<CleaningTypeModel, CleaningTypeOutputModel>();
             CreateMap<CleaningTypeInsertInputModel, CleaningTypeModel>();
             CreateMap<CleaningTypeUpdateInputModel, CleaningTypeModel>();
+        }
+    }
+}

@@ -33,7 +33,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users
-        [HttpGet("GetAllAdmins")]
+        [HttpGet("Admins")]
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
@@ -42,7 +42,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users
-        [HttpGet("GetAllCleaners")]
+        [HttpGet("Cleaners")]
         public ActionResult<List<UserOutputModel>> GetAllCleaners()
         {
             var userModels = _userService.GetAllCleaners();
@@ -51,7 +51,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users
-        [HttpGet("GetAllClients")]
+        [HttpGet("Clients")]
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();

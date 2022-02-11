@@ -24,7 +24,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<CleaningAdditionOutputModel> GetCleaningAdditionById(int id)
         {
             var model = _cleaningAdditionService.GetCleaningAdditionById(id);
-            var output = _autoMapper.Map<CleaningAdditionOutputModel>(model);
+            var output = _autoMapperInstance.Map<CleaningAdditionOutputModel>(model);
             return Ok(output);
         }
 
@@ -33,7 +33,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
             var models = _cleaningAdditionService.GetAllCleaningAdditions();
-            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(models);
+            var outputs = _autoMapperInstance.Map<List<CleaningAdditionOutputModel>>(models);
             return Ok(outputs);
         }
 
@@ -41,7 +41,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPost]
         public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = _autoMapper.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.AddCleaningAddition(model);
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -50,7 +50,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
-            var model = _autoMapper.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
+            var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
             _cleaningAdditionService.UpdateCleaningAddition(id, model);
             return Ok($"Cleaning type with {id} was updated");
         }

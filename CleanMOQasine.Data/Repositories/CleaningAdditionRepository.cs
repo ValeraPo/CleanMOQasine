@@ -3,11 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class CleaningAdditionRepository
+    public class CleaningAdditionRepository : ICleaningAdditionRepository
     {
         private readonly CleanMOQasineContext _context;
-        public CleaningAdditionRepository()
+        public CleaningAdditionRepository(CleanMOQasineContext context)
         {
+            _context = context;
         }
         public CleaningAddition GetCleaningAdditionById(int id)
         {

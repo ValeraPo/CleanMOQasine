@@ -8,6 +8,7 @@ namespace CleanMOQasine.Data
 
         public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options) : base(options)
         {
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

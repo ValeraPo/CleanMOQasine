@@ -4,13 +4,14 @@ using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
 {
-    public class CleaningAdditionService
+    public class CleaningAdditionService : ICleaningAdditionService
     {
-        private readonly CleaningAdditionRepository _cleaningAdditionRepository;
-        private readonly Mapper _autoMapperInstance;
-        public CleaningAdditionService()
+        private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
+        private readonly IMapper _autoMapperInstance;
+        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
         {
-            _cleaningAdditionRepository = new CleaningAdditionRepository();
+            _cleaningAdditionRepository = cleaningAdditionRepository;
+            _autoMapperInstance = mapper;
         }
 
         public CleaningAdditionModel GetCleaningAdditionById(int id)
@@ -48,5 +49,6 @@ namespace CleanMOQasine.Business.Services
         }
 
         //TODO: GetCleaningAdditionsByCleaningType
+
     }
 }

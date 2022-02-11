@@ -10,12 +10,12 @@ namespace CleanMOQasine.API.Controllers
     [ApiController]
     public class CleaningAdditionsController : ControllerBase
     {
-        private readonly CleaningAdditionService _cleaningAdditionService;
+        private readonly ICleaningAdditionService _cleaningAdditionService;
         private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionsController(IMapper mapper)
+        public CleaningAdditionsController(ICleaningAdditionService cleaningAdditionService, IMapper mapper)
         {
-            _cleaningAdditionService = new();
+            _cleaningAdditionService = cleaningAdditionService;
             _autoMapperInstance = mapper;
         }
 

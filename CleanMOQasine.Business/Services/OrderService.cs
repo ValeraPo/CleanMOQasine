@@ -35,7 +35,7 @@ namespace CleanMOQasine.Business.Services
         public void UpdateOrder(int id, OrderModel orderModel)
         {
             var order = _orderRepository.GetOrderById(id);
-            ThrowEntityException.ThrowEntityNotFound(id, order);
+            ExceptionsHelper.ThrowIfEntityNotFound(id, order);
             var entity = _mapper.Map<Order>(orderModel);
             _orderRepository.UpdateOrder(order, entity);
         }
@@ -49,32 +49,32 @@ namespace CleanMOQasine.Business.Services
         public void AddCleaner(int idOrder, int idUser)
         {
             var order = _orderRepository.GetOrderById(idOrder);
-            ThrowEntityException.ThrowEntityNotFound(idOrder, order);
+            ExceptionsHelper.ThrowIfEntityNotFound(idOrder, order);
             var cleaner = _userRepository.GetUserById(idUser);
-            ThrowEntityException.ThrowEntityNotFound(idUser, cleaner);
+            ExceptionsHelper.ThrowIfEntityNotFound(idUser, cleaner);
             _orderRepository.AddCleaner(order, cleaner);
         }
 
         public void RemoveCleaner(int idOrder, int idUser)
         {
             var order = _orderRepository.GetOrderById(idOrder);
-            ThrowEntityException.ThrowEntityNotFound(idOrder, order);
+            ExceptionsHelper.ThrowIfEntityNotFound(idOrder, order);
             var cleaner = _userRepository.GetUserById(idUser);
-            ThrowEntityException.ThrowEntityNotFound(idUser, cleaner);
+            ExceptionsHelper.ThrowIfEntityNotFound(idUser, cleaner);
             _orderRepository.RemoveCleaner(order, cleaner);
         }
 
         public void DeleteOrder(int id)
         {
             var order = _orderRepository.GetOrderById(id);
-            ThrowEntityException.ThrowEntityNotFound(id, order);
+            ExceptionsHelper.ThrowIfEntityNotFound(id, order);
             _orderRepository.DeleteOrder(order);
         }
 
         public void RestoreOrder(int id)
         {
             var order = _orderRepository.GetOrderById(id);
-            ThrowEntityException.ThrowEntityNotFound(id, order);
+            ExceptionsHelper.ThrowIfEntityNotFound(id, order);
             _orderRepository.RestoreOrder(order);
         }
     }

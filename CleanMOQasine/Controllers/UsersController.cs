@@ -33,29 +33,29 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users
-        [HttpGet("Admins")]
+        [HttpGet("admins")]
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
-            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(userModels);
+            var outputs = _autoMapper.Map<List<UserOutputModel>>(userModels);
             return Ok(outputs);
         }
 
         //api/Users
-        [HttpGet("Cleaners")]
+        [HttpGet("cleaners")]
         public ActionResult<List<UserOutputModel>> GetAllCleaners()
         {
             var userModels = _userService.GetAllCleaners();
-            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(userModels);
+            var outputs = _autoMapper.Map<List<UserOutputModel>>(userModels);
             return Ok(outputs);
         }
 
         //api/Users
-        [HttpGet("Clients")]
+        [HttpGet("clients")]
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();
-            var outputs = _autoMapper.Map<List<CleaningAdditionOutputModel>>(userModels);
+            var outputs = _autoMapper.Map<List<UserOutputModel>>(userModels);
             return Ok(outputs);
         }
 

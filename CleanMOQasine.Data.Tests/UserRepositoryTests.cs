@@ -127,8 +127,8 @@ namespace CleanMOQasine.Data.Tests
         public void UpdateUser_ShouldUpdateUserInDb()
         {
             //given
-            var userForTest = _userTestData.GetUserForTests();
-            _dbContext.Users.Add(userForTest);
+            var userToUpdate = _userTestData.GetUserForTests();
+            _dbContext.Users.Add(userToUpdate);
             _dbContext.SaveChanges();
             var userWithAnotherProperties = _userTestData.GetUpdatedUserForTests();
 
@@ -136,8 +136,12 @@ namespace CleanMOQasine.Data.Tests
             _userRepository.UpdateUser(userWithAnotherProperties);
 
             //then
-            var updatedUser = _dbContext.Users.FirstOrDefault(u => u.Id == userForTest.Id);
+            var updatedUser = _dbContext.Users.FirstOrDefault(u => u.Id == userToUpdate.Id);
             Assert.AreEqual(updatedUser, userWithAnotherProperties);
+            Assert.IsTrue(updatedUser.IsDeleted == userToUpdate.IsDeleted);
+            Assert.IsTrue(updatedUser.Email == userToUpdate.Email);
+            Assert.IsTrue(updatedUser.Password == userToUpdate.Password);
+            Assert.IsTrue(updatedUser.Role == userToUpdate.Role);
         }
     }
 }

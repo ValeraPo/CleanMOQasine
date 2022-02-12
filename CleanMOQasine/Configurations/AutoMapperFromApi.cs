@@ -3,6 +3,7 @@ using CleanMOQasine.API.Models;
 using CleanMOQasine.Business;
 using CleanMOQasine.Business.Models;
 
+
 namespace CleanMOQasine.API.Configurations
 {
     public class AutoMapperFromApi : Profile

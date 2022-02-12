@@ -6,12 +6,11 @@ namespace CleanMOQasine.Data.Repositories
     {
         void AddCleaner(Order order, User cleaner);
         void AddOrder(Order order);
-        void AddPayment(Order order, Payment payment);
-        void DeleteOrder(int id);
+        void DeleteOrder(Order order);
         IEnumerable<Order> GetAllOrders();
         Order GetOrderById(int id);
         void RemoveCleaner(Order order, User cleaner);
-        void RestoreOrder(int id);
-        void UpdateOrder(Order order);
+        void RestoreOrder(Order order);
+        void UpdateOrder(Order oldOrder, Order newOrder);
     }
 }

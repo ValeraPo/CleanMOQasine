@@ -4,6 +4,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 string _connectionStringVariableName = "CONNECTION_STRING"; 
@@ -25,6 +26,11 @@ builder.Services.AddScoped<ICleaningAdditionService, CleaningAdditionService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

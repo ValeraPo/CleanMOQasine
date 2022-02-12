@@ -94,6 +94,7 @@ namespace CleanMOQasine.Data.Tests
             //given
             var roomForTest = _roomTestData.GetRoomForTests();
             roomForTest.Id = 1;
+            var roomToUpdate = _dbContext.Rooms.FirstOrDefault(u => u.Id == roomForTest.Id);
 
             //when
             _roomRepository.UpdateRoom(roomForTest);
@@ -101,6 +102,7 @@ namespace CleanMOQasine.Data.Tests
             //then
             var updatedRoom = _dbContext.Rooms.FirstOrDefault(u => u.Id == roomForTest.Id);
             Assert.AreEqual(updatedRoom, roomForTest);
+            Assert.IsTrue(roomToUpdate.IsDeleted == updatedRoom.IsDeleted);
         }
     }
 }

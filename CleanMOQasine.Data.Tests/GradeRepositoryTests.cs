@@ -24,6 +24,8 @@ namespace CleanMOQasine.Data.Tests
                 .UseInMemoryDatabase(databaseName: "Test")
                 .Options;
             _context = new CleanMOQasineContext(opt); 
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
         }
 
         [TestCaseSource(typeof(GetGradeByIdTestCaseSource))]

@@ -24,6 +24,9 @@ builder.Services.AddScoped<ICleaningTypeService, CleaningTypeService>();
 builder.Services.AddScoped<ICleaningAdditionRepository, CleaningAdditionRepository>();
 builder.Services.AddScoped<ICleaningAdditionService, CleaningAdditionService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();

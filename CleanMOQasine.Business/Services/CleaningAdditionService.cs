@@ -8,6 +8,7 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapperInstance;
+
         public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
         {
             _cleaningAdditionRepository = cleaningAdditionRepository;

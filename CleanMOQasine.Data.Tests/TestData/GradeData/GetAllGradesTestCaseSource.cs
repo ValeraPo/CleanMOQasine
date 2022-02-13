@@ -15,7 +15,6 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             Grade grade1 = new Grade
             {
-                Id = 1,
                 IsAnonymous = false,
                 Comment = "Ok",
                 Rating = 5,
@@ -23,7 +22,6 @@ namespace CleanMOQasine.Data.Tests.TestData
             };
             Grade grade2 = new Grade
             {
-                Id = 2,
                 IsAnonymous = false,
                 Comment = "NeOk",
                 Rating = 2,
@@ -31,7 +29,6 @@ namespace CleanMOQasine.Data.Tests.TestData
             };
             Grade grade3 = new Grade
             {
-                Id = 3,
                 IsAnonymous = true,
                 Comment = "Ne",
                 Rating = 3,
@@ -39,7 +36,6 @@ namespace CleanMOQasine.Data.Tests.TestData
             };
             Grade grade4 = new Grade
             {
-                Id = 4,
                 IsAnonymous = true,
                 Comment = "Ne",
                 Rating = 6,

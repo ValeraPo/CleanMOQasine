@@ -6,11 +6,13 @@ namespace CleanMOQasine.Data.Repositories
     public class CleaningTypeRepository : ICleaningTypeRepository
     {
         private readonly CleanMOQasineContext _context;
+
         public CleaningTypeRepository(CleanMOQasineContext context)
         {
             _context = context;
         }
-        public CleaningType GetCleaningTypeById(int id)
+
+        public CleaningType? GetCleaningTypeById(int id)
         {
             return _context.CleaningTypes.Include(ca => ca.CleaningAdditions)
                            .FirstOrDefault(ct => ct.Id == id);

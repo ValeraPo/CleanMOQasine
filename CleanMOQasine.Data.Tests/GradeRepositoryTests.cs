@@ -15,7 +15,6 @@ namespace CleanMOQasine.Data.Tests
     public class GradeRepositoryTests
     {
         private CleanMOQasineContext _context;
-        private Mock<IGradeRepository> mock = new Mock<IGradeRepository>();
 
         [SetUp]
         public void Setup()
@@ -35,9 +34,11 @@ namespace CleanMOQasine.Data.Tests
             _context.Grades.Add(grade);
             _context.SaveChanges();
             var repo = new GradeRepository(_context);
+
             //when
             var actual = repo.GetGradeById(grade.Id);
             var expected = _context.Grades.FirstOrDefault(g => g.Id == grade.Id);
+
             //then
             Assert.AreEqual(expected, actual);
         }
@@ -50,9 +51,11 @@ namespace CleanMOQasine.Data.Tests
                 _context.Grades.Add(grade);
             _context.SaveChanges();
             var repo = new GradeRepository(_context);
+
             //when
             var actual = repo.GetAllGrades().ToList();
             var expected = expectedList;
+
             //then
             for (int i = 0; i < actual.Count; i++)
                 Assert.AreEqual(expected[i], actual[i]);
@@ -68,9 +71,11 @@ namespace CleanMOQasine.Data.Tests
             _context.Grades.Add(oldGrade);
             _context.SaveChanges();
             repo.UpdateGradeById(updatedGrade);
+
             //when
             var actual = _context.Grades.FirstOrDefault(g => g.Id == id);
             var expected = updatedGrade;
+
             //then
             Assert.AreEqual(expected, actual);
             actual.IsDeleted = true;
@@ -86,9 +91,11 @@ namespace CleanMOQasine.Data.Tests
             foreach (var grade in grades)
                 _context.Grades.Add(grade);
             _context.SaveChanges();
+
             //when
             repo.DeleteGradeById(idToDelete);
             List<Grade> actual = _context.Grades.Where(g => !g.IsDeleted).ToList();
+
             //then
             CollectionAssert.AreEqual(expected, actual);
         }
@@ -100,9 +107,11 @@ namespace CleanMOQasine.Data.Tests
             var repo = new GradeRepository(_context);
             _context.Orders.Add(order);
             _context.SaveChanges();
+
             //when
             repo.AddGrade(grade, order.Id);
             var actual = _context.Grades.FirstOrDefault(g => g.Id == grade.Id);
+
             //then
             Assert.AreEqual(grade, actual);
             Assert.AreEqual(order, actual.Order);

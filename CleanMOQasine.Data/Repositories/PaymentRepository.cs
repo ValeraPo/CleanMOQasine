@@ -5,8 +5,10 @@ namespace CleanMOQasine.Data.Repositories
     public class PaymentRepository
     {
         private readonly CleanMOQasineContext _context;
-        public PaymentRepository()
+
+        public PaymentRepository(CleanMOQasineContext context)
         {
+            _context = context;
         }
 
         public Payment GetPaymentById(int id)

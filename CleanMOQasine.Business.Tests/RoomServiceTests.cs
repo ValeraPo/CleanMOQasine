@@ -7,6 +7,7 @@ using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using Moq;
 using NUnit.Framework;
+using System;
 
 namespace CleanMOQasine.Business.Tests
 {
@@ -25,17 +26,45 @@ namespace CleanMOQasine.Business.Tests
         }
 
         [Test]
+        public void GetRoomById_ShouldReturnRoomWithCertainId()
+        {
+            //given
+            var room = _roomTestData.GetRoomForTests();
+            _roomRepositoryMock.Setup(x => x.GetRoomById(It.IsAny<int>())).Returns(room);
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+            var expected = _autoMapper.Map<RoomModel>(room);
+
+            //when
+            var actual = sut.GetRoomById(1);
+
+            //then
+            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(actual.Id, expected.Id);
+        }
+
+        [Test]
+        public void GetRoomById_ShouldThrowCustomException()
+        {
+            //given
+            _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns((Room)null);
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<Exception>(() => sut.GetRoomById(23));
+        }
+
+        [Test]
         public void GetAllRooms_ShouldReturnRoomsWithOrders()
         {
-            //arrange
+            //given
             var rooms = _roomTestData.GetListOfRoomsForTests();
             _roomRepositoryMock.Setup(m => m.GetRooms()).Returns(rooms);
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
-            //act
+            //when
             var actual = sut.GetAllRooms();
 
-            //assert
+            //then
             Assert.IsNotNull(actual);
             Assert.IsTrue(actual.Count > 0);
             Assert.IsNotNull(actual[0].Orders);
@@ -46,33 +75,100 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void AddRoom()
         {
-            //arrange
+            //given
             var roomModel = _roomTestData.GetRoomModelForTests();
             _roomRepositoryMock.Setup(m => m.AddRoom(It.IsAny<Room>())).Returns(23);
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
-            //act
+            //when
             sut.AddRoom(roomModel);
 
-            //assert
+            //then
             _roomRepositoryMock.Verify(m => m.AddRoom(It.IsAny<Room>()), Times.Once());
         }
 
         [Test]
         public void DeleteRoomById()
         {
-            //arrange
+            //given
             var room = new Room();
-            _roomRepositoryMock.Setup(m => m.UpdateRoom(It.IsAny<int>(), true));
             _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns(room);
+            _roomRepositoryMock.Setup(m => m.UpdateRoom(It.IsAny<int>(), true));
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
-            //act
+            //when
             sut.DeleteRoomById(23);
 
-            //assert
-            _roomRepositoryMock.Verify(m => m.UpdateRoom(It.IsAny<int>(), true), Times.Once());
+            //then
             _roomRepositoryMock.Verify(m => m.GetRoomById(It.IsAny<int>()), Times.Once());
+            _roomRepositoryMock.Verify(m => m.UpdateRoom(It.IsAny<int>(), true), Times.Once());
+        }
+
+        [Test]
+        public void DeleteRoomById_ShouldThrowCustomException()
+        {
+            //given
+            _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns((Room)null);
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<Exception>(() => sut.DeleteRoomById(23));
+        }
+
+        [Test]
+        public void UpdateRoom()
+        {
+            //given
+            var room = new Room();
+            _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns(room);
+            _roomRepositoryMock.Setup(m => m.UpdateRoom(room));
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.UpdateRoom(23, new RoomModel());
+
+            //then
+            _roomRepositoryMock.Verify(m => m.GetRoomById(It.IsAny<int>()), Times.Once());
+            _roomRepositoryMock.Verify(m => m.UpdateRoom(room), Times.Once());
+        }
+
+        [Test]
+        public void UpdateRoom_ShouldThrowCustomException()
+        {
+            //given
+            _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns((Room)null);
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<Exception>(() => sut.UpdateRoom(23, new RoomModel()));
+        }
+
+        [Test]
+        public void RestoreRoomById()
+        {
+            //given
+            var room = new Room();
+            _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns(room);
+            _roomRepositoryMock.Setup(m => m.UpdateRoom(It.IsAny<int>(), false));
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.RestoreRoomById(23);
+
+            //then
+            _roomRepositoryMock.Verify(m => m.GetRoomById(It.IsAny<int>()), Times.Once());
+            _roomRepositoryMock.Verify(m => m.UpdateRoom(room), Times.Once());
+        }
+
+        [Test]
+        public void RestoreRoomById_ShouldThrowCustomException()
+        {
+            //given
+            _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns((Room)null);
+            var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<Exception>(() => sut.RestoreRoomById(23));
         }
     }
 }

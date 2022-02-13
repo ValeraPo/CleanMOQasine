@@ -1,12 +1,11 @@
 using CleanMOQasine.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace CleanMOQasine.Data
 {
-    public class CleanMOQasineContext: DbContext
+    public class CleanMOQasineContext : DbContext
     {
+
         public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options) : base(options)
         {
         }

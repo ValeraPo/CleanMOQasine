@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Business.Configurations;
+using CleanMOQasine.Business.Exeptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
@@ -25,6 +26,8 @@ namespace CleanMOQasine.Business.Services
         public PaymentModel GetPaymentById(int id)
         {
             var payment = _paymentRepository.GetPaymentById(id);
+            if (payment is null)
+                throw new NotFoundException($"Payment with id {id} does not exist");
             return _mapper.Map<PaymentModel>(payment);
         }
 
@@ -34,11 +37,16 @@ namespace CleanMOQasine.Business.Services
             return _mapper.Map<IEnumerable<PaymentModel>>(payments);
         }
 
-        public int DeletePayment(int id)
-            => (GetPaymentById(id) is null) ? -1 : _paymentRepository.DeletePayment(id);
+        public void DeletePayment(int id)
+        {
+            GetPaymentById(id);
+            _paymentRepository.DeletePayment(id);
+
+        }
         
         public void UpdatePayment(PaymentModel payment, int id)
         {
+            GetPaymentById(id);
             var upd = _mapper.Map<Payment>(payment);
             _paymentRepository.UpdatePayment(upd, id);
         }

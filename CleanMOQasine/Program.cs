@@ -19,17 +19,18 @@ var connectionString = builder.Configuration.GetValue<string>(_connectionStringV
 builder.Services.AddDbContext<CleanMOQasineContext>(opt
     => opt.UseSqlServer(connectionString));
 
+builder.Services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper)
+                            , typeof(AutoMapperFromApi), typeof(GradeMapper)
+                            , typeof(PaymentMapper));
 builder.Services.AddScoped<ICleaningTypeRepository, CleaningTypeRepository>();
 builder.Services.AddScoped<ICleaningTypeService, CleaningTypeService>();
 builder.Services.AddScoped<ICleaningAdditionRepository, CleaningAdditionRepository>();
 builder.Services.AddScoped<ICleaningAdditionService, CleaningAdditionService>();
-builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
 
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();

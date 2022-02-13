@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -11,6 +9,7 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
+        private readonly UserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public OrderService(IOrderRepository orderRpository, IUserRepository userRepository, IMapper mapper)

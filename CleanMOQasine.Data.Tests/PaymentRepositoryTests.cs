@@ -31,8 +31,10 @@ namespace CleanMOQasine.Data.Tests
             //given
             _context.Payments.Add(payment);
             _context.SaveChanges();
+
             //when
             var actual = _paymentRepository.GetPaymentById(payment.Id);
+
             //then
             Assert.AreEqual(expected, actual);
         }
@@ -61,6 +63,37 @@ namespace CleanMOQasine.Data.Tests
             //when
             _paymentRepository.UpdatePayment(expected, expected.Id);
             var actual = _context.Payments.FirstOrDefault(p => p.Id == expected.Id);
+
+            //then
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(AddPaymentTestCaseSource), nameof(AddPaymentTestCaseSource.AddPaymentData))]
+        public void AddPayment(Payment payment, Order order)
+        {
+            //given
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            //when
+            _paymentRepository.AddPayment(payment, order.Id);
+            var actual = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
+
+            //then
+            Assert.AreEqual(payment, actual);
+            Assert.AreEqual(order, actual.Order);
+        }
+
+        [TestCaseSource(typeof(DeletePaymentTestCaseSource), nameof(DeletePaymentTestCaseSource.DeletePaymentData))]
+        public void DeletePayment(Payment payment, Payment expected)
+        {
+            //given
+            _context.Payments.Add(payment);
+            _context.SaveChanges();
+
+            //when
+            _paymentRepository.DeletePayment(payment.Id);
+            var actual = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
 
             //then
             Assert.AreEqual(expected, actual);

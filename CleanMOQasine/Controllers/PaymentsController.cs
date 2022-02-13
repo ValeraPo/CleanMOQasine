@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using CleanMOQasine.API.Models;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +22,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
             var payment = _paymentService.GetPaymentById(id);
-            if (payment is null)
-                return BadRequest();
-            else
-                return Ok((payment));
+            return Ok((payment));
         }
 
         [HttpGet]
@@ -40,13 +35,8 @@ namespace CleanMOQasine.API.Controllers
         [HttpDelete]
         public ActionResult DeletePaymentById(int id)
         {
-            if (_paymentService.GetPaymentById(id) is null)
-                return BadRequest();
-            else
-            {
-                _paymentService.DeletePayment(id);
-                return Ok();
-            }
+            _paymentService.DeletePayment(id);
+            return NoContent();
         }
 
         [HttpPost]
@@ -59,8 +49,6 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         public ActionResult UpdatePayment([FromBody] PaymentModel payment, int id)
         {
-            if (_paymentService.GetPaymentById(id) is null)
-                return BadRequest();
             _paymentService.UpdatePayment(payment, id);
             return Ok();
         }

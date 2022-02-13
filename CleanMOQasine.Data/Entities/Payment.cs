@@ -21,10 +21,5 @@
                 return false;
             return true;
         }
-
-        public override string ToString()
-        {
-            return $"{Id} {Amount} {PaymentDate} {IsDeleted}";
-        }
     }
 }

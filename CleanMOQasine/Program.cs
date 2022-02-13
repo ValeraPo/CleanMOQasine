@@ -1,4 +1,5 @@
 using CleanMOQasine.API.Configurations;
+using CleanMOQasine.API.Infrastructures;
 using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
@@ -46,6 +47,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExeptionHandler>();
 
 app.MapControllers();
 

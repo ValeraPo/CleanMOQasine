@@ -15,7 +15,7 @@ namespace CleanMOQasine.Data.Repositories
         public CleaningAddition? GetCleaningAdditionById(int id)
         {
             return _context.CleaningAdditions.Include(ca => ca.CleaningTypes)
-                           .FirstOrDefault(ca => ca.Id == id && !ca.IsDeleted);
+                           .FirstOrDefault(ca => ca.Id == id);
         }
 
         public List<CleaningAddition> GetAllCleaningAdditions()
@@ -26,18 +26,11 @@ namespace CleanMOQasine.Data.Repositories
                            .ToList();
         }
 
-        public List<CleaningAddition> GetCleaningAdditionsByCleaningType(CleaningType cleaningType)
-        {
-            return _context.CleaningAdditions.Where(ca => ca.CleaningTypes.Contains(cleaningType) && !ca.IsDeleted)
-                           .Include(ca => ca.CleaningTypes)
-                           .Include(ca => ca.Users)
-                           .ToList();
-        }
-
-        public void AddCleaningAddition(CleaningAddition cleaningAddition)
+        public int AddCleaningAddition(CleaningAddition cleaningAddition)
         {
             _context.CleaningAdditions.Add(cleaningAddition);
             _context.SaveChanges();
+            return cleaningAddition.Id;
         }
 
         public void UpdateCleaningAddition(int id, CleaningAddition updatedCleaningAddition)
@@ -62,5 +55,14 @@ namespace CleanMOQasine.Data.Repositories
             cleaningaddition.IsDeleted = false;
             _context.SaveChanges();
         }
+
+        //возможно в нём нет необходимости
+        //public List<CleaningAddition> GetCleaningAdditionsByCleaningType(CleaningType cleaningType)
+        //{
+        //    return _context.CleaningAdditions.Where(ca => ca.CleaningTypes.Contains(cleaningType) && !ca.IsDeleted)
+        //                   .Include(ca => ca.CleaningTypes)
+        //                   .Include(ca => ca.Users)
+        //                   .ToList();
+        //}
     }
 }

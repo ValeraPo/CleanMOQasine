@@ -13,7 +13,7 @@ namespace CleanMOQasine.Data.Repositories
         public CleaningAddition GetCleaningAdditionById(int id)
         {
             return _context.CleaningAdditions.Include(ca => ca.CleaningTypes)
-                           .FirstOrDefault(ca => ca.Id == id && !ca.IsDeleted);
+                           .FirstOrDefault(ca => ca.Id == id);
         }
 
         public List<CleaningAddition> GetAllCleaningAdditions()

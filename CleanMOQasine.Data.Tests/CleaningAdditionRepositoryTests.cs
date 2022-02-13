@@ -45,19 +45,20 @@ namespace CleanMOQasine.Data.Tests
             CollectionAssert.AreEqual(expected,actual);
         }
 
-        [TestCase(1)]
-        [TestCase(3)]
-        public void GetCleaningAdditionByIdTest(int id)
+        [TestCase(1, true)]
+        [TestCase(3, true)]
+        [TestCase(3, false)]
+        public void GetCleaningAdditionByIdTest(int id, bool isDeleted)
         {
             //given
-            var expected = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id && !ca.IsDeleted);
-            
+            var expected = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == id);
+            expected.IsDeleted = isDeleted;
+            _context.SaveChanges();
             //when
             var actual = _repository.GetCleaningAdditionById(id);
             
             //then
             Assert.IsNotNull(actual);
-            Assert.False(actual.IsDeleted);
             Assert.AreEqual(expected, actual);
 
         }

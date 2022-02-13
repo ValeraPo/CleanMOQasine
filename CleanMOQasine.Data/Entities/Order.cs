@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace CleanMOQasine.Data.Entities
 {
@@ -19,18 +21,24 @@ namespace CleanMOQasine.Data.Entities
         public virtual ICollection<User>? Cleaners { get; set; }
         public virtual ICollection<Payment>? Payments { get; set; }
 
+        public bool Equals(Order order)
+        {
+            return order.Client.FirstName.Equals(Client.FirstName) // TODO заменить на order.Client.Equals(Client) когда будет написано для Equals for User
+                && order.CleaningType.Name.Equals(CleaningType.Name) // TODO
+                && order.Address.Equals(Address)
+                && order.Date.Equals(Date)
+                && order.IsDeleted.Equals(IsDeleted)
+                && order.Rooms.Select(r => r.Name).SequenceEqual<string>(Rooms.Select(r => r.Name)) //TODO
+                && order.CleaningAdditions.Select(r => r.Name).SequenceEqual<string>(CleaningAdditions.Select(r => r.Name)) //TODO
+                && order.Cleaners.Select(r => r.FirstName).SequenceEqual<string>(Cleaners.Select(r => r.FirstName)) //TODO
+                && order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount)); //TODO
+        }
         public override bool Equals(object? obj)
         {
-            if (obj is null || obj is not Order)
+            if (obj is null)
                 return false;
-            Order order = (Order)obj;
-            return (Id == order.Id
-                && Client == order.Client
-                && CleaningType == order.CleaningType
-                && Grade == order.Grade
-                && Address == order.Address
-                && Date == order.Date
-                && IsDeleted == order.IsDeleted);
+            
+            return obj.GetType() == GetType() && Equals((Order)obj);
         }
     }
 }

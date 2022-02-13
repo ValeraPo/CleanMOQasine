@@ -4,7 +4,7 @@ using CleanMOQasine.Data.Entities;
 
 namespace CleanMOQasine.Business.Configurations
 {
-    public class AutoMapperToData : Profile
+    public class AutoMapperToData: Profile
     {
         public AutoMapperToData()
         {
@@ -12,6 +12,8 @@ namespace CleanMOQasine.Business.Configurations
             CreateMap<Order, OrderModel>().ReverseMap();
             CreateMap<CleaningAdditionModel, CleaningAddition>().ReverseMap();
             CreateMap<CleaningTypeModel, CleaningType>().ReverseMap();
+            CreateMap<OrderModel, Order>().ReverseMap();
+            CreateMap<OrderModel, Order>().ReverseMap();
         }
     }
 }

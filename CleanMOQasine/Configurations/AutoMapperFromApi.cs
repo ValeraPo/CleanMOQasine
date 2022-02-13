@@ -8,14 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CleanMOQasine.API.Configurations
 {
-    public class AutoMapperFromApi : Profile
+    public class AutoMapperFromApi: Profile
     {
-        public AutoMapperFromApi()
+        public AutoMapperFromApi() 
         {
             CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
             CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
+            CreateMap<CleaningTypeModel, CleaningTypeOutputModel>();
+            CreateMap<CleaningTypeInsertInputModel, CleaningTypeModel>();
+            CreateMap<CleaningTypeUpdateInputModel, CleaningTypeModel>();
         }
     }
 }

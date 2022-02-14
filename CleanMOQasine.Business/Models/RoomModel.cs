@@ -17,8 +17,7 @@
             if (roomModel.Id == Id
                 && roomModel.Name == Name
                 && roomModel.Price == Price
-                && roomModel.IsDeleted == IsDeleted
-                && roomModel.Orders == Orders)
+                && roomModel.IsDeleted == IsDeleted)
                 return false;
             return true;
         }

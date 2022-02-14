@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
@@ -60,7 +61,7 @@ namespace CleanMOQasine.Business.Services
         private void CheckRoom(Room room, int id)
         {
             if (room is null)
-                throw new Exception($"Комната с id = {id} не найдена");
+                throw new NotFoundException($"Комната с id = {id} не найдена");
         }
 
     }

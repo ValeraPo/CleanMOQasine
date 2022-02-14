@@ -4,6 +4,7 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Business.Tests.TestData;
 using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -50,7 +51,7 @@ namespace CleanMOQasine.Business.Tests
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
             //then
-            Assert.Throws<Exception>(() => sut.GetRoomById(23));
+            Assert.Throws<NotFoundException>(() => sut.GetRoomById(23));
         }
 
         [Test]
@@ -112,7 +113,7 @@ namespace CleanMOQasine.Business.Tests
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
             //then
-            Assert.Throws<Exception>(() => sut.DeleteRoomById(23));
+            Assert.Throws<NotFoundException>(() => sut.DeleteRoomById(23));
         }
 
         [Test]
@@ -140,7 +141,7 @@ namespace CleanMOQasine.Business.Tests
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
             //then
-            Assert.Throws<Exception>(() => sut.UpdateRoom(23, new RoomModel()));
+            Assert.Throws<NotFoundException>(() => sut.UpdateRoom(23, new RoomModel()));
         }
 
         [Test]
@@ -168,7 +169,7 @@ namespace CleanMOQasine.Business.Tests
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
             //then
-            Assert.Throws<Exception>(() => sut.RestoreRoomById(23));
+            Assert.Throws<NotFoundException>(() => sut.RestoreRoomById(23));
         }
     }
 }

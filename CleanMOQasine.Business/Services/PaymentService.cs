@@ -31,17 +31,16 @@ namespace CleanMOQasine.Business.Services
             return _mapper.Map<PaymentModel>(payment);
         }
 
-        public IEnumerable<PaymentModel> GetAllPayments()
+        public List<PaymentModel> GetAllPayments()
         {
             var payments = _paymentRepository.GetAllPayments();
-            return _mapper.Map<IEnumerable<PaymentModel>>(payments);
+            return _mapper.Map<List<PaymentModel>>(payments);
         }
 
         public void DeletePayment(int id)
         {
             GetPaymentById(id);
             _paymentRepository.DeletePayment(id);
-
         }
         
         public void UpdatePayment(PaymentModel payment, int id)
@@ -53,6 +52,7 @@ namespace CleanMOQasine.Business.Services
 
         public void AddPayment(PaymentModel payment, int orderId)
         {
+
             var newPayment = _mapper.Map<Payment>(payment);
             _paymentRepository.AddPayment(newPayment, orderId);
         }

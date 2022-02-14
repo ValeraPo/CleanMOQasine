@@ -92,10 +92,12 @@ namespace CleanMOQasine.Data.Tests
             _context.SaveChanges();
 
             //when
+            var paymentToCheckIsDeletedStatus = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
             _paymentRepository.DeletePayment(payment.Id);
             var actual = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
 
             //then
+            Assert.AreEqual(paymentToCheckIsDeletedStatus.IsDeleted, actual.IsDeleted);
             Assert.AreEqual(expected, actual);
         }
     }

@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Tests.TestData
 {
-    public class GetPaymentByIdTestCaseSource :IEnumerable
+    public class GetPaymentByIdTestCaseSource : IEnumerable
     {
         public IEnumerator GetEnumerator()
         {
-            Payment grade1 = new Payment
+            Payment payment1 = new Payment
             {
                 Id = 1,
                 PaymentDate = DateTime.Now,
                 Amount = 100,
                 IsDeleted = true
             };
-            yield return new object[] { grade1, null };
-            Payment grade2 = new Payment
+            yield return new object[] { payment1, null };
+            Payment payment2 = new Payment
             {
                 Id = 2,
                 PaymentDate = DateTime.Now.AddDays(-40),
                 Amount = 1000,
                 IsDeleted = false
             };
-            yield return new object[] { grade2, grade2 };
+            yield return new object[] { payment2, payment2 };
         }
     }
 }

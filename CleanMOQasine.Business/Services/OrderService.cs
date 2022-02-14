@@ -9,13 +9,16 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
-        private readonly UserRepository _userRepository;
+        //private readonly UserRepository _userRepository;
+        private readonly IPaymentRepository _paymentRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRpository, IUserRepository userRepository, IMapper mapper)
+        public OrderService(IOrderRepository orderRpository, IUserRepository userRepository
+            , IMapper mapper, IPaymentRepository paymentRepository)
         {
             _orderRepository = orderRpository;
             _userRepository = userRepository;
+            _paymentRepository = paymentRepository;
             _mapper = mapper;
         }
 

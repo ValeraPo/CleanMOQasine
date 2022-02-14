@@ -40,12 +40,12 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Amount = 999,
                 IsDeleted = true
             };
-            List<Payment> grades = new();
-            grades.Add(payment1);
-            grades.Add(payment2);
-            grades.Add(payment3);
-            grades.Add(payment4);
-            yield return new object[] { grades, new Payment { Id = 7,
+            List<Payment> payments = new();
+            payments.Add(payment1);
+            payments.Add(payment2);
+            payments.Add(payment3);
+            payments.Add(payment4);
+            yield return new object[] { payments, new Payment { Id = 7,
                                                               PaymentDate = DateTime.Now,
                                                               Amount = 90,
                                                               IsDeleted = false

@@ -16,12 +16,11 @@ namespace CleanMOQasine.Data.Repositories
         public List<Payment> GetAllPayments()
             => _context.Payments.Where(p => !p.IsDeleted).ToList();
 
-        public int DeletePayment(int id)
+        public void DeletePayment(int id)
         {
             var oldPayment = _context.Payments.FirstOrDefault(p => p.Id == id);
             oldPayment.IsDeleted = true;
             _context.SaveChanges();
-            return 1;
         }
 
         public void UpdatePayment(Payment newPayment, int id)

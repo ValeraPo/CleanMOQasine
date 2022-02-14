@@ -21,7 +21,7 @@ namespace CleanMOQasine.Data.Entities
         public virtual ICollection<User>? Cleaners { get; set; }
         public virtual ICollection<Payment>? Payments { get; set; }
 
-        public bool Equals(Order order)
+        private bool Equals(Order order)
         {
             return order.Client.FirstName.Equals(Client.FirstName)
                 && order.Client.LastName.Equals(Client.LastName)
@@ -31,9 +31,9 @@ namespace CleanMOQasine.Data.Entities
                 && order.Date.Equals(Date)
                 && order.IsDeleted.Equals(IsDeleted)
                 && order.Rooms.Select(r => r.Name).SequenceEqual<string>(Rooms.Select(r => r.Name))
-                && order.CleaningAdditions.Select(r => r.Name).SequenceEqual<string>(CleaningAdditions.Select(r => r.Name)) 
-                && order.Cleaners.Select(r => r.Login).SequenceEqual<string>(Cleaners.Select(r => r.Login))
-                && order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount));
+                && order.CleaningAdditions.Select(r => r.Name).SequenceEqual<string>(CleaningAdditions.Select(r => r.Name))
+                && order.Cleaners.Select(r => r.Login).SequenceEqual<string>(Cleaners.Select(r => r.Login));
+               //&& order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount)); //TODO добавить когда появится пэймент
         }
         public override bool Equals(object? obj)
         {

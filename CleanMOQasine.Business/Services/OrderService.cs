@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
-using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data;
+using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -23,6 +21,7 @@ namespace CleanMOQasine.Business.Services
         public OrderModel GetOrderById(int id)
         {
             var entity = _orderRepository.GetOrderById(id);
+            ExceptionsHelper.ThrowIfEntityNotFound(id, entity);
             return _mapper.Map<OrderModel>(entity);
         }
 
@@ -30,6 +29,17 @@ namespace CleanMOQasine.Business.Services
         {
             var entities = _orderRepository.GetAllOrders();
             return _mapper.Map<List<OrderModel>>(entities);
+        }
+
+        public List<OrderModel> GetOrdersByCleanerId(int idCleaner)
+        {
+            var orders = new List<OrderModel>();
+            foreach (var order in GetAllOrders())
+            {
+                if (order.Cleaners.Select(c => c.Id).Contains(idCleaner))
+                    orders.Add(order);
+            }
+            return orders;
         }
 
         public void UpdateOrder(int id, OrderModel orderModel)

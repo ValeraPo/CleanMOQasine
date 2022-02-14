@@ -6,9 +6,9 @@ namespace CleanMOQasine.Data.Repositories
     {
         private readonly CleanMOQasineContext _dbContext;
 
-        public UserRepository(CleanMOQasineContext context)
+        public UserRepository(CleanMOQasineContext dbContext)
         {
-            _dbContext = context;
+            _dbContext = dbContext;
         }
 
         public User? GetUserById(int id) => _dbContext.Users.FirstOrDefault(u => u.Id == id);
@@ -17,10 +17,11 @@ namespace CleanMOQasine.Data.Repositories
 
         public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
 
-        public void AddUser(User user)
+        public int AddUser(User user)
         {
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
+            return user.Id;
         }
 
         public void UpdateUser(User user)

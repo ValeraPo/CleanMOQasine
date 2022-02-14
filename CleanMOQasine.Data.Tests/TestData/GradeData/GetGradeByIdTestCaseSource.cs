@@ -14,7 +14,6 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             Grade grade1 = new Grade
             {
-                Id = 1,
                 IsAnonymous = false,
                 Comment = "Ok",
                 Rating = 5,
@@ -23,7 +22,6 @@ namespace CleanMOQasine.Data.Tests.TestData
             yield return new object[] { grade1};
             Grade grade2 = new Grade
             {
-                Id = 2,
                 IsAnonymous = false,
                 Comment = "NeOk",
                 Rating = 2,

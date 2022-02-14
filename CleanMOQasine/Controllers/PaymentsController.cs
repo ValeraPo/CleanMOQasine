@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,19 +10,19 @@ namespace CleanMOQasine.API.Controllers
     [Route("api/[controller]")]
     public class PaymentsController : Controller
     {
-        private readonly IPaymentService _paymentService;
+        private readonly IOrderService _orderService;
         private IMapper _mapper;
 
-        public PaymentsController(IPaymentService paymentService, IMapper mapper)
+        public PaymentsController(IOrderService paymentService, IMapper mapper)
         {
-            _paymentService = paymentService;
+            _orderService = paymentService;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
-            var payment = _paymentService.GetPaymentById(id);
+            var payment = _orderService.GetPaymentById(id);
             return Ok((payment));
         }
 
@@ -29,27 +30,21 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<List<PaymentModel>> GetAllPayments()
         {
             return Ok(_mapper
-                .Map<List<PaymentModel>>(_paymentService.GetAllPayments()));
+                .Map<List<PaymentModel>>(_orderService.GetAllPayments()));
         }
 
         [HttpDelete]
         public ActionResult DeletePaymentById(int id)
         {
-            _paymentService.DeletePayment(id);
+            _orderService.DeletePayment(id);
             return NoContent();
         }
 
-        [HttpPost]
-        public ActionResult AddPayment([FromBody] PaymentModel payment, [FromQuery]int orderId)
-        {
-            _paymentService.AddPayment(payment, orderId);
-            return StatusCode(StatusCodes.Status201Created, payment);
-        }
-
         [HttpPut("{id}")]
-        public ActionResult UpdatePayment([FromBody] PaymentModel payment, int id)
+        public ActionResult UpdatePayment([FromBody] PaymentOutputModel payment)
         {
-            _paymentService.UpdatePayment(payment, id);
+            var paymentModelToUpdate = _mapper.Map<PaymentModel>(payment);
+            _orderService.UpdatePayment(paymentModelToUpdate);
             return Ok();
         }
     }

@@ -24,20 +24,18 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void UpdatePayment(Payment newPayment, int id)
+        public void UpdatePayment(Payment newPayment)
         {
-            newPayment.Id = id;
             var oldPayment = _context.Payments.FirstOrDefault(p => p.Id == newPayment.Id);
             oldPayment.Amount = newPayment.Amount;
             oldPayment.PaymentDate = newPayment.PaymentDate;
             _context.SaveChanges();
         }
 
-        public void AddPayment(Payment newPayment, int orderId)
+        public void AddPayment(Payment newPayment, Order order)
         {
-            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
             newPayment.Order = order;
-            _context.Payments.Add(newPayment);
+            order.Payments.Add(newPayment);
             _context.SaveChanges();
         }
     }

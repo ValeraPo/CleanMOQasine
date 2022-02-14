@@ -61,7 +61,7 @@ namespace CleanMOQasine.Data.Tests
             _context.SaveChanges();
 
             //when
-            _paymentRepository.UpdatePayment(expected, expected.Id);
+            _paymentRepository.UpdatePayment(expected);
             var actual = _context.Payments.FirstOrDefault(p => p.Id == expected.Id);
 
             //then
@@ -76,7 +76,7 @@ namespace CleanMOQasine.Data.Tests
             _context.SaveChanges();
 
             //when
-            _paymentRepository.AddPayment(payment, order.Id);
+            _paymentRepository.AddPayment(payment, order);
             var actual = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
 
             //then

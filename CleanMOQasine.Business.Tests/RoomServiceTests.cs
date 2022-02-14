@@ -8,7 +8,6 @@ using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 using Moq;
 using NUnit.Framework;
-using System;
 
 namespace CleanMOQasine.Business.Tests
 {

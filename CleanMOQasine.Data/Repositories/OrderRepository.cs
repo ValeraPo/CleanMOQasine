@@ -8,10 +8,9 @@ namespace CleanMOQasine.Data.Repositories
         private readonly CleanMOQasineContext _dbContext;
         public bool _isInitialized;
 
-        public OrderRepository(CleanMOQasineContext context)
+        public OrderRepository(CleanMOQasineContext dbContext)
         {
-            _dbContext = context;
-            _isInitialized = true;
+            _dbContext = dbContext;
         }
 
         public Order GetOrderById(int id) => _dbContext.Orders.Include(o => o.Grade).FirstOrDefault(o => o.Id == id);

@@ -1,9 +1,8 @@
-﻿
-namespace CleanMOQasine.Business.Services
+﻿namespace CleanMOQasine.Business.Services
 {
     public interface ICleaningAdditionService
     {
-        void AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel);
+        int AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel);
         void DeleteCleaningAddition(int id);
         List<CleaningAdditionModel> GetAllCleaningAdditions();
         CleaningAdditionModel GetCleaningAdditionById(int id);

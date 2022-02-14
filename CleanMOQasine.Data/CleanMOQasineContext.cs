@@ -5,10 +5,7 @@ namespace CleanMOQasine.Data
 {
     public class CleanMOQasineContext : DbContext
     {
-
-        public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options) : base(options)
-        {
-        }
+        public CleanMOQasineContext(DbContextOptions<CleanMOQasineContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

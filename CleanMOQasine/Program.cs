@@ -1,4 +1,5 @@
 using CleanMOQasine.API.Configurations;
+using CleanMOQasine.API.Infrastructures;
 using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
@@ -26,6 +27,8 @@ builder.Services.AddScoped<ICleaningTypeRepository, CleaningTypeRepository>();
 builder.Services.AddScoped<ICleaningTypeService, CleaningTypeService>();
 builder.Services.AddScoped<ICleaningAdditionRepository, CleaningAdditionRepository>();
 builder.Services.AddScoped<ICleaningAdditionService, CleaningAdditionService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
@@ -46,6 +49,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExeptionHandler>();
 
 app.MapControllers();
 

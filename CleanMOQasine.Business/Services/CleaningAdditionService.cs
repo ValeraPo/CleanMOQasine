@@ -8,6 +8,7 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapperInstance;
+
         public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
         {
             _cleaningAdditionRepository = cleaningAdditionRepository;
@@ -26,10 +27,10 @@ namespace CleanMOQasine.Business.Services
             return _autoMapperInstance.Map<List<CleaningAdditionModel>>(entities);
         }
 
-        public void AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)
+        public int AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)
         {
             var entity = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);
-            _cleaningAdditionRepository.AddCleaningAddition(entity);
+            return _cleaningAdditionRepository.AddCleaningAddition(entity);
         }
 
         public void UpdateCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel)

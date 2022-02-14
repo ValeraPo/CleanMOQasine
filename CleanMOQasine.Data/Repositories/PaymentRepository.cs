@@ -5,6 +5,7 @@ namespace CleanMOQasine.Data.Repositories
     public class PaymentRepository : IPaymentRepository
     {
         private readonly CleanMOQasineContext _context;
+
         public PaymentRepository(CleanMOQasineContext context)
         {
             _context = context;

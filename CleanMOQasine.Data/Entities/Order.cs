@@ -23,15 +23,17 @@ namespace CleanMOQasine.Data.Entities
 
         public bool Equals(Order order)
         {
-            return order.Client.FirstName.Equals(Client.FirstName) // TODO заменить на order.Client.Equals(Client) когда будет написано для Equals for User
-                && order.CleaningType.Name.Equals(CleaningType.Name) // TODO
+            return order.Client.FirstName.Equals(Client.FirstName)
+                && order.Client.LastName.Equals(Client.LastName)
+                && order.Client.Login.Equals(Client.Login)
+                && order.CleaningType.Name.Equals(CleaningType.Name)
                 && order.Address.Equals(Address)
                 && order.Date.Equals(Date)
                 && order.IsDeleted.Equals(IsDeleted)
-                && order.Rooms.Select(r => r.Name).SequenceEqual<string>(Rooms.Select(r => r.Name)) //TODO
-                && order.CleaningAdditions.Select(r => r.Name).SequenceEqual<string>(CleaningAdditions.Select(r => r.Name)) //TODO
-                && order.Cleaners.Select(r => r.FirstName).SequenceEqual<string>(Cleaners.Select(r => r.FirstName)) //TODO
-                && order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount)); //TODO
+                && order.Rooms.Select(r => r.Name).SequenceEqual<string>(Rooms.Select(r => r.Name))
+                && order.CleaningAdditions.Select(r => r.Name).SequenceEqual<string>(CleaningAdditions.Select(r => r.Name)) 
+                && order.Cleaners.Select(r => r.Login).SequenceEqual<string>(Cleaners.Select(r => r.Login))
+                && order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount));
         }
         public override bool Equals(object? obj)
         {

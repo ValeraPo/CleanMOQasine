@@ -39,8 +39,8 @@ namespace CleanMOQasine.Data.Entities
                 && user.ClientOrders.Equals(ClientOrders)    
                 && user.CleanerOrders.Equals(CleanerOrders)
                 && user.CleaningAdditions.Equals(CleaningAdditions))
-                return false;
-            return true;
+                return true;
+            return false;
         }
     }
 }

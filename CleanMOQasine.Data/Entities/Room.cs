@@ -19,8 +19,8 @@
                 && room.Price.Equals(Price)
                 && room.IsDeleted.Equals(IsDeleted)
                 && room.Orders.Equals(Orders))
-                return false;
-            return true;
+                return true;
+            return false;
         }
 
     }

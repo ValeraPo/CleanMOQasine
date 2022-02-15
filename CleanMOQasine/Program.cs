@@ -1,13 +1,7 @@
-using CleanMOQasine.API.Configurations;
+using CleanMOQasine.API.Extensions;
 using CleanMOQasine.API.Infrastructures;
-using CleanMOQasine.Business.Configurations;
-using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
-using CleanMOQasine.Data.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 string _connectionStringVariableName = "CONNECTION_STRING"; 
@@ -17,39 +11,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = AuthOptions.Issuer,
-            ValidateAudience = true,
-            ValidAudience = AuthOptions.Audience,
-            ValidateLifetime = true,
-            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true
-        };
-    });
-
+builder.Services.AddCustomAuth();
 builder.Services.AddDbContext<CleanMOQasineContext>(opt
-    => opt.UseSqlServer(connectionString));
+    => opt.UseSqlServer(_connectionStringVariableName));
 
-builder.Services.AddScoped<ICleaningTypeRepository, CleaningTypeRepository>();
-builder.Services.AddScoped<ICleaningTypeService, CleaningTypeService>();
-builder.Services.AddScoped<ICleaningAdditionRepository, CleaningAdditionRepository>();
-builder.Services.AddScoped<ICleaningAdditionService, CleaningAdditionService>();
-builder.Services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-builder.Services.AddScoped<IGradeRepository, GradeRepository>();
-builder.Services.AddScoped<IGradeService, GradeService>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-
-builder.Services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
+builder.Services.RegisterCleanMOQasineServices();
+builder.Services.RegisterCleanMOQasineRepositories();
+builder.Services.RegisterCleanMOQasineAutomappers();
 
 var app = builder.Build();
 

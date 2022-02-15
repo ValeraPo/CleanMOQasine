@@ -4,6 +4,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace CleanMOQasine.API.Extensions
 {
@@ -57,6 +58,39 @@ namespace CleanMOQasine.API.Extensions
                     };
                 });
             services.AddAuthorization(); // а этой строки не было у нас, но Антон написал у себя ее значит наверное нужно
+        }
+
+        public static void RegisterSwaggerGen(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    Description = "JWT Authorization header using the Bearer scheme."
+
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                          {
+                              Reference = new OpenApiReference
+                              {
+                                  Type = ReferenceType.SecurityScheme,
+                                  Id = "Bearer"
+                              }
+                          },
+                         new string[] {}
+                    }
+                });
+            });
+
+
         }
     }
 }

@@ -32,6 +32,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/CleaningAdditions
+        [AuthorizeEnum(Role.Admin)]
         [HttpGet()]
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
@@ -42,7 +43,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
-        [AuthorizeEnum(Role.Admin)]
+        //[AuthorizeEnum(Role.Admin)]
         public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);

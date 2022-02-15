@@ -15,6 +15,6 @@ namespace CleanMOQasine.Business.Configurations
         private const string _key = "mysupersecret_secretkey!123";
 
         public static SymmetricSecurityKey GetSymmetricSecurityKey()=> 
-            new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_key));
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
     }
 }

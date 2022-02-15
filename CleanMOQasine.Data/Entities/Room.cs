@@ -17,10 +17,9 @@
             if (room.Id == Id
                 && room.Name == Name
                 && room.Price == Price
-                && room.IsDeleted == IsDeleted
-                && room.Orders == Orders)
-                return false;
-            return true;
+                && room.IsDeleted == IsDeleted)
+                return true;
+            return false;
         }
 
     }

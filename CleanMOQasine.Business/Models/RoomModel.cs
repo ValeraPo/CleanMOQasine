@@ -18,8 +18,8 @@
                 && roomModel.Name == Name
                 && roomModel.Price == Price
                 && roomModel.IsDeleted == IsDeleted)
-                return false;
-            return true;
+                return true;
+            return false;
         }
     }
 }

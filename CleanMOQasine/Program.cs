@@ -12,8 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCustomAuth();
+
+var connectionString = builder.Configuration.GetValue<string>(_connectionStringVariableName);
 builder.Services.AddDbContext<CleanMOQasineContext>(opt
-    => opt.UseSqlServer(_connectionStringVariableName));
+    => opt.UseSqlServer(connectionString));
 
 builder.Services.RegisterCleanMOQasineServices();
 builder.Services.RegisterCleanMOQasineRepositories();

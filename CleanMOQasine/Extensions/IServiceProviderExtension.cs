@@ -17,6 +17,7 @@ namespace CleanMOQasine.API.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGradeService, GradeService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         // а тут все что связано с репозиториями

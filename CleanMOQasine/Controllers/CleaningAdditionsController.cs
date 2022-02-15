@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +42,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);

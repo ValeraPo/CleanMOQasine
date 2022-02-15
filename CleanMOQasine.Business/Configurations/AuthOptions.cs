@@ -12,9 +12,9 @@ namespace CleanMOQasine.Business.Configurations
         public const string Issuer = "CleanMOQasine";
         public const string Audience = "Front";
 
-        private const string _key = "dirtyTapok228";
+        private const string _key = "mysupersecret_secretkey!123";
 
         public static SymmetricSecurityKey GetSymmetricSecurityKey()=> 
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
+            new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_key));
     }
 }

@@ -14,11 +14,10 @@
                 return false;
 
             Room room = (Room)obj;
-            if (room.Id.Equals(Id)
-                && room.Name.Equals(Name)
-                && room.Price.Equals(Price)
-                && room.IsDeleted.Equals(IsDeleted)
-                && room.Orders.Equals(Orders))
+            if (room.Id == Id
+                && room.Name == Name
+                && room.Price == Price
+                && room.IsDeleted == IsDeleted)
                 return true;
             return false;
         }

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanMOQasine.Data", "Clean
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanMOQasine.Data.Tests", "CleanMOQasine.Data.Tests\CleanMOQasine.Data.Tests.csproj", "{C9EEF17A-0C17-456B-8B0B-8C12879BCEA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanMOQasine.Business.Tests", "CleanMOQasine.Business.Tests\CleanMOQasine.Business.Tests.csproj", "{F8FF264E-BA1D-408B-BAD5-4E17E83DF85D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanMOQasine.Business.Tests", "CleanMOQasine.Business.Tests\CleanMOQasine.Business.Tests.csproj", "{FE2B476D-96BE-489B-B5A6-44AACC240541}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{C9EEF17A-0C17-456B-8B0B-8C12879BCEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9EEF17A-0C17-456B-8B0B-8C12879BCEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9EEF17A-0C17-456B-8B0B-8C12879BCEA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8FF264E-BA1D-408B-BAD5-4E17E83DF85D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8FF264E-BA1D-408B-BAD5-4E17E83DF85D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8FF264E-BA1D-408B-BAD5-4E17E83DF85D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8FF264E-BA1D-408B-BAD5-4E17E83DF85D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE2B476D-96BE-489B-B5A6-44AACC240541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE2B476D-96BE-489B-B5A6-44AACC240541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE2B476D-96BE-489B-B5A6-44AACC240541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE2B476D-96BE-489B-B5A6-44AACC240541}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

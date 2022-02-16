@@ -34,11 +34,7 @@ namespace CleanMOQasine.Data.Entities
                 && user.Login.Equals(Login)
                 && user.Password.Equals(Password)
                 && user.Rank.Equals(Rank)
-                && user.IsDeleted.Equals(IsDeleted)
-                && user.WorkingHours.Equals(WorkingHours)   
-                && user.ClientOrders.Equals(ClientOrders)    
-                && user.CleanerOrders.Equals(CleanerOrders)
-                && user.CleaningAdditions.Equals(CleaningAdditions))
+                && user.IsDeleted.Equals(IsDeleted))
                 return true;
             return false;
         }

@@ -10,41 +10,41 @@ namespace CleanMOQasine.API.Controllers
     [Route("api/[controller]")]
     public class PaymentsController : Controller
     {
-        private readonly IOrderService _orderService;
+        private readonly IPaymentService _paymentService;
         private IMapper _mapper;
 
-        public PaymentsController(IOrderService paymentService, IMapper mapper)
+        public PaymentsController(IPaymentService paymentService, IMapper mapper)
         {
-            _orderService = paymentService;
+            _paymentService = paymentService;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
-            var payment = _orderService.GetPaymentById(id);
+            var payment = _paymentService.GetPaymentById(id);
             return Ok((payment));
         }
 
         [HttpGet]
-        public ActionResult<List<PaymentModel>> GetAllPayments()
+        public ActionResult<List<PaymentInputModel>> GetAllPayments()
         {
             return Ok(_mapper
-                .Map<List<PaymentModel>>(_orderService.GetAllPayments()));
+                .Map<List<PaymentInputModel>>(_paymentService.GetAllPayments()));
         }
 
         [HttpDelete]
         public ActionResult DeletePaymentById(int id)
         {
-            _orderService.DeletePayment(id);
+            _paymentService.DeletePayment(id);
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public ActionResult UpdatePayment([FromBody] PaymentOutputModel payment)
         {
             var paymentModelToUpdate = _mapper.Map<PaymentModel>(payment);
-            _orderService.UpdatePayment(paymentModelToUpdate);
+            _paymentService.UpdatePayment(paymentModelToUpdate);
             return Ok();
         }
     }

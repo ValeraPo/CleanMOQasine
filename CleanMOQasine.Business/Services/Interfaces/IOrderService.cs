@@ -13,9 +13,5 @@ namespace CleanMOQasine.Business.Services
         void RestoreOrder(int id);
         void UpdateOrder(int id, OrderModel orderModel);
         void AddPayment(PaymentModel payment, int orderId);
-        void DeletePayment(int id);
-        List<PaymentModel> GetAllPayments();
-        PaymentModel GetPaymentById(int id);
-        void UpdatePayment(PaymentModel payment);
     }
 }

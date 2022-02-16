@@ -31,12 +31,5 @@ namespace CleanMOQasine.Data.Repositories
             oldPayment.PaymentDate = newPayment.PaymentDate;
             _context.SaveChanges();
         }
-
-        public void AddPayment(Payment newPayment, Order order)
-        {
-            newPayment.Order = order;
-            order.Payments.Add(newPayment);
-            _context.SaveChanges();
-        }
     }
 }

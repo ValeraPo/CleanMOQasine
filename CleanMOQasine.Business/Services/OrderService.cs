@@ -10,15 +10,13 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IPaymentRepository _paymentRepository;
         private readonly IMapper _mapper;
 
         public OrderService(IOrderRepository orderRpository, IUserRepository userRepository
-            , IMapper mapper, IPaymentRepository paymentRepository)
+            , IMapper mapper)
         {
             _orderRepository = orderRpository;
             _userRepository = userRepository;
-            _paymentRepository = paymentRepository;
             _mapper = mapper;
         }
 
@@ -80,40 +78,13 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
-        public PaymentModel GetPaymentById(int id)
-        {
-            var payment = _paymentRepository.GetPaymentById(id);
-            if (payment is null)
-                throw new NotFoundException($"Payment with id {id} does not exist");
-            return _mapper.Map<PaymentModel>(payment);
-        }
-
-        public List<PaymentModel> GetAllPayments()
-        {
-            var payments = _paymentRepository.GetAllPayments();
-            return _mapper.Map<List<PaymentModel>>(payments);
-        }
-
-        public void DeletePayment(int id)
-        {
-            GetPaymentById(id);
-            _paymentRepository.DeletePayment(id);
-        }
-
-        public void UpdatePayment(PaymentModel payment)
-        {
-            GetPaymentById(payment.Id);
-            var upd = _mapper.Map<Payment>(payment);
-            _paymentRepository.UpdatePayment(upd);
-        }
-
         public void AddPayment(PaymentModel payment, int orderId)
         {
             var order = _orderRepository.GetOrderById(orderId);
             if (order is null)
                 throw new NotFoundException($"Order with id {orderId} does not exist");
             var newPayment = _mapper.Map<Payment>(payment);
-            _paymentRepository.AddPayment(newPayment, order);
+            _orderRepository.AddPayment(newPayment, order);
         }
     }
 }

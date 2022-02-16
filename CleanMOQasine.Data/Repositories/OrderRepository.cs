@@ -59,6 +59,13 @@ namespace CleanMOQasine.Data.Repositories
             Save();
         }
 
+        public void AddPayment(Payment newPayment, Order order)
+        {
+            newPayment.Order = order;
+            _dbContext.Payments.Add(newPayment);
+            _dbContext.SaveChanges();
+        }
+
         private void Save() => _dbContext.SaveChanges();
     }
 }

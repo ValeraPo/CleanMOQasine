@@ -10,7 +10,6 @@ namespace CleanMOQasine.API.Extensions
 {
     public static class IServiceProviderExtension
     {
-        //Всё что связано с сервисами, лежащее в програм теперь тут
         public static void RegisterCleanMOQasineServices(this IServiceCollection services)
         {
             services.AddScoped<ICleaningTypeService, CleaningTypeService>();
@@ -21,7 +20,6 @@ namespace CleanMOQasine.API.Extensions
             services.AddScoped<IAuthService, AuthService>();
         }
 
-        // а тут все что связано с репозиториями
         public static void RegisterCleanMOQasineRepositories(this IServiceCollection services)
         {
             services.AddScoped<ICleaningTypeRepository, CleaningTypeRepository>();
@@ -30,17 +28,14 @@ namespace CleanMOQasine.API.Extensions
             services.AddScoped<IGradeRepository, GradeRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
         }
-        
-        // здесь лежат две строки с автомаперами.
-        // может и не нужно это расширение, делающее програм аж на 1 строку меньше
+         
         public static void RegisterCleanMOQasineAutomappers(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
             services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
 
         }
-
-        // сюда собственно убрала AddAuthentication
+         
         public static void AddCustomAuth(this IServiceCollection services)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -57,14 +52,13 @@ namespace CleanMOQasine.API.Extensions
                         ValidateIssuerSigningKey = true
                     };
                 });
-            services.AddAuthorization(); // а этой строки не было у нас, но Антон написал у себя ее значит наверное нужно
+            services.AddAuthorization(); 
         }
 
         public static void RegisterSwaggerGen(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
-
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
@@ -89,8 +83,6 @@ namespace CleanMOQasine.API.Extensions
                     }
                 });
             });
-
-
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class WorkingTimeRepository
+    public class WorkingTimeRepository : IWorkingTimeRepository
     {
         private readonly CleanMOQasineContext _context;
 
@@ -31,8 +31,9 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void AddWorkingTime(WorkingTime newWorkingTime)
+        public void AddWorkingTime(WorkingTime newWorkingTime, User user)
         {
+            newWorkingTime.User = user;
             _context.WorkingHours.Add(newWorkingTime);
             _context.SaveChanges();
         }

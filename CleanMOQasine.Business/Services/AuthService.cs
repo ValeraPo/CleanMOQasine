@@ -22,7 +22,7 @@ namespace CleanMOQasine.Business.Services
 
         public string Login(string login, string password)
         {
-            var user = _userRepository.Login(login, password);
+            var user = _userRepository.TryFindUserByLogin(login, password);
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.FirstName),
                                            new Claim(ClaimTypes.Surname, user.LastName),
                                            new Claim(ClaimTypes.Email, user.Email),

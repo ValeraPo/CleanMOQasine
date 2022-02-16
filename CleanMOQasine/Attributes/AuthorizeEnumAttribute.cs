@@ -8,7 +8,7 @@ namespace CleanMOQasine.API.Attributes
         public AuthorizeEnumAttribute(params object[] roles)
         {
             if (roles.Any(r => r.GetType().BaseType != typeof(Enum)))
-                throw new ArgumentException("roles");
+                throw new ArgumentException("The passed argument is not a enum.");
 
             this.Roles = string.Join(",", roles.Select(r => Enum.GetName(r.GetType(), r)));
         }

@@ -10,6 +10,6 @@ namespace CleanMOQasine.Data.Repositories
         List<User> GetUsers();
         void UpdateUser(int id, bool isDeleted);
         void UpdateUser(User user);
-        User Login(string login, string password);
+        User TryFindUserByLogin(string login, string password);
     }
 }

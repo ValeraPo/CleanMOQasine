@@ -42,7 +42,7 @@ namespace CleanMOQasine.Data.Repositories
             _dbContext.SaveChanges();
         }
 
-        public User Login(string login, string password)
+        public User TryFindUserByLogin(string login, string password)
         {
             var user = _dbContext.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
             return user;

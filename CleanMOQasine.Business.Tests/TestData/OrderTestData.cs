@@ -355,6 +355,7 @@ namespace CleanMOQasine.Business.Tests.TestData
 
             return orders;
         }
+
         public List<Order> GetListOfOrdersForGetOrdersByCleanerIdTest()
         {
             List<Order> orders = new List<Order>
@@ -450,6 +451,21 @@ namespace CleanMOQasine.Business.Tests.TestData
         };
 
             return orders;
+        }
+
+        public UserModel GetUserModelForTests()
+        {
+            return new UserModel
+            {
+                Email = "popova@mail.com",
+                FirstName = "Валентина",
+                LastName = "Попова",
+                Login = "popova",
+                Password = "popova",
+                PhoneNumber = "+7(911)567-87-90",
+                IsDeleted = false,
+                Role = Data.Enums.Role.Cleaner,
+            };
         }
 
     }

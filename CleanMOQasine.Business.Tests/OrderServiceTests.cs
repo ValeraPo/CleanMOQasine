@@ -102,7 +102,18 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void UpdateOrderTest()
         {
-            //TODO 
+            // given
+            var order = new Order();
+            _orderRepositoryMock.Setup(x => x.UpdateOrder(It.IsAny<Order>(), It.IsAny<Order>()));
+            _orderRepositoryMock.Setup(x => x.GetOrderById(It.IsAny<int>())).Returns(order);
+            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+
+            // when
+            sut.UpdateOrder(42, new OrderModel());
+
+            // then
+            _orderRepositoryMock.Verify(s => s.GetOrderById(42), Times.Once);
+            _orderRepositoryMock.Verify(s => s.UpdateOrder(order, It.IsAny<Order>()), Times.Once);
         }
 
         [Test]
@@ -119,13 +130,36 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void AddOrderTest()
         {
-            //TODO
+            // given
+            var orderModel = _orderTestData.GetOrderModelForTests();
+            _orderRepositoryMock.Setup(m => m.AddOrder(It.IsAny<Order>()));
+            var sut = new  OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.AddOrder(orderModel);
+
+            //then
+            _orderRepositoryMock.Verify(m => m.AddOrder(It.IsAny<Order>()), Times.Once());
         }
 
         [Test]
         public void AddCleanerTest()
         {
-            //TODO
+            // given
+            var order = new Order();
+            _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(order);
+            var user = new User();
+            _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(user);
+            var orderModel = _orderTestData.GetOrderModelForTests();
+            var userModel = _orderTestData.GetUserModelForTests();
+            _orderRepositoryMock.Setup(m => m.AddCleaner(It.IsAny<Order>(), It.IsAny<User>()));
+            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.AddCleaner(42, 42);
+
+            //then
+            _orderRepositoryMock.Verify(m => m.AddCleaner(It.IsAny<Order>(), It.IsAny<User>()), Times.Once());
         }
 
             [Test]
@@ -143,7 +177,19 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void RemoveCleanerTest()
         {
-            //TODO
+            // given
+            var order = new Order();
+            _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(order);
+            var user = new User();
+            _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(user);
+            _orderRepositoryMock.Setup(m => m.RemoveCleaner(It.IsAny<Order>(), It.IsAny<User>()));
+            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.RemoveCleaner(42, 42);
+
+            //then
+            _orderRepositoryMock.Verify(m => m.RemoveCleaner(It.IsAny<Order>(), It.IsAny<User>()), Times.Once());
         }
 
         [Test]
@@ -161,7 +207,18 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void RestoreOrderTest()
         {
-            //TODO
+            //given
+            var order = new Order();
+            _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(order);
+            _orderRepositoryMock.Setup(m => m.RestoreOrder(It.IsAny<Order>()));
+            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.RestoreOrder(23);
+
+            //then
+            _orderRepositoryMock.Verify(m => m.GetOrderById(It.IsAny<int>()), Times.Once());
+            _orderRepositoryMock.Verify(m => m.RestoreOrder(It.IsAny<Order>()), Times.Once());
         }
 
         [Test]
@@ -178,7 +235,18 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void DeleteOrderTest()
         {
-            //TODO
+            //given
+            var order = new Order();
+            _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(order);
+            _orderRepositoryMock.Setup(m => m.DeleteOrder(It.IsAny<Order>()));
+            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.DeleteOrder(23);
+
+            //then
+            _orderRepositoryMock.Verify(m => m.GetOrderById(It.IsAny<int>()), Times.Once());
+            _orderRepositoryMock.Verify(m => m.DeleteOrder(It.IsAny<Order>()), Times.Once());
         }
 
         [Test]

@@ -25,17 +25,18 @@ namespace CleanMOQasine.Data.Entities
             if (obj is null)
                 return false;
             User user = (User)obj;
-            if (user.Id.Equals(Id)
-                && user.FirstName.Equals(FirstName)
-                && user.LastName.Equals(LastName)
-                && user.Role.Equals(Role)
-                && user.PhoneNumber.Equals(PhoneNumber)
-                && user.Email.Equals(Email)
-                && user.Login.Equals(Login)
-                && user.Password.Equals(Password)
-                && user.Rank.Equals(Rank)
-                && user.IsDeleted.Equals(IsDeleted))
+            if (user.Id == Id
+                && user.FirstName == FirstName
+                && user.LastName == LastName
+                && user.Role == Role
+                && user.PhoneNumber == PhoneNumber
+                && user.Email == Email
+                && user.Login == Login
+                && user.Password == Password
+                && user.Rank == Rank
+                && user.IsDeleted == IsDeleted)
                 return true;
+
             return false;
         }
     }

@@ -17,5 +17,25 @@ namespace CleanMOQasine.Business.Models
         public List<CleaningAdditionModel> CleaningAdditions { get; set; }
         public List<WorkingTimeModel> WorkingHours { get; set; }
         public List<OrderModel> Orders { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is null)
+                return false;
+
+            UserModel userModel = (UserModel)obj;
+            if (userModel.Id == Id
+                && userModel.FirstName == FirstName
+                && userModel.LastName == LastName
+                && userModel.Role == Role
+                && userModel.Email == Email
+                && userModel.Login == Login
+                && userModel.Password == Password
+                && userModel.PhoneNumber == PhoneNumber
+                && userModel.IsDeleted == IsDeleted)
+                return true;
+
+            return false;
+        }
     }
 }

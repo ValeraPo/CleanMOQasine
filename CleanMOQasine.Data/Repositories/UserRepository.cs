@@ -41,11 +41,5 @@ namespace CleanMOQasine.Data.Repositories
             user.IsDeleted = isDeleted;
             _dbContext.SaveChanges();
         }
-
-        public User TryFindUserByLogin(string login, string password)
-        {
-            var user = _dbContext.Users.FirstOrDefault(u => u.Login == login && u.Password == password);
-            return user;
-        }
     }
 }

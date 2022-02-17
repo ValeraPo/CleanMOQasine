@@ -2,7 +2,7 @@
 
 namespace CleanMOQasine.Data.Repositories
 {
-    public class WorkingTimeRepository
+    public class WorkingTimeRepository : IWorkingTimeRepository
     {
         private readonly CleanMOQasineContext _context;
 
@@ -14,7 +14,7 @@ namespace CleanMOQasine.Data.Repositories
         public WorkingTime? GetWorkingTimeById(int id)
            => _context.WorkingHours.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
-        public IEnumerable<WorkingTime> GetAllWorkingTimes()
+        public List<WorkingTime> GetAllWorkingTimes()
             => _context.WorkingHours.Where(p => !p.IsDeleted).ToList();
 
         public void UpdateWorkingTime(WorkingTime workingTime)

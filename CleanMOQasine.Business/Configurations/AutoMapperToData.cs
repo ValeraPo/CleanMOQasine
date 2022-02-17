@@ -14,6 +14,7 @@ namespace CleanMOQasine.Business.Configurations
             CreateMap<CleaningTypeModel, CleaningType>().ReverseMap();
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<Room, RoomModel>().ReverseMap();
+            CreateMap<WorkingTime, WorkingTimeModel>().ReverseMap();
         }
     }
 }

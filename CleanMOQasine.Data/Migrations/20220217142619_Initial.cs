@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CleanMOQasine.Data.Migrations
 {
-    public partial class NewTablesName : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -60,10 +61,10 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Role = table.Column<int>(type: "int", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -312,8 +313,7 @@ namespace CleanMOQasine.Data.Migrations
                     { 28, new TimeSpan(0, 0, 25, 0, 0), false, "Помыть унитаз", 500m },
                     { 29, new TimeSpan(0, 0, 20, 0, 0), false, "Помыть биде", 300m },
                     { 30, new TimeSpan(0, 0, 10, 0, 0), false, "Помыть лоток", 200m },
-                    { 31, new TimeSpan(0, 0, 30, 0, 0), false, "Убрать что-то ещё", 400m },
-                    { 32, new TimeSpan(0, 1, 0, 0, 0), false, "Ебануть дробью", 0m }
+                    { 31, new TimeSpan(0, 0, 30, 0, 0), false, "Убрать что-то ещё", 400m }
                 });
 
             migrationBuilder.InsertData(

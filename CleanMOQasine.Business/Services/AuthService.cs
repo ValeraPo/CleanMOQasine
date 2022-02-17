@@ -34,7 +34,6 @@ namespace CleanMOQasine.Business.Services
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.FirstName),
                                            new Claim(ClaimTypes.Surname, user.LastName),
                                            new Claim(ClaimTypes.Email, user.Email),
-                                           new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                                            new Claim(ClaimTypes.Role, user.Role.ToString())};
 
             var jwt = new JwtSecurityToken(

@@ -13,18 +13,23 @@ namespace CleanMOQasine.Business.Tests
 {
     public class OrderServiceTests
     {
-        private readonly Mock<IOrderRepository> _orderRepositoryMock;
+        private Mock<IOrderRepository> _orderRepositoryMock;
         private readonly OrderTestData _orderTestData;
-        private readonly Mock<IUserRepository> _userRepositoryMock;
+        private Mock<IUserRepository> _userRepositoryMock;
         private readonly IMapper _autoMapper;
 
         public OrderServiceTests()
         {
-            _orderRepositoryMock = new Mock<IOrderRepository>();
-            _userRepositoryMock = new Mock<IUserRepository>();
             _orderTestData = new OrderTestData();
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _orderRepositoryMock = new Mock<IOrderRepository>();
         }
 
         [Test]
@@ -76,6 +81,7 @@ namespace CleanMOQasine.Business.Tests
             Assert.IsTrue(actual[0].Cleaners.Count > 0);
             Assert.IsInstanceOf(typeof(OrderModel), actual[0]);
         }
+        
         [Test]
         public void GetOrdersByCleanerIdTest()
         {
@@ -162,7 +168,7 @@ namespace CleanMOQasine.Business.Tests
             _orderRepositoryMock.Verify(m => m.AddCleaner(It.IsAny<Order>(), It.IsAny<User>()), Times.Once());
         }
 
-            [Test]
+        [Test]
         public void AddCleanerNegativeTest()
         {
             //given
@@ -259,11 +265,6 @@ namespace CleanMOQasine.Business.Tests
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.DeleteOrder(42));
         }
-
-
-
-
-
 
     }
 }

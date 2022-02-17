@@ -8,7 +8,7 @@ namespace CleanMOQasine.Business.Exeptions
 {
     public  class EntityNotFoundException : Exception
     {
-        public EntityNotFoundException(int id, string entityName) : base(@"{entityName} {id} cannot be found")
+        public EntityNotFoundException(int id, string entityName) : base($"{entityName} {id} cannot be found")
         {
         }
     }

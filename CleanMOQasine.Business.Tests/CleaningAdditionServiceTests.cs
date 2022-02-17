@@ -13,16 +13,21 @@ namespace CleanMOQasine.Business.Tests
 {
     public class CleaningAdditionServiceTests
     {
-        private readonly Mock<ICleaningAdditionRepository> _cleaningAdditionRepositoryMock;
+        private Mock<ICleaningAdditionRepository> _cleaningAdditionRepositoryMock;
         private readonly CleaningAdditionTestData _cleaningAdditionTestData;
         private readonly IMapper _autoMapper;
 
         public CleaningAdditionServiceTests()
         {
-            _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
             _cleaningAdditionTestData = new CleaningAdditionTestData();
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
         }
 
         [Test]
@@ -153,11 +158,22 @@ namespace CleanMOQasine.Business.Tests
             var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
 
             //when
-            sut.UpdateCleaningAddition(23, cleaningAdditionModel);
+            sut.UpdateCleaningAddition(It.IsAny<int>(), cleaningAdditionModel);
 
             //then
             _cleaningAdditionRepositoryMock.Verify(m => m.GetCleaningAdditionById(It.IsAny<int>()), Times.Once());
             _cleaningAdditionRepositoryMock.Verify(m => m.UpdateCleaningAddition(It.IsAny<int>(), cleaningAddition), Times.Once());
+        }
+
+        [Test]
+        public void UpdateCleaningAddition_ShouldThrowNotFoundException()
+        {
+            //given
+            _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns((CleaningAddition)null);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<NotFoundException>(() => sut.UpdateCleaningAddition(It.IsAny<int>(), new CleaningAdditionModel()));
         }
     }
 }

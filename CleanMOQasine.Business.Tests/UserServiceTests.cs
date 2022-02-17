@@ -14,7 +14,7 @@ namespace CleanMOQasine.Business.Tests
 {
     public class UserServiceTests
     {
-        private readonly Mock<IUserRepository> _userRepositoryMock;
+        private Mock<IUserRepository> _userRepositoryMock;
         private readonly UserTestData _userTestData;
         private readonly IMapper _autoMapper;
 
@@ -24,6 +24,12 @@ namespace CleanMOQasine.Business.Tests
             _userTestData = new UserTestData();
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _userRepositoryMock = new Mock<IUserRepository>();
         }
 
         [Test]

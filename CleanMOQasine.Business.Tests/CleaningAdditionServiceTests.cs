@@ -115,20 +115,49 @@ namespace CleanMOQasine.Business.Tests
         }
 
         [Test]
-        public void UpdateCleaningAddition()
+        public void RestoreCleaningAddition()
         {
             //given
             var cleaningAddition = new CleaningAddition();
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns(cleaningAddition);
-            _cleaningAdditionRepositoryMock.Setup(m => m.UpdateCleaningAddition(It.IsAny<int>()));
+            _cleaningAdditionRepositoryMock.Setup(m => m.RestoreCleaningAddition(It.IsAny<int>()));
             var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
 
             //when
-            sut.DeleteCleaningAddition(23);
+            sut.RestoreCleaningAddition(23);
 
             //then
             _cleaningAdditionRepositoryMock.Verify(m => m.GetCleaningAdditionById(It.IsAny<int>()), Times.Once());
-            _cleaningAdditionRepositoryMock.Verify(m => m.DeleteCleaningAddition(It.IsAny<int>()), Times.Once());
+            _cleaningAdditionRepositoryMock.Verify(m => m.RestoreCleaningAddition(It.IsAny<int>()), Times.Once());
+        }
+
+        [Test]
+        public void RestoreCleaningAddition_ShouldThrowNotFoundException()
+        {
+            //given
+            _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns((CleaningAddition)null);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<NotFoundException>(() => sut.RestoreCleaningAddition(5678));
+        }
+
+        [Test]
+        public void UpdateCleaningAddition()
+        {
+            //given
+            var cleaningAddition = new CleaningAddition();
+            var cleaningAdditionModel = new CleaningAdditionModel();
+            _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns(cleaningAddition);
+            _cleaningAdditionRepositoryMock.Setup(m => m.UpdateCleaningAddition(It.IsAny<int>(), cleaningAddition));
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.UpdateCleaningAddition(23, cleaningAdditionModel);
+
+            //then
+            _cleaningAdditionRepositoryMock.Verify(m => m.GetCleaningAdditionById(It.IsAny<int>()), Times.Once());
+            _cleaningAdditionRepositoryMock.Verify(m => m.UpdateCleaningAddition(It.IsAny<int>(), cleaningAddition), Times.Once());
         }
     }
 }

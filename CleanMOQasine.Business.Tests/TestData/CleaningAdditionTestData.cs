@@ -14,11 +14,9 @@ namespace CleanMOQasine.Business.Tests.TestData
         {
             CleaningAdditionModel cleaningAdditionModel = new CleaningAdditionModel
             {
-                Id = 1,
                 Name = "Уборка",
                 Price = 3000,
-                Duration = new TimeSpan(1, 0, 0),
-                IsDeleted = false
+                Duration = new TimeSpan(1, 0, 0)
             };
             return cleaningAdditionModel;
         }

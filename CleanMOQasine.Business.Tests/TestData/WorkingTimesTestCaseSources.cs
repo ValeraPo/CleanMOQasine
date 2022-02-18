@@ -94,11 +94,12 @@ namespace CleanMOQasine.Business.Tests.TestData
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now.AddHours(8)
             };
-            WorkingTimeModel workingTime = new()
+            WorkingTime workingTime = new()
             {
-                Day = 2,
-                StartTime = workingTimeModel.StartTime,
-                EndTime = workingTimeModel.EndTime,
+                Id = 1,
+                Day = Data.Enums.WeekDay.Monday,
+                StartTime = DateTime.Now.AddDays(-2),
+                EndTime = DateTime.Now.AddDays(-2).AddHours(3)
             };
             yield return new TestCaseData(workingTimeModel, workingTime);
         }

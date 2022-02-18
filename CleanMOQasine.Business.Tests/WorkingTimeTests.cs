@@ -45,7 +45,7 @@ namespace CleanMOQasine.Business.Tests
 
         [TestCaseSource(typeof(WorkingTimesTestCaseSources)
             , nameof(WorkingTimesTestCaseSources.GetWorkingTimeById))]
-        public void GetWorkingTimeById(WorkingTimeModel expected, WorkingTime workingTime)
+        public void GetWorkingTimeByIdTests(WorkingTimeModel expected, WorkingTime workingTime)
         {
             //given
             _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(workingTime.Id)).Returns(workingTime);
@@ -56,6 +56,45 @@ namespace CleanMOQasine.Business.Tests
 
             //then
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(WorkingTimesTestCaseSources)
+            , nameof(WorkingTimesTestCaseSources.UpdateWorkingTime))]
+        public void UpdateWorkingTimeTests(WorkingTimeModel expected, WorkingTime workingTime)
+        {
+            //given
+            _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(workingTime.Id)).Returns(workingTime);
+            _workingTimeRepositoryMock.Setup(m => m.UpdateWorkingTime(workingTime));
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+
+            //when
+            workingTimeService.UpdateWorkingTime(new WorkingTimeModel(), workingTime.Id);
+
+            //then
+            _workingTimeRepositoryMock.Verify(m => m.GetWorkingTimeById(It.IsAny<int>()), Times.Once());
+            _workingTimeRepositoryMock.Verify(m => m.UpdateWorkingTime(It.IsAny<WorkingTime>()), Times.Once());
+        }
+
+        [TestCase(1)]
+        public void DeleteWorkingTimeTests(int id)
+        {
+            //given
+            _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(id)).Returns(new WorkingTime() { Id = 1});
+            _workingTimeRepositoryMock.Setup(m => m.DeleteWorkingTime(id));
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+
+            //when
+            workingTimeService.DeleteWorkingTimeById(id);
+
+            //then
+            _workingTimeRepositoryMock.Verify(m => m.GetWorkingTimeById(It.IsAny<int>()), Times.Once());
+            _workingTimeRepositoryMock.Verify(m => m.DeleteWorkingTime(It.IsAny<int>()), Times.Once());
+        }
+
+        [Test]
+        public void AddWorkingTime()
+        {
+
         }
     }
 }

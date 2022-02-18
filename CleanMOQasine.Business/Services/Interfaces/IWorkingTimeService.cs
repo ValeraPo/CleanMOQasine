@@ -7,5 +7,6 @@ namespace CleanMOQasine.Business.Services
         List<WorkingTimeModel> GetAllWorkingTimes();
         WorkingTimeModel GetWorkingTimeById(int id);
         void UpdateWorkingTime(WorkingTimeModel workingTimeModel, int id);
+        void DeleteWorkingTimeById(int id);
     }
 }

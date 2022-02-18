@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 using System;
 using System.Collections.Generic;
@@ -35,9 +36,24 @@ namespace CleanMOQasine.Business.Services
 
         public void UpdateWorkingTime(WorkingTimeModel workingTimeModel, int id)
         {
+            if (_repository.GetWorkingTimeById(id) is null)
+                throw new NotFoundException($"Working time with id {id} does not exists");
             var workingTime = _mapper.Map<WorkingTime>(workingTimeModel);
             workingTime.Id = id;
             _repository.UpdateWorkingTime(workingTime);
+        }
+
+        public void DeleteWorkingTimeById(int id)
+        {
+            if (_repository.GetWorkingTimeById(id) is null)
+                throw new NotFoundException($"Working time with id {id} does not exists");
+            _repository.DeleteWorkingTime(id);
+        }
+
+        public void AddWorkingTime(WorkingTimeModel workingTimeModel)
+        {
+            //TODO перекинуть в юзера, скорее всего
+            _repository.AddWorkingTime();
         }
 
     }

@@ -9,10 +9,10 @@ namespace CleanMOQasine.Business.Tests.TestData
     {
         public CleaningTypeModel GetCleaningTypeModelForTests()
         {
-            CleaningTypeModel room = new CleaningTypeModel
+            CleaningTypeModel сleaningType = new CleaningTypeModel
             {
                 Id = 1,
-                Name = "Убрать трупы",
+                Name = "После резни",
                 Price = 1000,
                 CleaningAdditions = new List<CleaningAdditionModel>
                 {
@@ -24,20 +24,20 @@ namespace CleanMOQasine.Business.Tests.TestData
                     },
                     new CleaningAdditionModel
                     {
-                        Name = "Помыть ножи",
-                        Price = 300,
-                        Duration = new TimeSpan(0,10,1)
+                        Name = "Убрать свидетеля",
+                        Price = 1000000,
+                        Duration = new TimeSpan(1,10,1)
                     },
                     new CleaningAdditionModel
                     {
-                        Name = "Упаковать нарезку в пакеты)))",
+                        Name = "Упаковать нарезку в пакеты",
                         Price = 10000,
                         Duration = new TimeSpan(1,0,0)
                     },
                 }
             };
 
-            return room;
+            return сleaningType;
         }
 
         public CleaningType GetCleaningTypeForTests()
@@ -45,7 +45,7 @@ namespace CleanMOQasine.Business.Tests.TestData
             CleaningType cleaningType = new CleaningType
             {
                 Id = 1,
-                Name = "Убрать трупы",
+                Name = "После резни",
                 Price = 1000,
                 IsDeleted = false,
                 CleaningAdditions = new List<CleaningAddition>
@@ -58,13 +58,13 @@ namespace CleanMOQasine.Business.Tests.TestData
                     },
                     new CleaningAddition
                     {
-                        Name = "Помыть ножи",
-                        Price = 300,
-                        Duration = new TimeSpan(0,10,1)
+                        Name = "Убрать свидетеля",
+                        Price = 1000000,
+                        Duration = new TimeSpan(1,10,1)
                     },
                     new CleaningAddition
                     {
-                        Name = "Упаковать нарезку в пакеты)))",
+                        Name = "Упаковать нарезку в пакеты",
                         Price = 10000,
                         Duration = new TimeSpan(1,0,0)
                     },
@@ -84,6 +84,12 @@ namespace CleanMOQasine.Business.Tests.TestData
                     Price = 1000,
                     IsDeleted = false,
                 },
+                new CleaningType
+                {
+                    Name = "Грязная",
+                    Price = 1000,
+                    IsDeleted = false,
+                },
                 new CleaningType 
                 {
                     Name = "Вечная",
@@ -93,6 +99,16 @@ namespace CleanMOQasine.Business.Tests.TestData
             };
 
             return rooms;
+        }
+
+        public CleaningAddition GetCleaningAdditionForTest()
+        {
+            return new CleaningAddition
+            {
+                Name = "Вылизать унитаз",
+                Price= 1000,
+                Duration = new TimeSpan(0,20,0)
+            };
         }
     }
 }

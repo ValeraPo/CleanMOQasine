@@ -67,14 +67,40 @@ namespace CleanMOQasine.Business.Tests.TestData
             yield return new TestCaseData(workingTimeModels, workingTimes);
         }
 
-        //public IEnumerable<TestCaseData> GetWorkingTimeById()
-        //{
-        //    yield return new TestCaseData(null);
-        //}
-        //public DateTime StartTime { get; set; }
-        //public DateTime EndTime { get; set; }
-        //public int Day { get; set; }
+        public static IEnumerable<TestCaseData> GetWorkingTimeById()
+        {
+            WorkingTimeModel workingTimeModel = new()
+            {
+                Day = 1,
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddHours(8)
+            };
+            WorkingTime workingTime = new()
+            {
+                Id = 1,
+                Day = Data.Enums.WeekDay.Monday,
+                StartTime = workingTimeModel.StartTime,
+                EndTime = workingTimeModel.EndTime,
+                IsDeleted = false
+            };
+            yield return new TestCaseData(workingTimeModel, workingTime);
+        }
 
-
+        public static IEnumerable<TestCaseData> UpdateWorkingTime()
+        {
+            WorkingTimeModel workingTimeModel = new()
+            {
+                Day = 1,
+                StartTime = DateTime.Now,
+                EndTime = DateTime.Now.AddHours(8)
+            };
+            WorkingTimeModel workingTime = new()
+            {
+                Day = 2,
+                StartTime = workingTimeModel.StartTime,
+                EndTime = workingTimeModel.EndTime,
+            };
+            yield return new TestCaseData(workingTimeModel, workingTime);
+        }
     }
 }

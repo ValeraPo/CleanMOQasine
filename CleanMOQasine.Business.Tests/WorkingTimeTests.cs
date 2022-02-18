@@ -32,11 +32,30 @@ namespace CleanMOQasine.Business.Tests
             , nameof(WorkingTimesTestCaseSources.GetAllWorkingTimes))]
         public void GetAllWorkingTimesTests(List<WorkingTimeModel> expected, List<WorkingTime> workingTimes)
         {
+            //given
             _workingTimeRepositoryMock.Setup(m => m.GetAllWorkingTimes()).Returns(workingTimes);
             var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+            
+            //when
             var actual = workingTimeService.GetAllWorkingTimes();
 
+            //then
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestCaseSource(typeof(WorkingTimesTestCaseSources)
+            , nameof(WorkingTimesTestCaseSources.GetWorkingTimeById))]
+        public void GetWorkingTimeById(WorkingTimeModel expected, WorkingTime workingTime)
+        {
+            //given
+            _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(workingTime.Id)).Returns(workingTime);
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+
+            //when
+            var actual = workingTimeService.GetWorkingTimeById(workingTime.Id);
+
+            //then
+            Assert.AreEqual(expected, actual);
         }
     }
 }

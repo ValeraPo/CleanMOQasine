@@ -21,11 +21,11 @@ namespace CleanMOQasine.API.Infrastructures
             }
             catch (TypeMismatchException error)
             {
-                ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
+                await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
             }
             catch (AuthenticationException error)
             {
-                ConstructResponse(context, (HttpStatusCode)401, error.Message);
+                await ConstructResponse(context, HttpStatusCode.Unauthorized, error.Message);
             }
             catch (Exception error)
             {

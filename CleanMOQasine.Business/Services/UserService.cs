@@ -26,16 +26,6 @@ namespace CleanMOQasine.Business.Services
             return _autoMapper.Map<UserModel>(user);
         }
 
-        public UserModel GetUserByLogin(string login)
-        {
-            var user = _userRepository.GetUserByLogin(login);
-
-            if (user is null)
-                throw new NotFoundException($"Пользователь с логином '{login}' не найден");
-
-            return _autoMapper.Map<UserModel>(user);
-        }
-
         public void UpdateUser(int id, UserModel userModel)
         {
             var user = _userRepository.GetUserById(id);

@@ -1,16 +1,10 @@
 ﻿using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Security;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -29,13 +23,10 @@ namespace CleanMOQasine.Business.Services
             if (user is null || !PasswordHash.ValidatePassword(password, user.Password))
                 throw new AuthenticationException("Неверный логин или пароль.");
 
-
-
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.FirstName),
                                            new Claim(ClaimTypes.Surname, user.LastName),
                                            new Claim(ClaimTypes.Email, user.Email),
                                            new Claim(ClaimTypes.Role, user.Role.ToString())};
-
             var jwt = new JwtSecurityToken(
                 issuer: AuthOptions.Issuer,
                 audience: AuthOptions.Audience,

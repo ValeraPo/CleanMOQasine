@@ -33,7 +33,6 @@ namespace CleanMOQasine.API.Extensions
         {
             services.AddAutoMapper(typeof(AutoMapperFromApi), typeof(AutoMapperToData));
             services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
-
         }
          
         public static void AddCustomAuth(this IServiceCollection services)

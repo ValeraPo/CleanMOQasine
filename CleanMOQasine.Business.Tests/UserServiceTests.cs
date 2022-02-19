@@ -157,36 +157,6 @@ namespace CleanMOQasine.Business.Tests
             _userRepositoryMock.Verify(m => m.AddUser(It.IsAny<User>()), Times.Once());
         }
 
-
-        [Test]
-        public void GetUserByLogin_ShouldReturnUserWithCertainLogin()
-        {
-            //given
-            var user = _userTestData.GetUserForTests();
-            _userRepositoryMock.Setup(m => m.GetUserByLogin(It.IsAny<string>())).Returns(user);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object);
-            var expected = _autoMapper.Map<UserModel>(user);
-
-            //when
-            var actual = sut.GetUserByLogin(user.Login);
-
-            //then
-            _userRepositoryMock.Verify(m => m.GetUserByLogin(It.IsAny<string>()), Times.Once());
-            Assert.AreEqual(expected, actual);
-            Assert.AreEqual(expected.Login, actual.Login);
-        }
-
-        [Test]
-        public void GetUserByLogin_ShouldThrowCustomException()
-        {
-            //given
-            _userRepositoryMock.Setup(m => m.GetUserByLogin(It.IsAny<string>())).Returns((User)null);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object);
-
-            //then
-            Assert.Throws<NotFoundException>(() => sut.GetUserByLogin("Jopa"));
-        }
-
         [Test]
         public void UpdateUser()
         {

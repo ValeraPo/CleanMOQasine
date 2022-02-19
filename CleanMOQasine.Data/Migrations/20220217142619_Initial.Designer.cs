@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanMOQasine.Data.Migrations
 {
     [DbContext(typeof(CleanMOQasineContext))]
-    [Migration("20220206123248_NewTablesName")]
-    partial class NewTablesName
+    [Migration("20220217142619_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -342,14 +342,6 @@ namespace CleanMOQasine.Data.Migrations
                             IsDeleted = false,
                             Name = "Убрать что-то ещё",
                             Price = 400m
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Duration = new TimeSpan(0, 1, 0, 0, 0),
-                            IsDeleted = false,
-                            Name = "Ебануть дробью",
-                            Price = 0m
                         });
                 });
 
@@ -571,14 +563,12 @@ namespace CleanMOQasine.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
@@ -590,7 +580,6 @@ namespace CleanMOQasine.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("Rank")
@@ -751,7 +740,7 @@ namespace CleanMOQasine.Data.Migrations
             modelBuilder.Entity("CleanMOQasine.Data.Entities.WorkingTime", b =>
                 {
                     b.HasOne("CleanMOQasine.Data.Entities.User", "User")
-                        .WithMany("WorkingTime")
+                        .WithMany("WorkingHours")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -804,7 +793,7 @@ namespace CleanMOQasine.Data.Migrations
                 {
                     b.Navigation("ClientOrders");
 
-                    b.Navigation("WorkingTime");
+                    b.Navigation("WorkingHours");
                 });
 #pragma warning restore 612, 618
         }

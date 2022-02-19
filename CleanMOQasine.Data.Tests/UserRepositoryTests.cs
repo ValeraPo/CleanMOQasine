@@ -73,12 +73,7 @@ namespace CleanMOQasine.Data.Tests
         public void GetUsers_ShoudReturnUsersFormDb()
         {
             //given
-            var usersForTest = _userTestData.GetListOfUsersForTests();
-
-            foreach (var user in usersForTest)
-            {
-                _dbContext.Users.Add(user);
-            }
+            _dbContext.Users.AddRange(_userTestData.GetListOfUsersForTests());
             _dbContext.SaveChanges();
 
             //when
@@ -99,10 +94,12 @@ namespace CleanMOQasine.Data.Tests
 
             //when
             var addedUserId = _userRepository.AddUser(userForTest);
+            var expected = _userTestData.GetUserForTests();
+            expected.Id = addedUserId;
 
             //then
             var addedUser = _dbContext.Users.FirstOrDefault(u => u.Id == addedUserId);
-            Assert.AreEqual(userForTest, addedUser);
+            Assert.AreEqual(expected, addedUser);
         }
 
         [Test]

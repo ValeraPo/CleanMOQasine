@@ -78,7 +78,7 @@ namespace CleanMOQasine.Business.Services
         private void CheckUser(User user, int id)
         {
             if (user is null)
-                throw new Exception($"Пользователь с id = {id} не найден");
+                throw new NotFoundException($"Пользователь с id = {id} не найден");
         }
     }
 }

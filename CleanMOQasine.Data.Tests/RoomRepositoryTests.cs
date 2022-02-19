@@ -68,10 +68,12 @@ namespace CleanMOQasine.Data.Tests
 
             //when
             var addedRoomId = _roomRepository.AddRoom(roomForTest);
+            var expected = _roomTestData.GetRoomForTests();
+            expected.Id = addedRoomId;
 
             //then
-            var addedRoom = _dbContext.Rooms.FirstOrDefault(u => u.Id == addedRoomId);
-            Assert.AreEqual(roomForTest, addedRoom);
+            var actual = _dbContext.Rooms.FirstOrDefault(u => u.Id == addedRoomId);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

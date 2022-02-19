@@ -68,22 +68,6 @@ namespace CleanMOQasine.Data.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        //[TestCaseSource(typeof(AddPaymentTestCaseSource), nameof(AddPaymentTestCaseSource.AddPaymentData))]
-        //public void AddPayment(Payment payment, Order order)
-        //{
-        //    //given
-        //    _context.Orders.Add(order);
-        //    _context.SaveChanges();
-
-        //    //when
-        //    _paymentRepository.AddPayment(payment, order);
-        //    var actual = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
-
-        //    //then
-        //    Assert.AreEqual(payment, actual);
-        //    Assert.AreEqual(order, actual.Order);
-        //}
-
         [TestCaseSource(typeof(DeletePaymentTestCaseSource), nameof(DeletePaymentTestCaseSource.DeletePaymentData))]
         public void DeletePayment(Payment payment, Payment expected)
         {

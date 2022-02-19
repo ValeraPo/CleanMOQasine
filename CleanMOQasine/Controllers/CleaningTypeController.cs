@@ -6,11 +6,15 @@ using CleanMOQasine.Business.Services;
 using AutoMapper;
 using CleanMOQasine.API.Configurations;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Data.Enums;
+using CleanMOQasine.API.Attributes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CleanMOQasine.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeEnum(Role.Admin)]
     public class CleaningTypeController : ControllerBase
     {
         private readonly ICleaningTypeService _cleaningTypeService;
@@ -23,6 +27,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<CleaningTypeOutputModel> GetCleaningTypeById(int id)
         {
             var model = _cleaningTypeService.GetCleaningTypeById(id);
@@ -31,6 +36,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<List<CleaningTypeOutputModel>> GetAllCleaningTypes()
         {
             var models = _cleaningTypeService.GetAllCleaningTypes();

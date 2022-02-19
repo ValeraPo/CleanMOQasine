@@ -26,10 +26,10 @@ namespace CleanMOQasine.Business.Services
         public string Login(string login, string password)
         {
             var user = _userRepository.GetUserByLogin(login);
-            if (user is null)
-                throw new NotFoundException($"Пользователь с логином '{login}' не найден");
-            if (!PasswordHash.ValidatePassword(password, user.Password))
-                throw new InvalidPasswordException("Пароль неверный");
+            if (user is null || !PasswordHash.ValidatePassword(password, user.Password))
+                throw new AuthenticationException("Неверный логин или пароль.");
+
+
 
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.FirstName),
                                            new Claim(ClaimTypes.Surname, user.LastName),

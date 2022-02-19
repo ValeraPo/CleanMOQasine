@@ -1,4 +1,4 @@
-﻿namespace CleanMOQasine.API.Exceptions
+﻿namespace CleanMOQasine.Business.Exceptions
 {
     public class TypeMismatchException: Exception
     {

@@ -1,4 +1,4 @@
-﻿using CleanMOQasine.API.Exceptions;
+﻿using CleanMOQasine.Business.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CleanMOQasine.API.Attributes

@@ -11,6 +11,7 @@ namespace CleanMOQasine.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeEnum(Role.Admin)]
     public class CleaningAdditionsController : ControllerBase
     {
         private readonly ICleaningAdditionService _cleaningAdditionService;
@@ -24,6 +25,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions/228
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<CleaningAdditionOutputModel> GetCleaningAdditionById(int id)
         {
             var model = _cleaningAdditionService.GetCleaningAdditionById(id);
@@ -33,7 +35,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpGet()]
-        [AuthorizeEnum(Role.Client)]
+        [AllowAnonymous]
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
             var models = _cleaningAdditionService.GetAllCleaningAdditions();
@@ -43,7 +45,6 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
-        [AuthorizeEnum(Role.Admin)]
         public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);

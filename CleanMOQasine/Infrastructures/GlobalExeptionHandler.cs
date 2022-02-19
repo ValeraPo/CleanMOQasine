@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using CleanMOQasine.Business.Exceptions;
+using System.Net;
 using System.Text.Json;
 
 namespace CleanMOQasine.API.Infrastructures
@@ -18,9 +19,17 @@ namespace CleanMOQasine.API.Infrastructures
             {
                 await _next(context);
             }
-            catch (Exception error)
+            catch (TypeMismatchException error)
             {
                 ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
+            }
+            catch (AuthenticationException error)
+            {
+                ConstructResponse(context, (HttpStatusCode)401, error.Message);
+            }
+            catch (Exception error)
+            {
+                await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
             }
         }
 

@@ -61,7 +61,7 @@ namespace CleanMOQasine.Data.Tests
         }
 
         [TestCaseSource(typeof(WorkingHoursTestCaseSources)
-            , nameof(WorkingHoursTestCaseSources.GetWorkingTimeById))]
+            , nameof(WorkingHoursTestCaseSources.UpdateWorkingHours))]
         public void UpdateWorkingTimeByIdTests(WorkingTime workingHours
             , WorkingTime expected)
         {
@@ -71,10 +71,11 @@ namespace CleanMOQasine.Data.Tests
 
             //when
             _repo.UpdateWorkingTime(expected);
-            var actual = _context.WorkingHours.FirstOrDefault(w => w.Id == workingHours.Id); 
+            var actual = _context.WorkingHours.FirstOrDefault(w => w.Id == workingHours.Id);
 
             //then
             Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.IsDeleted, actual.IsDeleted);
         }
 
         [TestCaseSource(typeof(WorkingHoursTestCaseSources)

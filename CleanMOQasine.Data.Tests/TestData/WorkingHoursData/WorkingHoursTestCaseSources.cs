@@ -77,7 +77,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Id = 1,
                 Day = Enums.WeekDay.Friday,
                 EndTime = DateTime.Now.AddHours(8),
-                IsDeleted = false
+                IsDeleted = true
             };
             yield return new TestCaseData(workingTimeMock, updatedWorkingTimeMock);
             WorkingTime workingTimeMock1 = new()
@@ -85,14 +85,14 @@ namespace CleanMOQasine.Data.Tests.TestData
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
                 EndTime = DateTime.Now.AddHours(2),
-                IsDeleted = true
+                IsDeleted = false
             };
             WorkingTime updatedWorkingTimeMock1 = new()
             {
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
                 EndTime = DateTime.Now.AddHours(1),
-                IsDeleted = false
+                IsDeleted = true
             };
             yield return new TestCaseData(workingTimeMock1, updatedWorkingTimeMock1);
         }

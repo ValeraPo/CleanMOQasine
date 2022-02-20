@@ -11,5 +11,6 @@ namespace CleanMOQasine.Data.Repositories
         CleaningType GetCleaningTypeById(int id);
         void RestoreCleaningType(int id);
         bool UpdateCleaningType(int id, CleaningType updatedCleaningType);
+        void DeleteCleaningAdditionFromCleaningType(int cleaningTypeId, int cleaningAdditionId);
     }
 }

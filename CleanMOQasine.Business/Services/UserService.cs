@@ -3,8 +3,8 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Security;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Enums;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {

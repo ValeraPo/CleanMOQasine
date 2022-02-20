@@ -4,8 +4,8 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Business.Tests.TestData;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Business.Exceptions;
 using Moq;
 using NUnit.Framework;
 
@@ -220,6 +220,50 @@ namespace CleanMOQasine.Business.Tests
 
             //then
             Assert.Throws<NotFoundException>(() => sut.RestoreCleaningType(It.IsAny<int>()));
+        }
+
+        [Test]
+        public void DeleteCleaningAdditionFromCleaningType()
+        {
+            //given
+            var cleaningType = _cleaningTypeTestData.GetCleaningTypeForTests();
+            _cleaningTypeRepositoryMock.Setup(x => x.GetCleaningTypeById(It.IsAny<int>())).Returns(cleaningType);
+            _cleaningTypeRepositoryMock.Setup(x => x.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), 2));
+            var sut = new CleaningTypeService(_cleaningTypeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object, _autoMapper);
+
+            //when
+            sut.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), 2);
+
+            //then
+            _cleaningTypeRepositoryMock.Verify(m => m.GetCleaningTypeById(It.IsAny<int>()), Times.Once());
+            _cleaningTypeRepositoryMock.Verify(m => m.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), 2), Times.Once());
+        }
+
+        [Test]
+        public void DeleteCleaningAdditionFromCleaningType_ShouldThrowNotFoundCleaningTypeException()
+        {
+            //given
+            _cleaningTypeRepositoryMock.Setup(x => x.GetCleaningTypeById(It.IsAny<int>())).Returns((CleaningType)null);
+            var sut = new CleaningTypeService(_cleaningTypeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<NotFoundException>(() => sut.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), It.IsAny<int>()));
+            _cleaningTypeRepositoryMock.Verify(m => m.GetCleaningTypeById(It.IsAny<int>()), Times.Once());
+            _cleaningTypeRepositoryMock.Verify(m => m.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+        }
+
+        [Test]
+        public void DeleteCleaningAdditionFromCleaningType_ShouldThrowNotFoundCleaningAdditionException()
+        {
+            //given
+            var cleaningType = _cleaningTypeTestData.GetCleaningTypeForTests();
+            _cleaningTypeRepositoryMock.Setup(x => x.GetCleaningTypeById(It.IsAny<int>())).Returns(cleaningType);
+            var sut = new CleaningTypeService(_cleaningTypeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object, _autoMapper);
+
+            //then
+            Assert.Throws<NotFoundException>(() => sut.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), 10));
+            _cleaningTypeRepositoryMock.Verify(m => m.GetCleaningTypeById(It.IsAny<int>()), Times.Once());
+            _cleaningTypeRepositoryMock.Verify(m => m.DeleteCleaningAdditionFromCleaningType(It.IsAny<int>(), 10), Times.Never());
         }
     }
 }

@@ -4,8 +4,8 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Business.Tests.TestData;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Business.Exceptions;
 using Moq;
 using NUnit.Framework;
 

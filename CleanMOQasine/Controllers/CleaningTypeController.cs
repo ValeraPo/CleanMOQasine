@@ -52,10 +52,10 @@ namespace CleanMOQasine.API.Controllers
             return StatusCode(StatusCodes.Status201Created, cleaningTypeInsertInputModel);
         }
 
-        [HttpPut("{cleaningTypeId}/cleaning-additions")]
-        public ActionResult AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)
+        [HttpPut("{id}/cleaning-additions")]
+        public ActionResult AddCleaningAdditionToCleaningType(int id, int cleaningAdditionId)
         { 
-            _cleaningTypeService.AddCleaningAdditionToCleaningType(cleaningTypeId, cleaningAdditionId);
+            _cleaningTypeService.AddCleaningAdditionToCleaningType(id, cleaningAdditionId);
             return Ok();
 
         }
@@ -80,6 +80,13 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult RestoreCleaningType(int id)
         {
             _cleaningTypeService.RestoreCleaningType(id);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}/cleaning-additions")]
+        public ActionResult DeleteCleaningAdditionFromCleaningType(int id, int cleaningAdditionId)
+        {
+            _cleaningTypeService.DeleteCleaningAdditionFromCleaningType(id, cleaningAdditionId);
             return NoContent();
         }
     }

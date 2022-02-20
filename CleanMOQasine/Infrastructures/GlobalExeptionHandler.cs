@@ -27,6 +27,10 @@ namespace CleanMOQasine.API.Infrastructures
             {
                 await ConstructResponse(context, HttpStatusCode.Unauthorized, error.Message);
             }
+            catch (NotFoundException error)
+            {
+                await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
+            }
             catch (Exception error)
             {
                 await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);

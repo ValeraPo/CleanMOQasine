@@ -14,6 +14,7 @@ namespace CleanMOQasine.Data.Tests
         private CleanMOQasineContext _context;
         private Mock<ICleaningTypeRepository> mock = new Mock<ICleaningTypeRepository>();
         private ICleaningTypeRepository _repository;
+        private CleaningTypeTestData _testData;
 
         [SetUp]
         public void Setup()
@@ -25,6 +26,7 @@ namespace CleanMOQasine.Data.Tests
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
             _repository = new CleaningTypeRepository(_context);
+            _testData = new CleaningTypeTestData();
         }
 
         [TestCaseSource(typeof(GetCleaningTypeByIdTestCaseSource))]
@@ -46,7 +48,7 @@ namespace CleanMOQasine.Data.Tests
         public void GetAllCleaningTypesTest()
         {
             //given
-            var expected = GetEntitiesForGetAllCleaningTypesTest();
+            var expected = _testData.GetCleaningTypesForTest();
 
             //when
             var actual = _repository.GetAllCleaningTypes();
@@ -133,16 +135,24 @@ namespace CleanMOQasine.Data.Tests
             Assert.True(cleaningType.CleaningAdditions.Contains(cleaningAddition));
         }
 
-        public List<CleaningType> GetEntitiesForGetAllCleaningTypesTest()
+        [Test]
+        public void DeleteCleaningAdditionFromCleaningTypeTest()
         {
-            List<CleaningType> cleaningTypesSeed = new();
+            //given
+            var cleaningType = _testData.GetCleaningTypeForTest();
+            var cleaningAddition = cleaningType.CleaningAdditions.FirstOrDefault(ca => ca.Id == 104);
+            int oldListLength = cleaningType.CleaningAdditions.Count();
+            _context.CleaningTypes.Add(cleaningType);
+            _context.SaveChanges();
 
-            cleaningTypesSeed.Add(new CleaningType() { Id = 1, Name = "Поддерживающая", Price = 3000, IsDeleted = false });
-            cleaningTypesSeed.Add(new CleaningType() { Id = 2, Name = "Генеральная", Price = 6000, IsDeleted = false });
-            cleaningTypesSeed.Add(new CleaningType() { Id = 3, Name = "После ремонта", Price = 8000, IsDeleted = false });
-            cleaningTypesSeed.Add(new CleaningType() { Id = 4, Name = "Мытье окон", Price = 2000, IsDeleted = false });
+            //when
+            _repository.DeleteCleaningAdditionFromCleaningType(666, 104);
 
-            return cleaningTypesSeed;
+            //then
+            Assert.False(cleaningType.CleaningAdditions.Contains(cleaningAddition));
+            Assert.True(oldListLength - cleaningType.CleaningAdditions.Count() == 1);
         }
+
+        
     }
 }

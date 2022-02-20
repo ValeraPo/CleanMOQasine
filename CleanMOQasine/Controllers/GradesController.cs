@@ -15,8 +15,10 @@ namespace CleanMOQasine.API.Controllers
     {
         private readonly IGradeService _gradeService;
         private readonly IMapper _mapper;
-        public GradesController(IGradeService gradeService, IMapper mapper)
+        private readonly IUserService _userService;
+        public GradesController(IGradeService gradeService, IMapper mapper, IUserService userService)
         {
+            _userService = userService;
             _gradeService = gradeService;
             _mapper = mapper;
         }
@@ -53,13 +55,23 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery] int orderId)
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
+            int userId = 0;
+            bool isExist = false;
             if (identity != null)
             {
                 List<Claim> claims = identity.Claims.ToList();
-                var idUser = int.Parse(claims.Where(i =>
+                userId = int.Parse(claims.Where(i =>
                 i.Type == ClaimTypes.UserData).Select(c =>
                 c.Value).SingleOrDefault());
             }
+            var user = _userService.GetUserById(userId);
+            foreach(var order in user.Orders)
+            {
+                if (order.Id == orderId)
+                    isExist = true;
+            }
+            if (!isExist)
+                return StatusCode(StatusCodes.Status400BadRequest, grade);
             var model = _mapper.Map<GradeModel>(grade);
             _gradeService.AddGrade(model, orderId);
             return StatusCode(StatusCodes.Status201Created, grade);

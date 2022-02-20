@@ -92,7 +92,7 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
-        //его можно разделить на несколько... и эксепшены поредачить
+        //его можно разделить на несколько... и эксепшены поредачить (Т_Т)
         private List<UserModel> SearchCleaners(OrderModel orderModel)
         {
             TimeOnly timeStart = TimeOnly.FromDateTime(orderModel.Date);
@@ -100,15 +100,20 @@ namespace CleanMOQasine.Business.Services
             string day = orderModel.Date.DayOfWeek.ToString();
 
             var entities = _userRepository.GetCleaners(); //получение уборщиков
+            if (entities.Count() == 0)
+                throw new NotFoundException("Уборщиков нет (Т_Т)");
+
             var models = _mapper.Map<List<UserModel>>(entities); //маппинг в модели
 
-            //объединение списков из дополнений к уборке
+            //объединение списков из дополнений к уборке (здесь как будто должно лежать в сервисе CleaningAdditions, например метод GetCleaningAdditionsByOrder
+            //в котором ещё исключать одинаковые дополнения к уборке в CleaningAdditions заказа и CleaningType.CleaningAdditions заказа)
             var cleaningAdditions = orderModel.CleaningAdditions.Concat(orderModel.CleaningType.CleaningAdditions);
 
-            //поиск по способностям -> если величина списка пересечения способностей с дополнениями совпадает с дополнениями к заказу         
+            //поиск по способностям -> если величина списка пересечения способностей с дополнениями совпадает с дополнениями к заказу
+            //тут может в уборщиках искать по списку CleaningAdditions в другом методе
             var cleaners = models.Where(cl => cl.CleaningAdditions.Intersect(cleaningAdditions).Count() == cleaningAdditions.Count());
             if (cleaners.Count() == 0)
-                throw new NotFoundException("Никто так не может");
+                throw new NotFoundException("Никто так не может (Т_Т)"); //тут хз как это разрешить
 
             //хотя бы один рабочий день совпадает с датой и временем заказа
             var freeCleaners = cleaners.Where(cl => cl.WorkingHours.Any(wh => wh.Day.ToString() == day
@@ -122,6 +127,8 @@ namespace CleanMOQasine.Business.Services
 
             if (freeCleaners.Count() == 0)
                 throw new NotFoundException("Все клинеры в это время заняты");
+                //здесь как ты сказал кидать ближайшую свободную дату, только вот это сообщение тоже
+                //в виде эксепшена?
 
             return freeCleaners.ToList();
         }

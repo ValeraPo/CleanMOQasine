@@ -10,6 +10,6 @@ namespace CleanMOQasine.Business.Services
         List<CleaningTypeModel> GetAllCleaningTypes();
         CleaningTypeModel GetCleaningTypeById(int id);
         void RestoreCleaningType(int id);
-        bool UpdateCleaningType(int id, CleaningTypeModel updatedCleaningTypeModel);
+        void UpdateCleaningType(int id, CleaningTypeModel updatedCleaningTypeModel);
     }
 }

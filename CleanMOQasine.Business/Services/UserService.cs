@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
+using CleanMOQasine.Business.Security;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Enums;
+using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
@@ -22,16 +23,6 @@ namespace CleanMOQasine.Business.Services
         {
             var user = _userRepository.GetUserById(id);
             CheckUser(user, id);
-            return _autoMapper.Map<UserModel>(user);
-        }
-
-        public UserModel GetUserByLogin(string login)
-        {
-            var user = _userRepository.GetUserByLogin(login);
-
-            if (user is null)
-                throw new Exception($"Пользователь с логином '{login}' не найден");
-
             return _autoMapper.Map<UserModel>(user);
         }
 
@@ -61,9 +52,12 @@ namespace CleanMOQasine.Business.Services
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
         }
 
+        // Для клиента
         public void AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
+            mappedUser.Password = PasswordHash.HashPassword(mappedUser.Password);
+            mappedUser.Role = Role.Client;
             _userRepository.AddUser(mappedUser);
         }
 
@@ -84,7 +78,7 @@ namespace CleanMOQasine.Business.Services
         private void CheckUser(User user, int id)
         {
             if (user is null)
-                throw new Exception($"Пользователь с id = {id} не найден");
+                throw new NotFoundException($"Пользователь с id = {id} не найден");
         }
     }
 }

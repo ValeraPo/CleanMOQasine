@@ -13,16 +13,21 @@ namespace CleanMOQasine.Business.Tests
 {
     public class RoomServiceTests
     {
-        private readonly Mock<IRoomRepository> _roomRepositoryMock;
+        private Mock<IRoomRepository> _roomRepositoryMock;
         private readonly RoomTestData _roomTestData;
         private readonly IMapper _autoMapper;
 
         public RoomServiceTests()
         {
-            _roomRepositoryMock = new Mock<IRoomRepository>();
             _roomTestData = new RoomTestData();
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _roomRepositoryMock = new Mock<IRoomRepository>();
         }
 
         [Test]
@@ -149,7 +154,6 @@ namespace CleanMOQasine.Business.Tests
             //given
             var room = new Room();
             _roomRepositoryMock.Setup(m => m.GetRoomById(It.IsAny<int>())).Returns(room);
-            _roomRepositoryMock.Setup(m => m.UpdateRoom(It.IsAny<int>(), false));
             var sut = new RoomService(_roomRepositoryMock.Object, _autoMapper);
 
             //when
@@ -157,7 +161,7 @@ namespace CleanMOQasine.Business.Tests
 
             //then
             _roomRepositoryMock.Verify(m => m.GetRoomById(It.IsAny<int>()), Times.Once());
-            _roomRepositoryMock.Verify(m => m.UpdateRoom(room), Times.Once());
+            _roomRepositoryMock.Verify(m => m.UpdateRoom(It.IsAny<int>(), false), Times.Once());
         }
 
         [Test]

@@ -32,7 +32,7 @@ namespace CleanMOQasine.Business.Models
                     _totalDuration += c;
                 foreach (var c in CleaningAdditions.Select(c => c.Duration))
                     _totalDuration += c;
-                _totalDuration *= Rooms.Count;
+                //_totalDuration *= Rooms.Count;
                 return _totalDuration;
             }
             set { }

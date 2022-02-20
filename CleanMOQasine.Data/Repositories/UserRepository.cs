@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -43,6 +44,14 @@ namespace CleanMOQasine.Data.Repositories
             var user = GetUserById(id);
             user.IsDeleted = isDeleted;
             _dbContext.SaveChanges();
+        }
+
+        public List<User> GetCleaners()
+        {
+            return _dbContext.Users.Include(u => u.CleanerOrders)
+                                   .Include(u => u.CleaningAdditions)
+                                   .Include(u=>u.WorkingHours)
+                                   .Where(u=>u.Role == Enums.Role.Cleaner).ToList();
         }
     }
 }

@@ -92,29 +92,39 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
-        public List <UserModel> SearchCleaners(OrderModel orderModel)
+        private List<UserModel> SearchCleaners(OrderModel orderModel)
         {
-            var conditions = new List<Func<User, bool>>()
-            {
-                // Выбираем только клинеров
-                new Func<User, bool>(u => u.Role == Data.Enums.Role.Cleaner),
-                // Выбираем тех кто работает в это время
-                new Func<User, bool>(u => u.WorkingHours
-                .Where(h => (int)h.Day % 7 == (int)orderModel.Date.DayOfWeek)
-                .ToList()
-                .TrueForAll(h => h.StartTime <= orderModel.Date
-                    && h.EndTime >= orderModel.Date + orderModel.TotalDuration)),
-                // Выбираем тех кто не занят в это время
-                new Func<User, bool>(u => u.CleanerOrders
-                .Select(o => o.Date)
-                .ToList()
-                .TrueForAll(o => o != orderModel.Date))
-            };
-            var cleaners = _userRepository.GetUsersByConditions(conditions);
-            if (cleaners.Count == 0)
+            TimeOnly timeStart = TimeOnly.FromDateTime(orderModel.Date);
+            TimeOnly timeEnd = TimeOnly.FromDateTime(orderModel.Date + orderModel.TotalDuration);
+            string day = orderModel.Date.DayOfWeek.ToString();
+
+            var entities = _userRepository.GetCleaners(); //получение уборщиков
+            var models = _mapper.Map<List<UserModel>>(entities); //маппинг в модели
+
+            //объединение списков из дополнений к уборке
+            var cleaningAdditions = orderModel.CleaningAdditions.Concat(orderModel.CleaningType.CleaningAdditions);
+
+            //поиск по способностям -> если величина списка пересечения способностей с дополнениями совпадает с дополнениями к заказу         
+            var cleaners = models.Where(cl => cl.CleaningAdditions.Intersect(cleaningAdditions).Count() == cleaningAdditions.Count());
+            if (cleaners.Count() == 0)
+                throw new NotFoundException("Никто так не может");
+
+                                                    //хотя бы один рабочий день совпадает с датой и временем заказа
+            var freeCleaners = cleaners.Where(cl => cl.WorkingHours.Any(wh => wh.Day.ToString() == day
+                                                                         && wh.StartTime <= timeStart
+                                                                         && wh.EndTime >= timeEnd)
+
+                                                   //и нет ли других заказов на это время с учётом длитильности
+                                               && cl.Orders.ToList().TrueForAll(o => o.Date + o.TotalDuration < orderModel.Date
+                                                                                  || o.Date > orderModel.Date + orderModel.TotalDuration))
+                                     .ToList();
+
+            if (freeCleaners.Count == 0)
                 throw new NotFoundException("Все клинеры в это время заняты");
 
-            return _mapper.Map<List<UserModel>>(cleaners);
+            return freeCleaners.ToList();
         }
+
+
     }
 }

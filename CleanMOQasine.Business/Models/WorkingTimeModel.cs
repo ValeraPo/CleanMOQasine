@@ -1,9 +1,11 @@
-﻿namespace CleanMOQasine.Business.Models
+﻿using CleanMOQasine.Data.Enums;
+
+namespace CleanMOQasine.Business.Models
 {
     public class WorkingTimeModel
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int Day { get; set; }
+        public TimeOnly StartTime { get; set; }
+        public TimeOnly EndTime { get; set; }
+        public WeekDay Day { get; set; }
     }
 }

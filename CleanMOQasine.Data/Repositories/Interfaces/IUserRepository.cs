@@ -12,5 +12,6 @@ namespace CleanMOQasine.Data.Repositories
         void UpdateUser(User user);
         List<User> GetUsersByConditions(List<Func<User, bool>> conditions);
 
+        List<User> GetCleaners();
     }
 }

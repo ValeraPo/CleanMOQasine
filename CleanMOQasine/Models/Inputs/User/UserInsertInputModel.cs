@@ -18,6 +18,10 @@ namespace CleanMOQasine.API.Models
         [Required(ErrorMessage = "Введите фамилию.")]
         public string LastName { get; set; }
 
+        [Required(ErrorMessage = "Выберите роль пользователя.")]
+        [RegularExpression(@"^[1-3]$", ErrorMessage = "Выберите роль пользователя.")]
+        public int Role { get; set; }
+
         [Required(ErrorMessage = "Поле пароля нельзя оставлять пустым.")]
         [MinLength(9, ErrorMessage = "Ваш пароль недостаточно надежный.")]
         [MaxLength(30, ErrorMessage = "Максимальная длина пароля 30 символов.")]

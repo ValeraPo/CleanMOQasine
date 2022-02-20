@@ -14,15 +14,11 @@ namespace CleanMOQasine.API.Controllers
     public class CleaningTypeController : ControllerBase
     {
         private readonly ICleaningTypeService _cleaningTypeService;
-        private readonly ICleaningAdditionService _cleaningAdditionService;
         private readonly IMapper _autoMapperInstance;
 
-        public CleaningTypeController(ICleaningTypeService cleaningTypeService, 
-            ICleaningAdditionService cleaningAdditionService,
-            IMapper mapper)
+        public CleaningTypeController(ICleaningTypeService cleaningTypeService, IMapper mapper)
         {
             _cleaningTypeService = cleaningTypeService;
-            _cleaningAdditionService = cleaningAdditionService;
             _autoMapperInstance = mapper;
         }
 

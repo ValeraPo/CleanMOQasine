@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
@@ -18,6 +19,7 @@ namespace CleanMOQasine.Business.Services
         public CleaningAdditionModel GetCleaningAdditionById(int id)
         {
             var entity = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+            CheckCleaningAddition(entity);
             return _autoMapperInstance.Map<CleaningAdditionModel>(entity);
         }
 
@@ -35,21 +37,31 @@ namespace CleanMOQasine.Business.Services
 
         public void UpdateCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel)
         {
-            var entity = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);
-            _cleaningAdditionRepository.UpdateCleaningAddition(id, entity);
+            var entity = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+            CheckCleaningAddition(entity);
+            var entityUpdate = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);
+            _cleaningAdditionRepository.UpdateCleaningAddition(id, entityUpdate);
         }
 
         public void DeleteCleaningAddition(int id)
         {
+            var entity = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+            CheckCleaningAddition(entity);
             _cleaningAdditionRepository.DeleteCleaningAddition(id);
         }
 
         public void RestoreCleaningAddition(int id)
         {
+            var entity = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+            CheckCleaningAddition(entity);
             _cleaningAdditionRepository.RestoreCleaningAddition(id);
         }
 
-        //TODO: GetCleaningAdditionsByCleaningType
+        private void CheckCleaningAddition(CleaningAddition cleaningAddition)
+        {
+            if (cleaningAddition is null)
+                throw new NotFoundException($"CleaningAddition not found");
+        }
 
     }
 }

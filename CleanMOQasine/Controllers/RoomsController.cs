@@ -4,6 +4,7 @@ using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -23,7 +24,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms/23
         [HttpGet("{id}")]
-        [AuthorizeEnum(Role.Admin, Role.Cleaner, Role.Client)]
+        [Authorize]
         public ActionResult<RoomOutputModel> GetRoomById(int id)
         {
             var roomModel = _roomService.GetRoomById(id);
@@ -37,7 +38,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms
         [HttpGet()]
-        [AuthorizeEnum(Role.Admin, Role.Cleaner, Role.Client)]
+        [Authorize]
         public ActionResult<List<RoomOutputModel>> GetAllRooms()
         {
             var roomModels = _roomService.GetAllRooms();

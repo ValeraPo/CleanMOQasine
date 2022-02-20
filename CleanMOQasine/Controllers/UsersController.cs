@@ -4,6 +4,7 @@ using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -23,7 +24,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpGet("{id}")]
-        [AuthorizeEnum(Role.Admin, Role.Cleaner, Role.Client)]
+        [Authorize]
         public ActionResult<UserOutputModel> GetUserById(int id)
         {
             var userModel = _userService.GetUserById(id);
@@ -66,7 +67,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpPut("{id}")]
-        [AuthorizeEnum(Role.Admin, Role.Cleaner, Role.Client)]
+        [Authorize]
         public ActionResult UpdateUser(int id, [FromBody] UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);

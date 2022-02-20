@@ -17,6 +17,9 @@ namespace CleanMOQasine.Data.Repositories
 
         public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
 
+        public List<User> GetUsersByConditions(List<Func<User, bool>> conditions) => 
+            _dbContext.Users.Where(u => conditions.TrueForAll(condition => condition(u))).ToList();
+
         public int AddUser(User user)
         {
             _dbContext.Users.Add(user);

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 
 namespace CleanMOQasine.Business.Services
@@ -53,9 +52,15 @@ namespace CleanMOQasine.Business.Services
 
         public void AddOrder(OrderModel orderModel)
         {
-            //Выбираем наименее загруженного клинера
-            var cleaner = SearchCleaners(orderModel).MinBy(c => c.Orders.Count());
-            orderModel.Cleaners.Add(cleaner);
+            var cleaners = SearchCleaners(orderModel);
+            // Определяем количество клинеров
+            for (int i = 0; i <= (int)(orderModel.TotalDuration / TimeSpan.FromHours(4)); i++)
+            {
+                //Выбираем наименее загруженного клинера
+                var cleaner = cleaners.MinBy(c => c.Orders.Count());
+                orderModel.Cleaners.Add(cleaner);
+            }
+            
             var entity = _mapper.Map<Order>(orderModel);
             _orderRepository.AddOrder(entity);
         }
@@ -92,29 +97,29 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
-        public List <UserModel> SearchCleaners(OrderModel orderModel)
+        public List<UserModel> SearchCleaners(OrderModel orderModel)
         {
-            var conditions = new List<Func<User, bool>>()
-            {
-                // Выбираем только клинеров
-                new Func<User, bool>(u => u.Role == Data.Enums.Role.Cleaner),
-                // Выбираем тех кто работает в это время
-                new Func<User, bool>(u => u.WorkingHours
-                .Where(h => (int)h.Day % 7 == (int)orderModel.Date.DayOfWeek)
-                .ToList()
-                .TrueForAll(h => h.StartTime <= orderModel.Date
-                    && h.EndTime >= orderModel.Date + orderModel.TotalDuration)),
-                // Выбираем тех кто не занят в это время
-                new Func<User, bool>(u => u.CleanerOrders
-                .Select(o => o.Date)
-                .ToList()
-                .TrueForAll(o => o != orderModel.Date))
-            };
-            var cleaners = _userRepository.GetUsersByConditions(conditions);
-            if (cleaners.Count == 0)
-                throw new NotFoundException("Все клинеры в это время заняты");
+            var cleaningAdditionModels = new List<CleaningAdditionModel>();
+            cleaningAdditionModels.AddRange(orderModel.CleaningType.CleaningAdditions);
+            if (orderModel.CleaningType != null)
+                cleaningAdditionModels.AddRange(orderModel.CleaningAdditions);
+            var cleaningAdditions = _mapper.Map<List<CleaningAddition>>(cleaningAdditionModels);
 
+            var cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
+            // Смотрим даты на меся вперед
+            int count = 0;
+            while (cleaners.Count == 0 || count >= 30)
+            {
+                orderModel.Date.AddDays(1);
+                cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
+                count++;
+            }
+            //Если в желаемый день не нашли клинеров говорим что можем сдвинуть заказ на несколько дней
+            if (count > 0)
+            { //выводим сообщение пользователю
+            }
             return _mapper.Map<List<UserModel>>(cleaners);
         }
+
     }
 }

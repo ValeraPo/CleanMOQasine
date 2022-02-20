@@ -17,9 +17,6 @@ namespace CleanMOQasine.Data.Repositories
 
         public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
 
-        public List<User> GetUsersByConditions(List<Func<User, bool>> conditions) => 
-            _dbContext.Users.Where(u => conditions.TrueForAll(condition => condition(u))).ToList();
-
         public int AddUser(User user)
         {
             _dbContext.Users.Add(user);
@@ -44,5 +41,35 @@ namespace CleanMOQasine.Data.Repositories
             user.IsDeleted = isDeleted;
             _dbContext.SaveChanges();
         }
+
+        public List<User> GetCleaners(List<CleaningAddition> cleaningAdditions, DateTime orderDate, TimeSpan duration)
+        {
+            var conditions = new List<Func<User, bool>>()
+            {
+                // Выбираем неудаленных
+                new Func<User, bool>(u => !u.IsDeleted),
+                // Выбираем только клинеров
+                new Func<User, bool>(u => u.Role == Data.Enums.Role.Cleaner),
+                // Выбираем тех кто работает в это время
+                new Func<User, bool>(u => u.WorkingHours
+                .Where(h => (int)h.Day % 7 == (int)orderDate.DayOfWeek)
+                .ToList()
+                .TrueForAll(h => h.StartTime <= orderDate
+                    && h.EndTime >= orderDate + duration)),
+                // Выбираем тех кто не занят в это время
+                new Func<User, bool>(u => u.CleanerOrders
+                .Select(o => o.Date)
+                .ToList()
+                .TrueForAll(o => o != orderDate)),
+                //поиск по способностям
+                new Func<User, bool>(u => cleaningAdditions.TrueForAll(c => u.CleaningAdditions.Contains(c)))
+
+            };
+            return GetUsersByConditions(conditions);
+        }
+
+        private List<User> GetUsersByConditions(List<Func<User, bool>> conditions) =>
+           _dbContext.Users.ToList().Where(u => conditions.TrueForAll(condition => condition(u))).ToList();
+
     }
 }

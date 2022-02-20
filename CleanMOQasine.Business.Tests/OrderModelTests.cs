@@ -18,12 +18,14 @@ namespace CleanMOQasine.Business.Tests
         }
 
 
-        [Test]
-        public void IsCompletedTest()
+        [TestCase(1, false)]
+        [TestCase(2, true)]
+        [TestCase(3, false)]
+        public void IsCompletedTest(int orderNumber, bool isCompleted)
         {
             //given
-            var order = _orderTestData.GetOrderModelForTests();
-            var expected = true;
+            var order = _orderTestData.MockInputOrderModel(orderNumber);
+            var expected = isCompleted;
 
             //when
             var actual = order.IsCompleted;
@@ -32,12 +34,14 @@ namespace CleanMOQasine.Business.Tests
             Assert.AreEqual(actual, expected);
         }
 
-        [Test]
-        public void TotalDurationTest()
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void TotalDurationTest(int orderNumber)
         {
             //given
-            var order = _orderTestData.GetOrderModelForTests();
-            var expected = new TimeSpan(1, 16, 25, 0);
+            var order = _orderTestData.MockInputOrderModel(orderNumber);
+            var expected = _orderTestData.MockOutpuTotalDuration(orderNumber);
 
             //when
             var actual = order.TotalDuration;
@@ -46,12 +50,14 @@ namespace CleanMOQasine.Business.Tests
             Assert.AreEqual(actual, expected);
         }
 
-        [Test]
-        public void TotalPriceTest()
+        [TestCase(1, 0)]
+        [TestCase(2, 2705)]
+        [TestCase(3, 1712.6165233)]
+        public void TotalPriceTest(int orderNumber, decimal price)
         {
             //given
-            var order = _orderTestData.GetOrderModelForTests();
-            var expected = 2705;
+            var order = _orderTestData.MockInputOrderModel(orderNumber);
+            var expected = price;
 
             //when
             var actual = order.TotalPrice;

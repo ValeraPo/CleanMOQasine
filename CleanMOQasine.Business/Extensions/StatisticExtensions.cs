@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Extensions
 {
-    public  static class IStatisticExtensions
+    public  static class StatisticExtensions
     {
 		public static TimeSpan Sum(this IEnumerable<TimeSpan> timeSpans)
 		{

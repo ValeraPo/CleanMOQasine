@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {

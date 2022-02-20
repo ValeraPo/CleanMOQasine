@@ -1,4 +1,4 @@
-﻿namespace CleanMOQasine.Data.Exceptions
+﻿namespace CleanMOQasine.Business.Exceptions
 {
     public class NotFoundException : Exception
     {

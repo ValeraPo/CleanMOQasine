@@ -40,6 +40,5 @@ namespace CleanMOQasine.Data.Repositories
             _context.Grades.Add(grade);
             _context.SaveChanges();
         }
-
     }
 }

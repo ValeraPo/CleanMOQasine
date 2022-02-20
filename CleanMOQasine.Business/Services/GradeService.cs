@@ -9,11 +9,13 @@ namespace CleanMOQasine.Business.Services
     public class GradeService : IGradeService
     {
         private readonly IGradeRepository _gradeRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        public GradeService(IGradeRepository gradeRpository, IMapper mapper)
+        public GradeService(IGradeRepository gradeRpository, IMapper mapper, IOrderRepository orderRepository)
         {
             _gradeRepository = gradeRpository;
             _mapper = mapper;
+            _orderRepository = orderRepository;
         }
 
         public GradeModel GetGradeById(int id)

@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -38,6 +41,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpDelete]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult DeleteGradeById(int id)
         {
             _gradeService.DeleteGradeById(id);
@@ -45,9 +49,17 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPost]
+        [AuthorizeEnum(Role.Client)]
         public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery] int orderId)
         {
-
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                List<Claim> claims = identity.Claims.ToList();
+                var idUser = int.Parse(claims.Where(i =>
+                i.Type == ClaimTypes.UserData).Select(c =>
+                c.Value).SingleOrDefault());
+            }
             var model = _mapper.Map<GradeModel>(grade);
             _gradeService.AddGrade(model, orderId);
             return StatusCode(StatusCodes.Status201Created, grade);

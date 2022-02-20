@@ -92,6 +92,7 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
+        //его можно разделить на несколько... и эксепшены поредачить
         private List<UserModel> SearchCleaners(OrderModel orderModel)
         {
             TimeOnly timeStart = TimeOnly.FromDateTime(orderModel.Date);
@@ -109,17 +110,17 @@ namespace CleanMOQasine.Business.Services
             if (cleaners.Count() == 0)
                 throw new NotFoundException("Никто так не может");
 
-                                                    //хотя бы один рабочий день совпадает с датой и временем заказа
+            //хотя бы один рабочий день совпадает с датой и временем заказа
             var freeCleaners = cleaners.Where(cl => cl.WorkingHours.Any(wh => wh.Day.ToString() == day
                                                                          && wh.StartTime <= timeStart
                                                                          && wh.EndTime >= timeEnd)
 
-                                                   //и нет ли других заказов на это время с учётом длитильности
+                                               //и нет ли других заказов на это время с учётом длитильности
                                                && cl.Orders.ToList().TrueForAll(o => o.Date + o.TotalDuration < orderModel.Date
-                                                                                  || o.Date > orderModel.Date + orderModel.TotalDuration))
-                                     .ToList();
+                                                                                  || o.Date > orderModel.Date + orderModel.TotalDuration));
+                                     
 
-            if (freeCleaners.Count == 0)
+            if (freeCleaners.Count() == 0)
                 throw new NotFoundException("Все клинеры в это время заняты");
 
             return freeCleaners.ToList();

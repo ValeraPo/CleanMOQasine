@@ -1,10 +1,11 @@
 ﻿
+using CleanMOQasine.Business.Extensions;
+using System.Linq;
+
 namespace CleanMOQasine.Business.Models
 {
     public class OrderModel
     {
-        private decimal _totalPrice;
-        private TimeSpan _totalDuration;
         private bool _isCompleted;
 
         public int Id { get; set; }
@@ -14,27 +15,19 @@ namespace CleanMOQasine.Business.Models
         public string Address { get; set; }
         public decimal TotalPrice 
         {
-            get
-            {
-                _totalPrice = (CleaningType.CleaningAdditions.Select(c => c.Price).Sum()
+            get => (CleaningType.CleaningAdditions.Select(c => c.Price).Sum()
                 + CleaningAdditions.Select(c => c.Price).Sum()) * Rooms.Count
                 + Rooms.Select(r => r.Price).Sum();
-                return _totalPrice;
-            }
+            
             set { } 
         }
 
         public TimeSpan TotalDuration
         {
-            get
-            {
-                foreach (var c in CleaningType.CleaningAdditions.Select(c => c.Duration))
-                    _totalDuration += c;
-                foreach (var c in CleaningAdditions.Select(c => c.Duration))
-                    _totalDuration += c;
-                _totalDuration *= Rooms.Count;
-                return _totalDuration;
-            }
+            get => (CleaningType.CleaningAdditions.Select(c => c.Duration).Sum()
+                + CleaningAdditions.Select(c => c.Duration).Sum())
+                * Rooms.Count;
+           
             set { }
         }
 

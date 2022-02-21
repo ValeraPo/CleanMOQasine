@@ -50,13 +50,10 @@ namespace CleanMOQasine.Business.Services
 
         public List<OrderModel> GetOrdersByCleanerId(int idCleaner)
         {
-            var orders = new List<OrderModel>();
-            foreach (var order in GetAllOrders())
-            {
-                if (order.Cleaners.Select(c => c.Id).Contains(idCleaner))
-                    orders.Add(order);
-            }
-            return orders;
+            var cleaner = _userRepository.GetUserById(idCleaner);
+            ExceptionsHelper.ThrowIfEntityNotFound(idCleaner, cleaner);
+            var entities = _orderRepository.GetOrdersByCleaner(cleaner);
+            return _mapper.Map<List<OrderModel>>(entities);
         }
 
         public void UpdateOrder(int id, OrderModel orderModel)

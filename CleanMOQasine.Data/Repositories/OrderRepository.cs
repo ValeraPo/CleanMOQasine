@@ -28,6 +28,17 @@ namespace CleanMOQasine.Data.Repositories
             Save();
         }
 
+        public List<Order> GetOrdersByCleaner(User cleaner)
+        {
+            var orders = new List<Order>();
+            foreach (var order in GetAllOrders())
+            {
+                if (order.Cleaners.Contains(cleaner))
+                    orders.Add(order);
+            }
+            return orders;
+        }
+
         public void AddOrder(Order order)
         {
             _dbContext.Orders.Add(order);

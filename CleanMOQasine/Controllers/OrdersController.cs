@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -35,15 +38,26 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders
         [HttpGet]
+        [Authorize]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
-            var models = _orderService.GetAllOrders();
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            List<Claim> claims = identity.Claims.ToList();
+            var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
+            var role = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault();
+            var models = new List<OrderModel>();
+            if (role == Role.Admin.ToString())
+                models = _orderService.GetAllOrders();
+            else if (role == Role.Cleaner.ToString())
+                models = _orderService.GetOrdersByCleanerId(idUser);
+            else models = _orderService.GetOrdersByClientId(idUser);
             var outputs = _mapper.Map<List<OrderOutputModel>>(models);
             return Ok(outputs);
         }
 
         //api/Orders/42
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<OrderOutputModel> GetOrderById(int id)
         {
             var model = _orderService.GetOrderById(id);
@@ -53,7 +67,8 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders
         [HttpPost]
-        public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
+        [AuthorizeEnum(Role.Client)]
+        public ActionResult AddOrder([FromBody] OrderUpdateInputModel order)
         {
             var modelOrder = _mapper.Map<OrderModel>(order);
             foreach(var c in order.CleaningAdditionIds)
@@ -70,8 +85,26 @@ namespace CleanMOQasine.API.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        //api/Orders
+        [HttpPost]
+        [AuthorizeEnum(Role.Admin)]
+        public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
+        {
+            var modelOrder = _mapper.Map<OrderModel>(order);
+            foreach (var c in order.CleaningAdditionIds)
+                modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
+            modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
+            //foreach (var r in order.RoomIds)
+            //    modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            modelOrder.Client = _userService.GetUserById(order.ClientId);
+
+            _orderService.AddOrder(modelOrder);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
         //api/Orders/42
         [HttpPut("{id}")]
+        [AuthorizeEnum(Role.Admin, Role.Client)]
         public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
             var model = _mapper.Map<OrderModel>(order);
@@ -81,6 +114,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders/42/cleaner
         [HttpPut("{id}/cleaner")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             var model = _mapper.Map<OrderModel>(cleaner);
@@ -90,6 +124,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders/42/remove-cleaner
         [HttpPut("{id}/remove-cleaner")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             var model = _mapper.Map<OrderModel>(cleaner);
@@ -98,6 +133,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Orders/42
+        [AuthorizeEnum(Role.Admin)]
         [HttpDelete("{id}")]
         public ActionResult DeleteOrder(int id)
         {
@@ -106,6 +142,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Orders/42
+        [AuthorizeEnum(Role.Admin)]
         [HttpPatch("{id}")]
         public ActionResult RestoreOrder(int id)
         {

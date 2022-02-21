@@ -42,6 +42,9 @@ namespace CleanMOQasine.Business.Services
             return _mapper.Map<List<OrderModel>>(entities);
         }
 
+        public List<OrderModel> GetOrdersByClientId(int idClient) =>
+           GetAllOrders().Where(o => o.Client.Id == idClient).ToList();
+
         public List<OrderModel> GetOrdersByCleanerId(int idCleaner)
         {
             var orders = new List<OrderModel>();

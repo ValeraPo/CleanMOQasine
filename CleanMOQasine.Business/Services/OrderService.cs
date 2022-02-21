@@ -3,7 +3,7 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
+using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {

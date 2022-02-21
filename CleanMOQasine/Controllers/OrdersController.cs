@@ -85,8 +85,8 @@ namespace CleanMOQasine.API.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        //api/Orders
-        [HttpPost]
+        //api/Orders/admin
+        [HttpPost("admin")]
         [AuthorizeEnum(Role.Admin)]
         public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
         {

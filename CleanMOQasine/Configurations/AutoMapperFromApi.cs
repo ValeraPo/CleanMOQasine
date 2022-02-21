@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business;
 using CleanMOQasine.Business.Models;
 
@@ -20,6 +21,8 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<CleaningTypeUpdateInputModel, CleaningTypeModel>();
             CreateMap<RoomInputModel, RoomModel>();
             CreateMap<RoomModel, RoomOutputModel>();
+            CreateMap<PaymentOutputModel, PaymentModel>();
+            CreateMap<PaymentModel, PaymentInputModel>();
         }
     }
 }

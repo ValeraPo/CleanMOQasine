@@ -2,6 +2,8 @@
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -107,6 +109,15 @@ namespace CleanMOQasine.Business.Services
             var order = _orderRepository.GetOrderById(id);
             ExceptionsHelper.ThrowIfEntityNotFound(id, order);
             _orderRepository.RestoreOrder(order);
+        }
+
+        public void AddPayment(PaymentModel payment, int orderId)
+        {
+            var order = _orderRepository.GetOrderById(orderId);
+            if (order is null)
+                throw new NotFoundException($"Order with id {orderId} does not exist");
+            var newPayment = _mapper.Map<Payment>(payment);
+            _orderRepository.AddPayment(newPayment, order);
         }
 
         public List<UserModel> SearchCleaners(OrderModel orderModel)

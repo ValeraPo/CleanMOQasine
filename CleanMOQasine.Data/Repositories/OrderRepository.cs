@@ -12,7 +12,7 @@ namespace CleanMOQasine.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public Order GetOrderById(int id) => _dbContext.Orders.Include(o => o.Grade).FirstOrDefault(o => o.Id == id);
+        public Order GetOrderById(int id) => _dbContext.Orders.Include(o => o.Grade).Include(o => o.Payments).FirstOrDefault(o => o.Id == id);
 
         public IEnumerable<Order> GetAllOrders() => _dbContext.Orders.Where(o => !o.IsDeleted).ToList();
 
@@ -56,6 +56,13 @@ namespace CleanMOQasine.Data.Repositories
         {
             order.IsDeleted = false;
             Save();
+        }
+
+        public void AddPayment(Payment newPayment, Order order)
+        {
+            newPayment.Order = order;
+            _dbContext.Payments.Add(newPayment);
+            _dbContext.SaveChanges();
         }
 
         private void Save() => _dbContext.SaveChanges();

@@ -5,7 +5,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Business.Tests.TestData;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Enums;
-using CleanMOQasine.Data.Exceptions;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Data.Repositories;
 using Moq;
 using NUnit.Framework;

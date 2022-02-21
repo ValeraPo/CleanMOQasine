@@ -7,7 +7,7 @@ namespace CleanMOQasine.Business.Models
 
         //public UserModel Client { get; set; }
         //public CleaningTypeModel CleaningType { get; set; }
-        //public GradeModel Grade { get; set; }
+        public GradeModel Grade { get; set; }
         public string Address { get; set; }
         public decimal TotalPrice { get; set; }
         public TimeSpan TotalDuration { get; set; }

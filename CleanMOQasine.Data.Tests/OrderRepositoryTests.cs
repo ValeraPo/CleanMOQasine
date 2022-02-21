@@ -1,4 +1,5 @@
-﻿using CleanMOQasine.Data.Repositories;
+﻿using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
@@ -167,6 +168,22 @@ namespace CleanMOQasine.Data.Tests
             //then
             Assert.AreEqual(expected, actual);
         }
-        
+
+        [TestCaseSource(typeof(AddPaymentTestCaseSource), nameof(AddPaymentTestCaseSource.AddPaymentData))]
+        public void AddPayment(Payment payment, Order order)
+        {
+            //given
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            //when
+            _repository.AddPayment(payment, order);
+            var actual = _context.Payments.FirstOrDefault(p => p.Id == payment.Id);
+
+            //then
+            Assert.AreEqual(payment, actual);
+            Assert.AreEqual(order, actual.Order);
+        }
+
     }
 }

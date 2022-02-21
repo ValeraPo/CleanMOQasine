@@ -11,5 +11,6 @@ namespace CleanMOQasine.Business.Services
         CleaningTypeModel GetCleaningTypeById(int id);
         void RestoreCleaningType(int id);
         void UpdateCleaningType(int id, CleaningTypeModel updatedCleaningTypeModel);
+        void DeleteCleaningAdditionFromCleaningType(int cleaningTypeId, int cleaningAdditionId);
     }
 }

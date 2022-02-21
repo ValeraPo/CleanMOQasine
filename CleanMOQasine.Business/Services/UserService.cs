@@ -3,8 +3,8 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Security;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Enums;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -52,12 +52,10 @@ namespace CleanMOQasine.Business.Services
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
         }
 
-        // Для клиента
         public void AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
             mappedUser.Password = PasswordHash.HashPassword(mappedUser.Password);
-            mappedUser.Role = Role.Client;
             _userRepository.AddUser(mappedUser);
         }
 

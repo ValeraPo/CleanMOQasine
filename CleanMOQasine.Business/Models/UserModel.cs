@@ -30,7 +30,7 @@ namespace CleanMOQasine.Business.Models
                 }
                 return null;
             }
-            set { }
+            private set { }
         }
         public override bool Equals(object? obj)
         {

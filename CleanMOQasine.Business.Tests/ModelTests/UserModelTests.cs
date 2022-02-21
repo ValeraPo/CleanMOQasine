@@ -22,10 +22,10 @@ namespace CleanMOQasine.Business.Tests.ModelTests
         [TestCase(3,null)]
         [TestCase(4,null)]
         [TestCase(5, null)]
-        public void RankTest(int numberUser, double? expected)
+        public void RankTest(int userNumber, double? expected)
         {
             //given
-            var user = _testData.GetUsersForTest(numberUser);
+            var user = _testData.GetUsersForTest(userNumber);
 
             //when
             double? actual = user.Rank;

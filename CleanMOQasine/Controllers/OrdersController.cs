@@ -18,22 +18,22 @@ namespace CleanMOQasine.API.Controllers
         private readonly IUserService _userService;
         private readonly ICleaningAdditionService _cleaningAdditionService;
         private readonly ICleaningTypeService _cleaningTypeService;
-       // private readonly IRoomService _roomService;
+       private readonly IRoomService _roomService;
         private readonly IMapper _mapper;
 
         public OrdersController(IOrderService orderService,
             IUserService userService,
             IMapper maper,
             ICleaningAdditionService cleaningAdditionService,
-            ICleaningTypeService cleaningTypeService)
-           // IRoomService roomService)
+            ICleaningTypeService cleaningTypeService,
+           IRoomService roomService)
         {
             _orderService = orderService;
             _userService = userService;
             _mapper = maper;
             _cleaningAdditionService = cleaningAdditionService;
             _cleaningTypeService = cleaningTypeService;
-           // _roomService = roomService;
+           _roomService = roomService;
         }
 
         //api/Orders/admin
@@ -85,8 +85,8 @@ namespace CleanMOQasine.API.Controllers
             foreach(var c in order.CleaningAdditionIds)
                 modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
             modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
-            //foreach (var r in order.RoomIds)
-            //    modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            foreach (var r in order.RoomIds)
+                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
             modelOrder.Client = _userService.GetUserById(GetUserId());
 
             _orderService.AddOrder(modelOrder);
@@ -102,8 +102,8 @@ namespace CleanMOQasine.API.Controllers
             foreach (var c in order.CleaningAdditionIds)
                 modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
             modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
-            //foreach (var r in order.RoomIds)
-            //    modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            foreach (var r in order.RoomIds)
+                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
             modelOrder.Client = _userService.GetUserById(order.ClientId);
 
             _orderService.AddOrder(modelOrder);

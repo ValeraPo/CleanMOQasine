@@ -6,7 +6,6 @@ namespace CleanMOQasine.Data.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly CleanMOQasineContext _dbContext;
-        public bool _isInitialized;
 
         public OrderRepository(CleanMOQasineContext dbContext)
         {

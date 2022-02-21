@@ -6,6 +6,6 @@ namespace CleanMOQasine.API.Models
         public string Address { get; set; }
         public DateTime Date { get; set; }
         public List<int> RoomIds { get; set; }
-        public List<CleaningAdditionInputModel> CleaningAdditions { get; set; }
+        public List<int> CleaningAdditionIds { get; set; }
     }
 }

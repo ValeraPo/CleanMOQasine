@@ -89,5 +89,13 @@ namespace CleanMOQasine.API.Controllers
             _orderService.RestoreOrder(id);
             return Ok($"Order with id = {id} was restored");
         }
+
+        [HttpPost("{orderId}/payment")]
+        public ActionResult AddPayment([FromBody] PaymentInputModel payment, int orderId)
+        {
+            var paymentModel = _mapper.Map<PaymentModel>(payment);
+            _orderService.AddPayment(paymentModel, orderId);
+            return StatusCode(StatusCodes.Status201Created, payment);
+        }
     }
 }

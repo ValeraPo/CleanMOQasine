@@ -1,4 +1,7 @@
-﻿using CleanMOQasine.Business.Models;
+﻿using AutoMapper;
+using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Models;
+using CleanMOQasine.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -7,43 +10,41 @@ namespace CleanMOQasine.API.Controllers
     [Route("api/[controller]")]
     public class PaymentsController : Controller
     {
+        private readonly IPaymentService _paymentService;
+        private IMapper _mapper;
+
+        public PaymentsController(IPaymentService paymentService, IMapper mapper)
+        {
+            _paymentService = paymentService;
+            _mapper = mapper;
+        }
 
         [HttpGet("{id}")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
-            //if () payment is null
-            return BadRequest();
-            //else
-            return Ok();
-
+            var payment = _paymentService.GetPaymentById(id);
+            return Ok((payment));
         }
 
         [HttpGet]
-        public ActionResult<List<PaymentModel>> GetAllPayments()
+        public ActionResult<List<PaymentInputModel>> GetAllPayments()
         {
-            return Ok();
+            return Ok(_mapper
+                .Map<List<PaymentInputModel>>(_paymentService.GetAllPayments()));
         }
 
         [HttpDelete]
         public ActionResult DeletePaymentById(int id)
         {
-            //if () payment is null
-            return BadRequest();
-            //else
-            return Ok();
-        }
-        [HttpPost]
-        public ActionResult AddPayment(PaymentModel payment)
-        {
-            return StatusCode(StatusCodes.Status201Created, payment);
+            _paymentService.DeletePayment(id);
+            return NoContent();
         }
 
         [HttpPut]
-        public ActionResult UpdatePayment(PaymentModel payment)
+        public ActionResult UpdatePayment([FromBody] PaymentOutputModel payment)
         {
-            //if () payment is null
-            return BadRequest();
-            //else
+            var paymentModelToUpdate = _mapper.Map<PaymentModel>(payment);
+            _paymentService.UpdatePayment(paymentModelToUpdate);
             return Ok();
         }
     }

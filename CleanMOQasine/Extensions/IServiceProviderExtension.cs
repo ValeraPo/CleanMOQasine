@@ -19,6 +19,7 @@ namespace CleanMOQasine.API.Extensions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IPaymentService, PaymentService>();
         }
 
         public static void RegisterCleanMOQasineRepositories(this IServiceCollection services)
@@ -29,6 +30,7 @@ namespace CleanMOQasine.API.Extensions
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IGradeRepository, GradeRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
         }
          
         public static void RegisterCleanMOQasineAutomappers(this IServiceCollection services)

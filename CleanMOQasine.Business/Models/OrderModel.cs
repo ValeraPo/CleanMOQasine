@@ -15,6 +15,17 @@ namespace CleanMOQasine.Business.Models
         public bool IsCompleted { get; set; }
         public bool IsDeleted { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is OrderModel model &&
+                   Id == model.Id &&
+                   EqualityComparer<GradeModel>.Default.Equals(Grade, model.Grade) &&
+                   Address == model.Address &&
+                   TotalPrice == model.TotalPrice &&
+                   TotalDuration.Equals(model.TotalDuration) &&
+                   Date == model.Date;
+        }
+
 
         //public ICollection<RoomModel> Rooms { get; set; }
         //public ICollection<CleaningAdditionModel> CleaningAdditions { get; set; }

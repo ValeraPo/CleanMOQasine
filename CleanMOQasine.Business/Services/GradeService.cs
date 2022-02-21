@@ -21,13 +21,13 @@ namespace CleanMOQasine.Business.Services
         public GradeModel GetGradeById(int id)
         {
             var grade = _gradeRepository.GetGradeById(id);
+            CheckEntity(grade, typeof(Grade));
             return _mapper.Map<GradeModel>(grade);
         }
 
         public void UpdateGrade(GradeModel grade, int id)
         {
-            if (GetGradeById(id) is null)
-                throw new NotFoundException($"Grade with {id} not found");
+            GetGradeById(id);
             var updatedGrade = _mapper.Map<Grade>(grade);
             updatedGrade.Id = id;
             _gradeRepository.UpdateGradeById(updatedGrade);
@@ -47,8 +47,9 @@ namespace CleanMOQasine.Business.Services
 
         public void DeleteGradeById(int id)
         {
-            if (GetGradeById(id) is null)
-                throw new NotFoundException($"Grade with {id} not found");
+            //if (GetGradeById(id) is null)
+            //    throw new NotFoundException($"Grade with {id} not found");
+            GetGradeById(id);
             _gradeRepository.DeleteGradeById(id);
         }
 
@@ -68,6 +69,12 @@ namespace CleanMOQasine.Business.Services
                 }
             }
             return _mapper.Map<List<GradeModel>>(gradesToCalculateMidCleanersRating);
+        }
+
+        private void CheckEntity(object entity, Type entityType)
+        {
+            if (entity is null)
+                throw new NotFoundException($"The entity {entityType.Name} was not found");
         }
     }
 }

@@ -5,7 +5,7 @@ namespace CleanMOQasine.API.Extensions
 {
     public static class ControllerValidateExtensions
     {
-        public static int? GetUserId(this ControllerBase controllerBase)
+        public static int GetUserId(this ControllerBase controllerBase)
         {
             var identity = controllerBase.HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
@@ -16,7 +16,8 @@ namespace CleanMOQasine.API.Extensions
                 if (parsed)
                     return userId;
             }
-            return null;
+            //return null;
+            throw new Exception();
         }
     }
 }

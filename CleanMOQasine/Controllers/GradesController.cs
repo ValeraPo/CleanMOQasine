@@ -55,11 +55,11 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Client)]
         public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery] int orderId)
         {
-            int? userId = this.GetUserId();
-            if (userId is null)
-                return StatusCode(StatusCodes.Status400BadRequest, grade);
-            if (grade.Rating > 5 || grade.Rating < 0)
-                return StatusCode(StatusCodes.Status400BadRequest, "Рейтинг от 0 до 5");
+            this.GetUserId();
+            //if (userId is null)
+            //    return StatusCode(StatusCodes.Status400BadRequest, grade);
+            //if (grade.Rating > 5 || grade.Rating < 0)
+            //    return StatusCode(StatusCodes.Status400BadRequest, "Рейтинг от 0 до 5");
             var model = _mapper.Map<GradeModel>(grade);
             _gradeService.AddGrade(model, orderId);
             return StatusCode(StatusCodes.Status201Created, grade);

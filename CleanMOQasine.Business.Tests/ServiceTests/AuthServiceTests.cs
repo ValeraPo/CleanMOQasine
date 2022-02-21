@@ -15,25 +15,23 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
     public class AuthServiceTests
     {
         private Mock<IUserRepository> _userRepositoryMock;
-        private AuthServiceTestData _testData;
 
 
         [SetUp]
         public void Setup()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
-            _testData = new AuthServiceTestData();
         }
 
         [Test]
         public void Login_ShouldReturnStringWithToken()
         {
             //given
-            var user = _testData.GetUserForTests();
+            var user = AuthServiceTestData.GetUserForTests();
             _userRepositoryMock.Setup(x => x.GetUserByLogin(user.Login)).Returns(user);
             var sut = new AuthService(_userRepositoryMock.Object);
             //when
-            var expected = sut.Login(user.Login, _testData.ValidPassword);
+            var expected = sut.Login(user.Login, AuthServiceTestData.ValidPassword);
             var claimValues = new JwtSecurityTokenHandler().ReadJwtToken(expected).Claims.Select(c => c.Value);
             
             //then
@@ -58,12 +56,12 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         public void Login_WithInvalidPassword_ShouldReturnAuthenticationException()
         {
             //given
-            var user = _testData.GetUserForTests();
+            var user = AuthServiceTestData.GetUserForTests();
             _userRepositoryMock.Setup(x => x.GetUserByLogin(user.Login)).Returns(user);
             var sut = new AuthService(_userRepositoryMock.Object);
 
             //then
-            Assert.Throws<AuthenticationException>(() => sut.Login(user.Login, It.IsAny<string>()));
+            Assert.Throws<AuthenticationException>(() => sut.Login(user.Login, AuthServiceTestData.InvalidPassword));
             _userRepositoryMock.Verify(m => m.GetUserByLogin(user.Login), Times.Once());
         }
 

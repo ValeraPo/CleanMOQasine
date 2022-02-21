@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Tests.ServiceTests
 {
-    public class AuthServiceTestData
+    public static class AuthServiceTestData
     {
-        public string ValidPassword = "у2меня2сложный8пароль";
-        public User GetUserForTests()
+        public const string ValidPassword = "у2меня2сложный8пароль";
+        public const string InvalidPassword = "(T_T)";
+        public static User GetUserForTests()
         {
             return new User
             {

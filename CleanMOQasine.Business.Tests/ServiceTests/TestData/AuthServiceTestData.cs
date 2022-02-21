@@ -13,6 +13,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
     {
         public const string ValidPassword = "у2меня2сложный8пароль";
         public const string InvalidPassword = "(T_T)";
+
         public static User GetUserForTests()
         {
             return new User

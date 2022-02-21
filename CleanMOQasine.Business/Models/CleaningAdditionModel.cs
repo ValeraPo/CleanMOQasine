@@ -12,6 +12,16 @@ namespace CleanMOQasine.Business
         public List<CleaningTypeModel> CleaningTypes { get; set; }
         public bool IsDeleted { get; set; }
 
+        public override bool Equals(object? obj)
+        {
+            return obj is CleaningAdditionModel model &&
+                   Id == model.Id &&
+                   Name == model.Name &&
+                   Price == model.Price &&
+                   Duration.Equals(model.Duration) &&
+                   IsDeleted == model.IsDeleted;
+        }
+
         //TODO:
         //public ICollection<UserModel> Users { get; set; //наверное это и не надо здесь
     }

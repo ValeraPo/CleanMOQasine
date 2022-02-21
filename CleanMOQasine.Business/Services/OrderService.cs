@@ -3,6 +3,8 @@ using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -12,22 +14,22 @@ namespace CleanMOQasine.Business.Services
         private readonly IUserRepository _userRepository;
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly ICleaningTypeRepository _cleaningTypeRepository;
-       // private readonly IRoomRepository _roomRepository;
+       private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
 
         public OrderService(IOrderRepository orderRpository, 
             IUserRepository userRepository, 
             IMapper mapper,
             ICleaningAdditionRepository cleaningAdditionRepository,
-            ICleaningTypeRepository cleaningTypeRepository)
-            //IRoomRepository roomRepository)
+            ICleaningTypeRepository cleaningTypeRepository,
+            IRoomRepository roomRepository)
         {
             _orderRepository = orderRpository;
             _userRepository = userRepository;
             _mapper = mapper;
             _cleaningAdditionRepository = cleaningAdditionRepository;
             _cleaningTypeRepository = cleaningTypeRepository;
-           // _roomRepository = roomRepository;
+           _roomRepository = roomRepository;
         }
 
         public OrderModel GetOrderById(int id)
@@ -42,6 +44,9 @@ namespace CleanMOQasine.Business.Services
             var entities = _orderRepository.GetAllOrders();
             return _mapper.Map<List<OrderModel>>(entities);
         }
+
+        public List<OrderModel> GetOrdersByClientId(int idClient) =>
+           GetAllOrders().Where(o => o.Client.Id == idClient).ToList();
 
         public List<OrderModel> GetOrdersByCleanerId(int idCleaner)
         {
@@ -110,15 +115,6 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
-        public void AddPayment(PaymentModel payment, int orderId)
-        {
-            var order = _orderRepository.GetOrderById(orderId);
-            if (order is null)
-                throw new NotFoundException($"Order with id {orderId} does not exist");
-            var newPayment = _mapper.Map<Payment>(payment);
-            _orderRepository.AddPayment(newPayment, order);
-        }
-
         public List<UserModel> SearchCleaners(OrderModel orderModel)
         {
             var cleaningAdditionModels = new List<CleaningAdditionModel>();
@@ -144,5 +140,14 @@ namespace CleanMOQasine.Business.Services
             return _mapper.Map<List<UserModel>>(cleaners);
         }
 
+
+        public void AddPayment(PaymentModel payment, int orderId)
+        {
+            var order = _orderRepository.GetOrderById(orderId);
+            if (order is null)
+                throw new NotFoundException($"Order with id {orderId} does not exist");
+            var newPayment = _mapper.Map<Payment>(payment);
+            _orderRepository.AddPayment(newPayment, order);
+        }
     }
 }

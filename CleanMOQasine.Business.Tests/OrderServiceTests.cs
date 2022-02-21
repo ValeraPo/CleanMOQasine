@@ -16,7 +16,10 @@ namespace CleanMOQasine.Business.Tests
         private Mock<IOrderRepository> _orderRepositoryMock;
         private readonly OrderTestData _orderTestData;
         private Mock<IUserRepository> _userRepositoryMock;
-        private readonly IMapper _autoMapper;
+        private IMapper _autoMapper;
+        private Mock<ICleaningAdditionRepository> _cleaningAdditionRepositoryMock;
+        private Mock<ICleaningTypeRepository> _cleaningTypeRepositoryMock;
+        // private  Mock<IRoomRepository> _roomRepositoryMock;
 
         public OrderServiceTests()
         {
@@ -30,6 +33,8 @@ namespace CleanMOQasine.Business.Tests
         {
             _userRepositoryMock = new Mock<IUserRepository>();
             _orderRepositoryMock = new Mock<IOrderRepository>();
+            _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
+            _cleaningTypeRepositoryMock = new Mock<ICleaningTypeRepository>();
         }
 
         [Test]
@@ -38,7 +43,10 @@ namespace CleanMOQasine.Business.Tests
             //given
             var order = _orderTestData.GetOrderForTests();
             _orderRepositoryMock.Setup(x => x.GetOrderById(It.IsAny<int>())).Returns(order);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object, 
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
             var expected = _autoMapper.Map<OrderModel>(order);
 
             //when
@@ -53,7 +61,10 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                 _userRepositoryMock.Object, _autoMapper,
+                 _cleaningAdditionRepositoryMock.Object,
+                 _cleaningTypeRepositoryMock.Object);
 
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.GetOrderById(42));
@@ -65,7 +76,10 @@ namespace CleanMOQasine.Business.Tests
             //given
             var orders = _orderTestData.GetListOfOrdersForTests();
             _orderRepositoryMock.Setup(m => m.GetAllOrders()).Returns(orders);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             var actual = sut.GetAllOrders();
@@ -88,7 +102,10 @@ namespace CleanMOQasine.Business.Tests
             //given
             var orders = _orderTestData.GetListOfOrdersForTests();
             _orderRepositoryMock.Setup(m => m.GetAllOrders()).Returns(orders);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             var actual = sut.GetOrdersByCleanerId(2);
@@ -112,7 +129,10 @@ namespace CleanMOQasine.Business.Tests
             var order = new Order();
             _orderRepositoryMock.Setup(x => x.UpdateOrder(It.IsAny<Order>(), It.IsAny<Order>()));
             _orderRepositoryMock.Setup(x => x.GetOrderById(It.IsAny<int>())).Returns(order);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             // when
             sut.UpdateOrder(42, new OrderModel());
@@ -127,7 +147,10 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.UpdateOrder(23, new OrderModel()));
@@ -139,7 +162,10 @@ namespace CleanMOQasine.Business.Tests
             // given
             var orderModel = _orderTestData.GetOrderModelForTests();
             _orderRepositoryMock.Setup(m => m.AddOrder(It.IsAny<Order>()));
-            var sut = new  OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             sut.AddOrder(orderModel);
@@ -159,7 +185,10 @@ namespace CleanMOQasine.Business.Tests
             var orderModel = _orderTestData.GetOrderModelForTests();
             var userModel = _orderTestData.GetUserModelForTests();
             _orderRepositoryMock.Setup(m => m.AddCleaner(It.IsAny<Order>(), It.IsAny<User>()));
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             sut.AddCleaner(42, 42);
@@ -174,7 +203,10 @@ namespace CleanMOQasine.Business.Tests
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns((User)null);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.AddCleaner(42, 42));
@@ -189,7 +221,10 @@ namespace CleanMOQasine.Business.Tests
             var user = new User();
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(user);
             _orderRepositoryMock.Setup(m => m.RemoveCleaner(It.IsAny<Order>(), It.IsAny<User>()));
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             sut.RemoveCleaner(42, 42);
@@ -204,7 +239,10 @@ namespace CleanMOQasine.Business.Tests
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns((User)null);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.RemoveCleaner(42, 42));
@@ -217,7 +255,10 @@ namespace CleanMOQasine.Business.Tests
             var order = new Order();
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(order);
             _orderRepositoryMock.Setup(m => m.RestoreOrder(It.IsAny<Order>()));
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             sut.RestoreOrder(23);
@@ -232,7 +273,10 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.RestoreOrder(42));
@@ -245,7 +289,10 @@ namespace CleanMOQasine.Business.Tests
             var order = new Order();
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(order);
             _orderRepositoryMock.Setup(m => m.DeleteOrder(It.IsAny<Order>()));
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //when
             sut.DeleteOrder(23);
@@ -260,7 +307,10 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
-            var sut = new OrderService(_orderRepositoryMock.Object, _userRepositoryMock.Object, _autoMapper);
+            var sut = new OrderService(_orderRepositoryMock.Object,
+                _userRepositoryMock.Object, _autoMapper,
+                _cleaningAdditionRepositoryMock.Object,
+                _cleaningTypeRepositoryMock.Object);
 
             //then
             Assert.Throws<EntityNotFoundException>(() => sut.DeleteOrder(42));

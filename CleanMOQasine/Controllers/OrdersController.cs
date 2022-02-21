@@ -36,21 +36,32 @@ namespace CleanMOQasine.API.Controllers
            // _roomService = roomService;
         }
 
-        //api/Orders
-        [HttpGet]
-        [Authorize]
+        //api/Orders/admin
+        [HttpGet("admin")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            List<Claim> claims = identity.Claims.ToList();
-            var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
-            var role = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault();
-            var models = new List<OrderModel>();
-            if (role == Role.Admin.ToString())
-                models = _orderService.GetAllOrders();
-            else if (role == Role.Cleaner.ToString())
-                models = _orderService.GetOrdersByCleanerId(idUser);
-            else models = _orderService.GetOrdersByClientId(idUser);
+            var models = _orderService.GetAllOrders();
+            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
+            return Ok(outputs);
+        }
+
+        //api/Orders/client
+        [HttpGet("client")]
+        [AuthorizeEnum(Role.Client)]
+        public ActionResult<List<OrderOutputModel>> GetOrdersByClient()
+        {
+            var models = _orderService.GetOrdersByClientId(GetUserId());
+            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
+            return Ok(outputs);
+        }
+
+        //api/Orders/cleaner
+        [HttpGet("cleaner")]
+        [AuthorizeEnum(Role.Cleaner)]
+        public ActionResult<List<OrderOutputModel>> GetOrdersByCleaner()
+        {
+            var models = _orderService.GetOrdersByCleanerId(GetUserId());
             var outputs = _mapper.Map<List<OrderOutputModel>>(models);
             return Ok(outputs);
         }
@@ -76,10 +87,7 @@ namespace CleanMOQasine.API.Controllers
             modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
             //foreach (var r in order.RoomIds)
             //    modelOrder.Rooms.Add(_roomService.GetRoomById(r));
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            List<Claim> claims = identity.Claims.ToList();
-            var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
-            modelOrder.Client = _userService.GetUserById(idUser);
+            modelOrder.Client = _userService.GetUserById(GetUserId());
 
             _orderService.AddOrder(modelOrder);
             return StatusCode(StatusCodes.Status201Created);
@@ -156,6 +164,14 @@ namespace CleanMOQasine.API.Controllers
             var paymentModel = _mapper.Map<PaymentModel>(payment);
             _orderService.AddPayment(paymentModel, orderId);
             return StatusCode(StatusCodes.Status201Created, payment);
+        }
+
+        private int GetUserId()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            List<Claim> claims = identity.Claims.ToList();
+            var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
+            return idUser;
         }
     }
 }

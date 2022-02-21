@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
@@ -68,9 +69,10 @@ namespace CleanMOQasine.Business.Services
 
         public void AddOrder(OrderModel orderModel)
         {
+            var maxHours = 4;
             var cleaners = SearchCleaners(orderModel);
             // Определяем количество клинеров
-            for (int i = 0; i <= (int)(orderModel.TotalDuration / TimeSpan.FromHours(4)); i++)
+            for (int i = 0; i <= (int)(orderModel.TotalDuration / TimeSpan.FromHours(maxHours)); i++)
             {
                 //Выбираем наименее загруженного клинера
                 var cleaner = cleaners.MinBy(c => c.Orders.Count());
@@ -123,8 +125,9 @@ namespace CleanMOQasine.Business.Services
 
             var cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
             // Смотрим даты на меся вперед
-            int count = 0;
-            while (cleaners.Count == 0 || count >= 30)
+            var maxDays = 30;
+            var count = 0;
+            while (cleaners.Count == 0 || count >= maxDays)
             {
                 orderModel.Date.AddDays(1);
                 cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);

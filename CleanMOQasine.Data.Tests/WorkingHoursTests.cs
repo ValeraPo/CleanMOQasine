@@ -63,14 +63,14 @@ namespace CleanMOQasine.Data.Tests
         [TestCaseSource(typeof(WorkingHoursTestCaseSources)
             , nameof(WorkingHoursTestCaseSources.UpdateWorkingHours))]
         public void UpdateWorkingTimeByIdTests(WorkingTime workingHours
-            , WorkingTime expected)
+            , WorkingTime expected, WorkingTime objectToUpdate)
         {
             //given
             _context.WorkingHours.Add(workingHours);
             _context.SaveChanges();
 
             //when
-            _repo.UpdateWorkingTime(expected);
+            _repo.UpdateWorkingTime(objectToUpdate);
             var actual = _context.WorkingHours.FirstOrDefault(w => w.Id == workingHours.Id);
 
             //then

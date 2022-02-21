@@ -69,17 +69,24 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 1,
                 Day = Enums.WeekDay.Monday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = DateTime.Now.AddHours(4),
                 IsDeleted = false
             };
-            WorkingTime updatedWorkingTimeMock = new()
+            WorkingTime expected = new()
             {
                 Id = 1,
                 Day = Enums.WeekDay.Friday,
                 EndTime = DateTime.Now.AddHours(8),
+                IsDeleted = false
+            };
+            WorkingTime mockToUpdate = new()
+            {
+                Id = 1,
+                Day = Enums.WeekDay.Friday,
+                EndTime = expected.EndTime,
                 IsDeleted = true
             };
-            yield return new TestCaseData(workingTimeMock, updatedWorkingTimeMock);
+            yield return new TestCaseData(workingTimeMock, expected, mockToUpdate);
             WorkingTime workingTimeMock1 = new()
             {
                 Id = 2,
@@ -91,10 +98,17 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(1),
-                IsDeleted = true
+                EndTime = workingTimeMock1.EndTime,
+                IsDeleted = false
             };
-            yield return new TestCaseData(workingTimeMock1, updatedWorkingTimeMock1);
+            WorkingTime mockToUpdate1 = new()
+            {
+                Id = 2,
+                Day = Enums.WeekDay.Friday,
+                EndTime = workingTimeMock1.EndTime,
+                IsDeleted = false
+            };
+            yield return new TestCaseData(workingTimeMock1, updatedWorkingTimeMock1, mockToUpdate1);
         }
 
         public static IEnumerable<TestCaseData> DeleteWorkingTimeById()

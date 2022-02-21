@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -23,7 +22,7 @@ namespace CleanMOQasine.Business.Services
         public CleaningTypeModel GetCleaningTypeById(int id)
         {
             var entity = _cleaningTypeRepository.GetCleaningTypeById(id);
-            CheckEntity(entity, "CleanigType");
+            CheckEntity(entity, typeof(CleaningType));
             return _autoMapperInstance.Map<CleaningTypeModel>(entity);
         }
 
@@ -41,39 +40,47 @@ namespace CleanMOQasine.Business.Services
 
         public void UpdateCleaningType(int id, CleaningTypeModel updatedCleaningTypeModel)
         {
-            var entity = _cleaningTypeRepository.GetCleaningTypeById(id);
-            CheckEntity(entity, "CleanigType");
+            GetCleaningTypeById(id);
             var entityUpdated = _autoMapperInstance.Map<CleaningType>(updatedCleaningTypeModel);
-            _cleaningTypeRepository.UpdateCleaningType(id, entity);
+            _cleaningTypeRepository.UpdateCleaningType(id, entityUpdated);
         }
 
         public void AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)
         {
-            var cleaningType = _cleaningTypeRepository.GetCleaningTypeById(cleaningTypeId);
-            CheckEntity(cleaningType, "CleanigType");
+            GetCleaningTypeById(cleaningTypeId);
             var cleaningAddition = _cleaningAdditionRepository.GetCleaningAdditionById(cleaningAdditionId);
-            CheckEntity(cleaningAddition, "CleanigAddition");
+            CheckEntity(cleaningAddition, typeof(CleaningAddition));
             _cleaningTypeRepository.AddCleaningAdditionToCleaningType(cleaningTypeId, cleaningAdditionId);
+        }
+
+        public void DeleteCleaningAdditionFromCleaningType(int cleaningTypeId, int cleaningAdditionId)
+        {
+            var cleaningType = _cleaningTypeRepository.GetCleaningTypeById(cleaningTypeId);
+            CheckEntity(cleaningType, typeof(CleaningType));
+
+            var cleaningAddition = cleaningType.CleaningAdditions.FirstOrDefault(ca=>ca.Id==cleaningAdditionId);
+            if (cleaningAddition is null)
+                throw new NotFoundException("The CleaningAddition was not found in this CleaningType");
+
+            _cleaningTypeRepository.DeleteCleaningAdditionFromCleaningType(cleaningTypeId, cleaningAdditionId);
         }
 
         public void DeleteCleaningType(int id)
         {
-            var entity = _cleaningTypeRepository.GetCleaningTypeById(id);
-            CheckEntity(entity, "CleanigType");
+            GetCleaningTypeById(id);
             _cleaningTypeRepository.DeleteCleaningType(id);
         }
 
         public void RestoreCleaningType(int id)
         {
-            var entity = _cleaningTypeRepository.GetCleaningTypeById(id);
-            CheckEntity(entity, "CleanigType");
+            GetCleaningTypeById(id);
             _cleaningTypeRepository.RestoreCleaningType(id);
         }
 
-        private void CheckEntity(object entity, string name)
+        private void CheckEntity(object entity, Type entityType)
         {
             if (entity is null)
-                throw new NotFoundException($"The entity {name} was not found");
+                throw new NotFoundException($"The entity {entityType.Name} was not found");
         }
     }
 }

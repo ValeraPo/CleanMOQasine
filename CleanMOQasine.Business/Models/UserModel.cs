@@ -12,12 +12,26 @@ namespace CleanMOQasine.Business.Models
         public string Login { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public double? Rank { get; set; }
         public bool IsDeleted { get; set; }
         public List<CleaningAdditionModel> CleaningAdditions { get; set; }
         public List<WorkingTimeModel> WorkingHours { get; set; }
         public List<OrderModel> Orders { get; set; }
-
+        public double? Rank 
+        {
+            get
+            {
+                if (Role is Role.Cleaner)
+                {
+                    var grades = Orders.Where(o=>o.Grade is not null).Select(o => o.Grade);
+                    if (grades.Count() != 0)
+                        return ((double)grades.Select(g => g.Rating).Sum()) / grades.Count();
+                    else
+                        return null;
+                }
+                return null;
+            }
+            private set { }
+        }
         public override bool Equals(object? obj)
         {
             if (obj is null)

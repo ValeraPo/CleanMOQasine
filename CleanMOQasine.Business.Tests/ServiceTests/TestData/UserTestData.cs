@@ -20,7 +20,6 @@ namespace CleanMOQasine.Business.Tests.TestData
                 PhoneNumber = "+7(921)765-45-23",
                 IsDeleted = false,
                 Role = Role.Client,
-                Rank = 4.5666,
                 CleaningAdditions = new List<CleaningAdditionModel> {
                     new CleaningAdditionModel { },
                     new CleaningAdditionModel { }

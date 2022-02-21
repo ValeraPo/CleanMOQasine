@@ -6,11 +6,15 @@ using CleanMOQasine.Business.Services;
 using AutoMapper;
 using CleanMOQasine.API.Configurations;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Data.Enums;
+using CleanMOQasine.API.Attributes;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CleanMOQasine.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeEnum(Role.Admin)]
     public class CleaningTypeController : ControllerBase
     {
         private readonly ICleaningTypeService _cleaningTypeService;
@@ -23,6 +27,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<CleaningTypeOutputModel> GetCleaningTypeById(int id)
         {
             var model = _cleaningTypeService.GetCleaningTypeById(id);
@@ -31,6 +36,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult<List<CleaningTypeOutputModel>> GetAllCleaningTypes()
         {
             var models = _cleaningTypeService.GetAllCleaningTypes();
@@ -46,10 +52,10 @@ namespace CleanMOQasine.API.Controllers
             return StatusCode(StatusCodes.Status201Created, cleaningTypeInsertInputModel);
         }
 
-        [HttpPut("{cleaningTypeId}/cleaning-additions")]
-        public ActionResult AddCleaningAdditionToCleaningType(int cleaningTypeId, int cleaningAdditionId)
+        [HttpPut("{id}/cleaning-additions")]
+        public ActionResult AddCleaningAdditionToCleaningType(int id, int cleaningAdditionId)
         { 
-            _cleaningTypeService.AddCleaningAdditionToCleaningType(cleaningTypeId, cleaningAdditionId);
+            _cleaningTypeService.AddCleaningAdditionToCleaningType(id, cleaningAdditionId);
             return Ok();
 
         }
@@ -74,6 +80,13 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult RestoreCleaningType(int id)
         {
             _cleaningTypeService.RestoreCleaningType(id);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}/cleaning-additions")]
+        public ActionResult DeleteCleaningAdditionFromCleaningType(int id, int cleaningAdditionId)
+        {
+            _cleaningTypeService.DeleteCleaningAdditionFromCleaningType(id, cleaningAdditionId);
             return NoContent();
         }
     }

@@ -54,6 +54,14 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
+        public void DeleteCleaningAdditionFromCleaningType(int cleaningTypeId, int cleaningAdditionId)
+        {
+            var interstedCleaningType = GetCleaningTypeById(cleaningTypeId);
+            var cleaningAddition = _context.CleaningAdditions.FirstOrDefault(ca => ca.Id == cleaningAdditionId && !ca.IsDeleted);
+            interstedCleaningType.CleaningAdditions.Remove(cleaningAddition);
+            _context.SaveChanges();
+        }
+
         public void DeleteCleaningType(int id)
         {
             var cleaningType = GetCleaningTypeById(id);

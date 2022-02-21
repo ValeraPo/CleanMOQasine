@@ -52,18 +52,21 @@ namespace CleanMOQasine.Business.Tests.TestData
                 {
                     new CleaningAddition
                     {
+                        Id=1,
                         Name = "Смыть кровь",
                         Price = 1000,
                         Duration = new TimeSpan(1,1,1)
                     },
                     new CleaningAddition
                     {
+                        Id = 2,
                         Name = "Убрать свидетеля",
                         Price = 1000000,
                         Duration = new TimeSpan(1,10,1)
                     },
                     new CleaningAddition
                     {
+                        Id = 3,
                         Name = "Упаковать нарезку в пакеты",
                         Price = 10000,
                         Duration = new TimeSpan(1,0,0)

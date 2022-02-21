@@ -56,9 +56,9 @@ namespace CleanMOQasine.Business.Services
         {
             var grades = _gradeRepository.GetGradesWithCleaners();
             List<Grade> gradesToCalculateMidCleanersRating = new();
-            foreach(var grade in grades)
+            foreach (var grade in grades)
             {
-                foreach(var cleaner in grade.Order.Cleaners)
+                foreach (var cleaner in grade.Order.Cleaners)
                 {
                     if (cleaner.Id == cleanerId)
                     {

@@ -74,9 +74,9 @@ namespace CleanMOQasine.API.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}")]
-        //[AuthorizeEnum(Role.Admin)]
-        public ActionResult GetCleanerGrades(int id, [FromBody] GradeBaseInputModel grade)
+        [HttpGet("cleaners/{id}")]
+        [AuthorizeEnum(Role.Admin)]
+        public ActionResult GetCleanerGrades(int id)
         {
             var cleanerGrades = _gradeService.GetAllGradesByCleanerId(id);
             return Ok(cleanerGrades);

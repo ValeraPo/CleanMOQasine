@@ -3,19 +3,19 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Business.Exceptions;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace CleanMOQasine.Business.Services
 {
     public class GradeService : IGradeService
     {
         private readonly IGradeRepository _gradeRepository;
-        private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        public GradeService(IGradeRepository gradeRpository, IMapper mapper, IOrderRepository orderRepository)
+        public GradeService(IGradeRepository gradeRpository, IMapper mapper)
         {
             _gradeRepository = gradeRpository;
             _mapper = mapper;
-            _orderRepository = orderRepository;
         }
 
         public GradeModel GetGradeById(int id)
@@ -50,6 +50,24 @@ namespace CleanMOQasine.Business.Services
             if (GetGradeById(id) is null)
                 throw new NotFoundException($"Grade with {id} not found");
             _gradeRepository.DeleteGradeById(id);
+        }
+
+        public List<GradeModel> GetAllGradesByCleanerId(int cleanerId)
+        {
+            var grades = _gradeRepository.GetGradesWithCleaners();
+            List<Grade> gradesToCalculateMidCleanersRating = new();
+            foreach(var grade in grades)
+            {
+                foreach(var cleaner in grade.Order.Cleaners)
+                {
+                    if (cleaner.Id == cleanerId)
+                    {
+                        gradesToCalculateMidCleanersRating.Add(grade);
+                        break;
+                    }
+                }
+            }
+            return _mapper.Map<List<GradeModel>>(gradesToCalculateMidCleanersRating);
         }
     }
 }

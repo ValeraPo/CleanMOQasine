@@ -9,5 +9,7 @@ namespace CleanMOQasine.Data.Repositories
         IEnumerable<Grade> GetAllGrades();
         Grade? GetGradeById(int id);
         void UpdateGradeById(Grade grade);
+        List<Grade> GetGradesWithCleaners();
+
     }
 }

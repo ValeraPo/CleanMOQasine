@@ -9,5 +9,6 @@ namespace CleanMOQasine.Business.Services
         List<GradeModel> GetAllGrades();
         GradeModel GetGradeById(int id);
         void UpdateGrade(GradeModel grade, int id);
+        List<GradeModel> GetAllGradesByCleanerId(int cleanerId);
     }
 }

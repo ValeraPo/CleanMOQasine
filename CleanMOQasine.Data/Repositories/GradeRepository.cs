@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -39,6 +40,14 @@ namespace CleanMOQasine.Data.Repositories
             grade.Order = order;
             _context.Grades.Add(grade);
             _context.SaveChanges();
+        }
+
+        public List<Grade> GetGradesWithCleaners()
+        {
+            var grades = _context.Grades.Include(o => o.Order)
+                .ThenInclude(c => c.Cleaners)
+                .Where(g => !g.IsDeleted).ToList();
+            return grades;
         }
     }
 }

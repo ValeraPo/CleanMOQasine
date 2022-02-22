@@ -31,6 +31,14 @@ namespace CleanMOQasine.API.Infrastructures
             {
                 await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
             }
+            catch (NoAccessException error)
+            {
+                await ConstructResponse(context, HttpStatusCode.Forbidden, error.Message);
+            }
+            catch (EntityNotFoundException error)
+            {
+                await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
+            }
             catch (Exception error)
             {
                 await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);

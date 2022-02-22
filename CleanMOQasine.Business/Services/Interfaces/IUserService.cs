@@ -10,7 +10,6 @@ namespace CleanMOQasine.Business.Services
         List<UserModel> GetAllCleaners();
         List<UserModel> GetAllClients();
         UserModel GetUserById(int id);
-        UserModel GetUserByLogin(string login);
         void RestoreUserById(int id);
         void UpdateUser(int id, UserModel userModel);
         void AddWorkingTime(WorkingTimeModel workingTimeModel, int userId);

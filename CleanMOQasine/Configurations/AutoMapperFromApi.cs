@@ -3,7 +3,6 @@ using CleanMOQasine.API.Models;
 using CleanMOQasine.Business;
 using CleanMOQasine.Business.Models;
 
-
 namespace CleanMOQasine.API.Configurations
 {
     public class AutoMapperFromApi : Profile
@@ -21,6 +20,8 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<RoomInputModel, RoomModel>();
             CreateMap<RoomModel, RoomOutputModel>();
             CreateMap<WorkingTimeOutputModel, WorkingTimeModel>();
+            CreateMap<PaymentOutputModel, PaymentModel>();
+            CreateMap<PaymentModel, PaymentInputModel>();
         }
     }
 }

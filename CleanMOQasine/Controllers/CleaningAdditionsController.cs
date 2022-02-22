@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeEnum(Role.Admin)]
     public class CleaningAdditionsController : ControllerBase
     {
         private readonly ICleaningAdditionService _cleaningAdditionService;
@@ -21,6 +25,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions/228
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public ActionResult<CleaningAdditionOutputModel> GetCleaningAdditionById(int id)
         {
             var model = _cleaningAdditionService.GetCleaningAdditionById(id);
@@ -30,6 +35,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpGet()]
+        [AllowAnonymous]
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
             var models = _cleaningAdditionService.GetAllCleaningAdditions();

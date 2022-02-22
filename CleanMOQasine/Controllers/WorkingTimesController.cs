@@ -36,6 +36,7 @@ namespace CleanMOQasine.API.Controllers
             _workingTimeService.DeleteWorkingTimeById(id);
             return NoContent();
         }
+
         [HttpPost]
         public ActionResult AddWorkingTime(WorkingTimeModel workingTime)
         {

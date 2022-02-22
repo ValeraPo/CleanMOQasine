@@ -19,6 +19,7 @@
                 && room.Price == Price
                 && room.IsDeleted == IsDeleted)
                 return true;
+
             return false;
         }
 

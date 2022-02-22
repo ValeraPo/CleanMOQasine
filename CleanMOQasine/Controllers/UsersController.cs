@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -21,6 +24,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<UserOutputModel> GetUserById(int id)
         {
             var userModel = _userService.GetUserById(id);
@@ -34,6 +38,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpGet("admins")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
@@ -52,6 +57,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpGet("clients")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();
@@ -61,6 +67,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpPut("{id}")]
+        [Authorize]
         public ActionResult UpdateUser(int id, [FromBody] UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);
@@ -70,6 +77,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult<UserModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
@@ -79,6 +87,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpDelete("{id}")]
+        [AuthorizeEnum(Role.Admin, Role.Client)]
         public ActionResult DeleteUser(int id)
         {
             _userService.DeleteUserById(id);
@@ -96,6 +105,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpPatch("{id}")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult RestoreUser(int id)
         {
             _userService.RestoreUserById(id);

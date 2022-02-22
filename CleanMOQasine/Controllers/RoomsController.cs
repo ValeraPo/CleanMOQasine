@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -21,6 +24,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms/23
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<RoomOutputModel> GetRoomById(int id)
         {
             var roomModel = _roomService.GetRoomById(id);
@@ -34,6 +38,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms
         [HttpGet()]
+        [Authorize]
         public ActionResult<List<RoomOutputModel>> GetAllRooms()
         {
             var roomModels = _roomService.GetAllRooms();
@@ -43,7 +48,8 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms/23
         [HttpPut("{id}")]
-        public ActionResult UpdateUser(int id, [FromBody] RoomInputModel roomInputModel)
+        [AuthorizeEnum(Role.Admin)]
+        public ActionResult UpdateRoom(int id, [FromBody] RoomInputModel roomInputModel)
         {
             var roomModel = _autoMapper.Map<RoomModel>(roomInputModel);
             _roomService.UpdateRoom(id, roomModel);
@@ -52,6 +58,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms
         [HttpPost]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult<RoomModel> AddRoom([FromBody] RoomInputModel roomInputModel)
         {
             var roomModel = _autoMapper.Map<RoomModel>(roomInputModel);
@@ -61,6 +68,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms/23
         [HttpDelete("{id}")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult DeleteRoom(int id)
         {
             _roomService.DeleteRoomById(id);
@@ -69,6 +77,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms/23
         [HttpPatch("{id}")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult RestoreRoom(int id)
         {
             _roomService.RestoreRoomById(id);

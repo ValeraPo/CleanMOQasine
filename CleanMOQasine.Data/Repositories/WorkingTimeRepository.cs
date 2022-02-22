@@ -20,7 +20,9 @@ namespace CleanMOQasine.Data.Repositories
         public void UpdateWorkingTime(WorkingTime workingTime)
         {
             var oldWorkingTime = _context.WorkingHours.FirstOrDefault(p => p.Id == workingTime.Id);
-            oldWorkingTime = workingTime;
+            oldWorkingTime.Day = workingTime.Day;
+            oldWorkingTime.EndTime = workingTime.EndTime;
+            oldWorkingTime.StartTime = workingTime.StartTime;
             _context.SaveChanges();
         }
 

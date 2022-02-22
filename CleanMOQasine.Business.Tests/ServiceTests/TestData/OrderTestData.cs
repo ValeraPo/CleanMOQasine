@@ -75,21 +75,20 @@ namespace CleanMOQasine.Business.Tests.TestData
                         IsDeleted = false,
                         Role = Data.Enums.Role.Cleaner,
                     }
+                },
+                Payments = new List<PaymentModel>
+                {
+                    new PaymentModel
+                    {
+                        Amount = 100,
+                        PaymentDate = new DateTime(2022, 2, 12),
+                    },
+                    new PaymentModel
+                    {
+                        Amount = 150,
+                        PaymentDate = new DateTime(2022, 2, 10),
+                    },
                 }
-                //TODO добавить когда появится пэймент
-                //Payments = new List<PaymentModel>
-                //{
-                //    new PaymentModel
-                //    {
-                //        Amount = 100,
-                //        PaymentDate = new DateTime(2022, 2, 12),
-                //    },
-                //    new PaymentModel
-                //    {
-                //        Amount = 150,
-                //        PaymentDate = new DateTime(2022, 2, 10),
-                //    },
-                //}
             };
         }
 
@@ -161,21 +160,20 @@ namespace CleanMOQasine.Business.Tests.TestData
                         IsDeleted = false,
                         Role = Data.Enums.Role.Cleaner,
                     }
+                },
+                Payments = new List<Payment>
+                {
+                    new Payment
+                    {
+                        Amount = 100,
+                        PaymentDate = new DateTime(2022, 2, 12),
+                    },
+                    new Payment
+                    {
+                        Amount = 150,
+                        PaymentDate = new DateTime(2022, 2, 10),
+                    },
                 }
-                //TODO добавить когда появится пэймент
-                //Payments = new List<Payment>
-                //{
-                //    new Payment
-                //    {
-                //        Amount = 100,
-                //        PaymentDate = new DateTime(2022, 2, 12),
-                //    },
-                //    new Payment
-                //    {
-                //        Amount = 150,
-                //        PaymentDate = new DateTime(2022, 2, 10),
-                //    },
-                //}
             };
         }
 
@@ -252,25 +250,23 @@ namespace CleanMOQasine.Business.Tests.TestData
                         IsDeleted = false,
                         Role = Data.Enums.Role.Cleaner,
                     }
+                },
+                Payments = new List<Payment>
+                {
+                    new Payment
+                    {
+                        Amount = 100,
+                        PaymentDate = new DateTime(2022, 2, 12),
+                        IsDeleted = false
+                    },
+                    new Payment
+                    {
+                        Amount = 150,
+                        PaymentDate = new DateTime(2022, 2, 10),
+                        IsDeleted = false
+                    },
                 }
-                //TODO добавить когда появится пэймент
-                //Payments = new List<Payment>
-                //{
-                //    new Payment
-                //    {
-                //        Amount = 100,
-                //        PaymentDate = new DateTime(2022, 2, 12),
-                //        IsDeleted = false
-                //    },
-                //    new Payment
-                //    {
-                //        Amount = 150,
-                //        PaymentDate = new DateTime(2022, 2, 10),
-                //        IsDeleted = false
-                //    },
-                //}
             },
-
                 new Order
             {
                 Address = "Ул. Матросова, 2",
@@ -339,20 +335,18 @@ namespace CleanMOQasine.Business.Tests.TestData
                         IsDeleted = false,
                         Role = Data.Enums.Role.Cleaner,
                     }
+                },
+                Payments = new List<Payment>
+                {
+                    new Payment
+                    {
+                        Amount = 100,
+                        PaymentDate = new DateTime(2022, 1, 9),
+                        IsDeleted = false
+                    },
                 }
-                //TODO добавить когда появится пэймент
-                //Payments = new List<Payment>
-                //{
-                //    new Payment
-                //    {
-                //        Amount = 100,
-                //        PaymentDate = new DateTime(2022, 1, 9),
-                //        IsDeleted = false
-                //    },
-                //}
             },
         };
-
             return orders;
         }
 
@@ -429,27 +423,24 @@ namespace CleanMOQasine.Business.Tests.TestData
                         IsDeleted = false,
                         Role = Data.Enums.Role.Cleaner,
                     }
+                },
+                Payments = new List<Payment>
+                {
+                    new Payment
+                    {
+                        Amount = 100,
+                        PaymentDate = new DateTime(2022, 2, 12),
+                        IsDeleted = false
+                    },
+                    new Payment
+                    {
+                        Amount = 150,
+                        PaymentDate = new DateTime(2022, 2, 10),
+                        IsDeleted = false
+                    },
                 }
-                //TODO добавить когда появится пэймент
-                //Payments = new List<Payment>
-                //{
-                //    new Payment
-                //    {
-                //        Amount = 100,
-                //        PaymentDate = new DateTime(2022, 2, 12),
-                //        IsDeleted = false
-                //    },
-                //    new Payment
-                //    {
-                //        Amount = 150,
-                //        PaymentDate = new DateTime(2022, 2, 10),
-                //        IsDeleted = false
-                //    },
-                //}
             },
-
         };
-
             return orders;
         }
 
@@ -467,6 +458,5 @@ namespace CleanMOQasine.Business.Tests.TestData
                 Role = Data.Enums.Role.Cleaner,
             };
         }
-
     }
 }

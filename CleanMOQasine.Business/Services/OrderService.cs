@@ -3,8 +3,6 @@ using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
-using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Business.Exceptions;
 
 namespace CleanMOQasine.Business.Services
 {
@@ -14,7 +12,7 @@ namespace CleanMOQasine.Business.Services
         private readonly IUserRepository _userRepository;
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly ICleaningTypeRepository _cleaningTypeRepository;
-       private readonly IRoomRepository _roomRepository;
+        private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
 
         public OrderService(IOrderRepository orderRpository, 
@@ -29,7 +27,7 @@ namespace CleanMOQasine.Business.Services
             _mapper = mapper;
             _cleaningAdditionRepository = cleaningAdditionRepository;
             _cleaningTypeRepository = cleaningTypeRepository;
-           _roomRepository = roomRepository;
+            _roomRepository = roomRepository;
         }
 
         public OrderModel GetOrderById(int id)
@@ -136,7 +134,6 @@ namespace CleanMOQasine.Business.Services
             }
             return _mapper.Map<List<UserModel>>(cleaners);
         }
-
 
         public void AddPayment(PaymentModel payment, int orderId)
         {

@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Business.Configurations
 {
@@ -26,6 +21,7 @@ namespace CleanMOQasine.Business.Configurations
             CreateMap<Room, RoomModel>().ReverseMap();
 
             CreateMap<WorkingTime, WorkingTimeModel>().ReverseMap();
+
             CreateMap<Payment, PaymentModel>().ReverseMap();
         }
     }

@@ -16,6 +16,7 @@ namespace CleanMOQasine.Business.Models
         public List<CleaningAdditionModel> CleaningAdditions { get; set; }
         public List<WorkingTimeModel> WorkingHours { get; set; }
         public List<OrderModel> Orders { get; set; }
+
         public double? Rank 
         {
             get
@@ -32,6 +33,7 @@ namespace CleanMOQasine.Business.Models
             }
             private set { }
         }
+
         public override bool Equals(object? obj)
         {
             if (obj is null)

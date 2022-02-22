@@ -12,6 +12,7 @@ namespace CleanMOQasine.API.Controllers
     {
         private readonly IGradeService _gradeService;
         private readonly IMapper _mapper;
+
         public GradesController(IGradeService gradeService, IMapper mapper)
         {
             _gradeService = gradeService;

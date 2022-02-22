@@ -1,4 +1,4 @@
-﻿using CleanMOQasine.API.Attributes;
+﻿using CleanMOQasine.API.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace CleanMOQasine.API.Models

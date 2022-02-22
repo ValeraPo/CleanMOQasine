@@ -1,7 +1,6 @@
 ﻿using CleanMOQasine.API.Controllers;
 using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CleanMOQasine.API.Extensions

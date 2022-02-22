@@ -37,7 +37,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseMiddleware<GlobalExeptionHandler>();
+app.UseMiddleware<GlobalExñeptionHandler>();
 
 app.MapControllers();
 

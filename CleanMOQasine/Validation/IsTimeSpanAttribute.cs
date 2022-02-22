@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace CleanMOQasine.API.Attributes
+namespace CleanMOQasine.API.Validation
 {
-    public class IsTimeSpanAttribute: ValidationAttribute
+    public class IsTimeSpanAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
         {

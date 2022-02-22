@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CleanMOQasine.API.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace CleanMOQasine.API.Models
 {
@@ -24,7 +25,7 @@ namespace CleanMOQasine.API.Models
 
         [Required(ErrorMessage = "Поле пароля нельзя оставлять пустым.")]
         [MinLength(9, ErrorMessage = "Ваш пароль недостаточно надежный.")]
-        [MaxLength(30, ErrorMessage = "Максимальная длина пароля 30 символов.")]
+        [MaxLength(30, ErrorMessage = "Пароль не может быть длиннее 30 символов.")]
         public string Password { get; set; }
     }
 }

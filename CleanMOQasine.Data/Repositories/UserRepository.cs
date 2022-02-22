@@ -17,6 +17,8 @@ namespace CleanMOQasine.Data.Repositories
 
         public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
 
+        public User? GetUserByEmail(string email) => _dbContext.Users.FirstOrDefault(u => u.Email == email);
+
         public int AddUser(User user)
         {
             _dbContext.Users.Add(user);

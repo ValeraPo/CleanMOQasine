@@ -4,11 +4,11 @@ using System.Text.Json;
 
 namespace CleanMOQasine.API.Infrastructures
 {
-    public class GlobalExeptionHandler
+    public class GlobalExсeptionHandler
     {
         private readonly RequestDelegate _next;
 
-        public GlobalExeptionHandler(RequestDelegate next)
+        public GlobalExсeptionHandler(RequestDelegate next)
         {
             _next = next;
         }

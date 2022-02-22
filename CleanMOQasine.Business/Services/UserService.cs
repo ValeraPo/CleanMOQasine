@@ -52,11 +52,35 @@ namespace CleanMOQasine.Business.Services
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
         }
 
+        public bool CheckIfLoginExists(string login)
+        {
+            var user = _userRepository.GetUserByLogin(login);
+            if (user is null)
+                return false;
+
+            return true;
+        }
+
+        public bool CheckIfEmailExists(string email)
+        {
+            var user = _userRepository.GetUserByEmail(email);
+            if (user is null)
+                return false;
+
+            return true;
+        }
+
         public void AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
             mappedUser.Password = PasswordHash.HashPassword(mappedUser.Password);
             _userRepository.AddUser(mappedUser);
+        }
+
+        public void RegisterNewClient(UserModel userModel)
+        {
+            userModel.Role = Role.Client;
+            AddUser(userModel);
         }
 
         public void DeleteUserById(int id)

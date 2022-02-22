@@ -4,6 +4,9 @@ namespace CleanMOQasine.Business.Services
 {
     public interface IUserService
     {
+        void RegisterNewClient(UserModel userModel);
+        bool CheckIfLoginExists(string login);
+        bool CheckIfEmailExists(string email);
         void AddUser(UserModel userModel);
         void DeleteUserById(int id);
         List<UserModel> GetAllAdmins();

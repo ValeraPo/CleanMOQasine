@@ -2,7 +2,6 @@ using CleanMOQasine.API.Extensions;
 using CleanMOQasine.API.Infrastructures;
 using CleanMOQasine.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 string _connectionStringVariableName = "CONNECTION_STRING"; 
@@ -38,7 +37,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseMiddleware<GlobalExeptionHandler>();
+app.UseMiddleware<GlobalExñeptionHandler>();
 
 app.MapControllers();
 

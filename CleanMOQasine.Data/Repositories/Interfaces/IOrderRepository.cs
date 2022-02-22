@@ -13,5 +13,6 @@ namespace CleanMOQasine.Data.Repositories
         void RestoreOrder(Order order);
         void UpdateOrder(Order oldOrder, Order newOrder);
         public void AddPayment(Payment newPayment, Order order);
+        public List<Order> GetOrdersByCleaner(User cleaner);
     }
 }

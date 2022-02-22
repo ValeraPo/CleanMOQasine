@@ -16,22 +16,27 @@ namespace CleanMOQasine.Business.Models
         public List<CleaningAdditionModel> CleaningAdditions { get; set; }
         public List<WorkingTimeModel> WorkingHours { get; set; }
         public List<OrderModel> Orders { get; set; }
+
         public double? Rank 
         {
             get
             {
                 if (Role is Role.Cleaner)
                 {
-                    var grades = Orders.Where(o=>o.Grade is not null).Select(o => o.Grade);
-                    if (grades.Count() != 0)
-                        return ((double)grades.Select(g => g.Rating).Sum()) / grades.Count();
-                    else
-                        return null;
+                    if (Orders is not null)
+                    {
+                        var grades = Orders.Where(o=>o.Grade is not null).Select(o => o.Grade);
+                        if (grades.Count() != 0)
+                            return ((double)grades.Select(g => g.Rating).Sum()) / grades.Count();
+                        else
+                            return null;
+                    }
                 }
                 return null;
             }
             private set { }
         }
+
         public override bool Equals(object? obj)
         {
             if (obj is null)

@@ -1,14 +1,11 @@
-﻿using CleanMOQasine.Business.Models;
-using Microsoft.AspNetCore.Mvc;
-using CleanMOQasine.Business;
+﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
+using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
-using AutoMapper;
-using CleanMOQasine.API.Configurations;
-using CleanMOQasine.API.Models;
 using CleanMOQasine.Data.Enums;
-using CleanMOQasine.API.Attributes;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
 {

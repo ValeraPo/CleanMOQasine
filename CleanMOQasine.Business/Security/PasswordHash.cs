@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 
-
 namespace CleanMOQasine.Business.Security
 {
     public class PasswordHash

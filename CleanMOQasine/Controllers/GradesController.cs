@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
+using CleanMOQasine.API.Extensions;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -11,10 +15,12 @@ namespace CleanMOQasine.API.Controllers
     public class GradesController : Controller
     {
         private readonly IGradeService _gradeService;
+        private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
-        public GradesController(IGradeService gradeService, IMapper mapper)
+        public GradesController(IGradeService gradeService, IOrderService orderService, IMapper mapper)
         {
             _gradeService = gradeService;
+            _orderService = orderService;
             _mapper = mapper;
         }
 
@@ -30,6 +36,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult GetAllGrades()
         {
             var model = _gradeService.GetAllGrades();
@@ -38,6 +45,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpDelete]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult DeleteGradeById(int id)
         {
             _gradeService.DeleteGradeById(id);
@@ -45,8 +53,12 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPost]
+        [AuthorizeEnum(Role.Client)]
         public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery] int orderId)
         {
+            var clientId = this.GetUserId();
+            var orders = _orderService.GetOrdersByClientId(clientId);
+            this.CheckCustomerOrder(orders, orderId);
 
             var model = _mapper.Map<GradeModel>(grade);
             _gradeService.AddGrade(model, orderId);
@@ -54,11 +66,20 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult UpdateGrade(int id, [FromBody] GradeBaseInputModel grade)
         {
             var model = _mapper.Map<GradeModel>(grade);
             _gradeService.UpdateGrade(model, id);
             return Ok();
+        }
+
+        [HttpGet("cleaners/{id}")]
+        [AuthorizeEnum(Role.Admin)]
+        public ActionResult GetCleanerGrades(int id)
+        {
+            var cleanerGrades = _gradeService.GetAllGradesByCleanerId(id);
+            return Ok(cleanerGrades);
         }
     }
 }

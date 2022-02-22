@@ -11,12 +11,14 @@ namespace CleanMOQasine.Business.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IWorkingTimeRepository _workingTimeRepository;
         private readonly IMapper _autoMapper;
 
-        public UserService(IMapper autoMapper, IUserRepository userRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository)
         {
             _userRepository = userRepository;
             _autoMapper = autoMapper;
+            _workingTimeRepository = workingTimeRepository;
         }
 
         public UserModel GetUserById(int id)
@@ -52,11 +54,35 @@ namespace CleanMOQasine.Business.Services
             return _autoMapper.Map<List<UserModel>>(users).Where(u => u.Role == Role.Client).ToList();
         }
 
+        public bool CheckIfLoginExists(string login)
+        {
+            var user = _userRepository.GetUserByLogin(login);
+            if (user is null)
+                return false;
+
+            return true;
+        }
+
+        public bool CheckIfEmailExists(string email)
+        {
+            var user = _userRepository.GetUserByEmail(email);
+            if (user is null)
+                return false;
+
+            return true;
+        }
+
         public void AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
             mappedUser.Password = PasswordHash.HashPassword(mappedUser.Password);
             _userRepository.AddUser(mappedUser);
+        }
+
+        public void RegisterNewClient(UserModel userModel)
+        {
+            userModel.Role = Role.Client;
+            AddUser(userModel);
         }
 
         public void DeleteUserById(int id)
@@ -72,6 +98,29 @@ namespace CleanMOQasine.Business.Services
             CheckUser(user, id);
             _userRepository.UpdateUser(id, false);
         }
+
+        public void AddWorkingTime(WorkingTimeModel workingTimeModel, int userId)
+        {
+            var workingTimes = _workingTimeRepository.GetCleanersWorkingTimes(userId);
+            foreach(var workTime in workingTimes)
+            {
+                if (workTime.StartTime < workingTimeModel.StartTime
+                    && workTime.EndTime > workingTimeModel.EndTime)
+                    return;
+                else if (workTime.StartTime > workingTimeModel.StartTime
+                    || workTime.EndTime < workingTimeModel.EndTime)
+                {
+                    workTime.StartTime = workingTimeModel.StartTime;
+                    workTime.EndTime = workingTimeModel.EndTime;
+                    _workingTimeRepository.UpdateWorkingTime(workTime);
+                    return;
+                }
+            }
+            var workingTimeForEntity = _autoMapper.Map<WorkingTime>(workingTimeModel);
+            var user = GetUserById(userId);
+            _workingTimeRepository.AddWorkingTime(workingTimeForEntity, userId);
+        }
+
 
         private void CheckUser(User user, int id)
         {

@@ -1,14 +1,10 @@
-using Microsoft.EntityFrameworkCore.InMemory;
+using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Data.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using CleanMOQasine.Data.Repositories;
-using CleanMOQasine.Data.Entities;
-using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
-using Moq;
 using System.Linq;
-using CleanMOQasine.Data.Tests.TestData;
 
 namespace CleanMOQasine.Data.Tests
 {
@@ -21,8 +17,8 @@ namespace CleanMOQasine.Data.Tests
         {
             var opt = new DbContextOptionsBuilder<CleanMOQasineContext>()
                 .UseInMemoryDatabase(databaseName: "Test")
-                .Options;
-            _context = new CleanMOQasineContext(opt); 
+                .EnableSensitiveDataLogging().Options;
+            _context = new CleanMOQasineContext(opt);
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
         }
@@ -44,7 +40,7 @@ namespace CleanMOQasine.Data.Tests
         }
 
         [TestCaseSource(typeof(GetAllGradesTestCaseSource))]
-        public void GetAllGradesTest(List <Grade> grades, List<Grade> expectedList)
+        public void GetAllGradesTest(List<Grade> grades, List<Grade> expectedList)
         {
             //given
             foreach (var grade in grades)
@@ -115,6 +111,21 @@ namespace CleanMOQasine.Data.Tests
             //then
             Assert.AreEqual(grade, actual);
             Assert.AreEqual(order, actual.Order);
+        }
+
+        [TestCaseSource(typeof(GetGradesByCleanerTestCaseSource))]
+        public void GetGradesByCleanerTest(List<Grade> allGrades, int cleanerId, List<Grade> expected)
+        {
+            //given
+            _context.Grades.AddRange(allGrades);
+            _context.SaveChanges();
+            var repo = new GradeRepository(_context);
+
+            //when
+            var actual = repo.GetGradesByCleaner(cleanerId);
+
+            //then
+            CollectionAssert.AreEqual(actual, expected);
         }
     }
 }

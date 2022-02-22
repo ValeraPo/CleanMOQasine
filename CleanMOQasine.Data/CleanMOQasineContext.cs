@@ -9,6 +9,7 @@ namespace CleanMOQasine.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.CreateEntities();
             modelBuilder.SetOnDeleteNoAction();
             modelBuilder.Seed();

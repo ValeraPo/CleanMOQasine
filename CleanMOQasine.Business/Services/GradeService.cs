@@ -51,8 +51,6 @@ namespace CleanMOQasine.Business.Services
 
         public void DeleteGradeById(int id)
         {
-            //if (GetGradeById(id) is null)
-            //    throw new NotFoundException($"Grade with {id} not found");
             GetGradeById(id);
             _gradeRepository.DeleteGradeById(id);
         }
@@ -60,18 +58,6 @@ namespace CleanMOQasine.Business.Services
         public List<GradeModel> GetAllGradesByCleanerId(int cleanerId)
         {
             var grades = _gradeRepository.GetGradesByCleaner(cleanerId);
-            //List<Grade> gradesToCalculateMidCleanersRating = new();
-            //foreach (var grade in grades)
-            //{
-            //    foreach (var cleaner in grade.Order.Cleaners)
-            //    {
-            //        if (cleaner.Id == cleanerId)
-            //        {
-            //            gradesToCalculateMidCleanersRating.Add(grade);
-            //            break;
-            //        }
-            //    }
-            //}
             return _mapper.Map<List<GradeModel>>(grades);
         }
 

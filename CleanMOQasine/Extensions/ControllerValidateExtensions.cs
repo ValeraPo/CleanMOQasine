@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.API.Controllers;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -18,7 +19,7 @@ namespace CleanMOQasine.API.Extensions
                 if (parsed)
                     return userId;
             }
-            throw new Exception("Вы не авторизованы");
+            throw new AuthenticationException("Вы не авторизованы");
         }
 
         public static void CheckCustomerOrder(this GradesController controller, List<OrderModel> orders, int orderId)
@@ -26,11 +27,11 @@ namespace CleanMOQasine.API.Extensions
             
             if (orders == null || orders.Count == 0)
             {
-                throw new Exception("У этого клиента не было заказов");
+                throw new NotFoundException("У этого клиента не было заказов");
             }
             bool containsThisOrder = orders.Any(o => o.Id == orderId);
             if (!containsThisOrder)
-                throw new Exception("У этого клиента не было такого заказа");
+                throw new NoAccessException("У этого клиента не было такого заказа");
         }
     }
 }

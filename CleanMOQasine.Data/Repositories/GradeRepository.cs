@@ -49,5 +49,14 @@ namespace CleanMOQasine.Data.Repositories
                 .Where(g => !g.IsDeleted).ToList();
             return grades;
         }
+
+        public List<Grade> GetGradesByCleaner(int cleanerId)
+        {
+            var grades = _context.Grades
+                .Include(g=>g.Order)
+                .ThenInclude(o=>o.Cleaners)
+                .Where(g => !g.IsDeleted && g.Order.Cleaners.Any(c => c.Id == cleanerId)).ToList();
+            return grades;
+        }
     }
 }

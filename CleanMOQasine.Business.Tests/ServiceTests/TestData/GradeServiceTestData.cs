@@ -1,5 +1,7 @@
 ﻿using CleanMOQasine.Data.Entities;
+using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +34,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
             };
         }
 
-        public List<Grade> GetGrades()
+        public static IEnumerable<TestCaseData> GetGrades()
         {
             var grade1 = new Grade
             {
@@ -72,7 +74,8 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
                     }
                 }
             };
-            return new List<Grade> { grade1, grade2};
+            yield return new TestCaseData(new List<Grade> { grade1, grade2});
+            yield return new TestCaseData(new List<Grade> { });
         }
     }
 }

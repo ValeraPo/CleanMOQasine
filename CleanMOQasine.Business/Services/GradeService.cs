@@ -11,11 +11,13 @@ namespace CleanMOQasine.Business.Services
     public class GradeService : IGradeService
     {
         private readonly IGradeRepository _gradeRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IMapper _mapper;
-        public GradeService(IGradeRepository gradeRpository, IMapper mapper)
+        public GradeService(IGradeRepository gradeRpository, IMapper mapper, IOrderRepository orderRepository)
         {
             _gradeRepository = gradeRpository;
             _mapper = mapper;
+            _orderRepository = orderRepository;
         }
 
         public GradeModel GetGradeById(int id)
@@ -41,6 +43,8 @@ namespace CleanMOQasine.Business.Services
 
         public void AddGrade(GradeModel grade, int orderId)
         {
+            var order = _orderRepository.GetOrderById(orderId);
+            CheckEntity(order, typeof(Order));
             var newGrade = _mapper.Map<Grade>(grade);
             _gradeRepository.AddGrade(newGrade, orderId);
         }
@@ -55,20 +59,20 @@ namespace CleanMOQasine.Business.Services
 
         public List<GradeModel> GetAllGradesByCleanerId(int cleanerId)
         {
-            var grades = _gradeRepository.GetGradesWithCleaners();
-            List<Grade> gradesToCalculateMidCleanersRating = new();
-            foreach (var grade in grades)
-            {
-                foreach (var cleaner in grade.Order.Cleaners)
-                {
-                    if (cleaner.Id == cleanerId)
-                    {
-                        gradesToCalculateMidCleanersRating.Add(grade);
-                        break;
-                    }
-                }
-            }
-            return _mapper.Map<List<GradeModel>>(gradesToCalculateMidCleanersRating);
+            var grades = _gradeRepository.GetGradesByCleaner(cleanerId);
+            //List<Grade> gradesToCalculateMidCleanersRating = new();
+            //foreach (var grade in grades)
+            //{
+            //    foreach (var cleaner in grade.Order.Cleaners)
+            //    {
+            //        if (cleaner.Id == cleanerId)
+            //        {
+            //            gradesToCalculateMidCleanersRating.Add(grade);
+            //            break;
+            //        }
+            //    }
+            //}
+            return _mapper.Map<List<GradeModel>>(grades);
         }
 
         private void CheckEntity(object entity, Type entityType)

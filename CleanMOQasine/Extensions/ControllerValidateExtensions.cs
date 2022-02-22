@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CleanMOQasine.API.Controllers;
+using CleanMOQasine.Business.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CleanMOQasine.API.Extensions
 {
     public static class ControllerValidateExtensions
     {
-        public static int GetUserId(this ControllerBase controllerBase)
+        public static int GetUserId(this GradesController controller)
         {
-            var identity = controllerBase.HttpContext.User.Identity as ClaimsIdentity;
+            var identity = controller.HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
             {
                 int userId;
@@ -16,8 +18,19 @@ namespace CleanMOQasine.API.Extensions
                 if (parsed)
                     return userId;
             }
-            //return null;
-            throw new Exception();
+            throw new Exception("Вы не авторизованы");
+        }
+
+        public static void CheckCustomerOrder(this GradesController controller, List<OrderModel> orders, int orderId)
+        {
+            
+            if (orders == null || orders.Count == 0)
+            {
+                throw new Exception("У этого клиента не было заказов");
+            }
+            bool containsThisOrder = orders.Any(o => o.Id == orderId);
+            if (!containsThisOrder)
+                throw new Exception("У этого клиента не было такого заказа");
         }
     }
 }

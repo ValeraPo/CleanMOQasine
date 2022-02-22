@@ -16,10 +16,12 @@ namespace CleanMOQasine.API.Controllers
     public class GradesController : Controller
     {
         private readonly IGradeService _gradeService;
+        private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
-        public GradesController(IGradeService gradeService, IMapper mapper)
+        public GradesController(IGradeService gradeService, IOrderService orderService, IMapper mapper)
         {
             _gradeService = gradeService;
+            _orderService = orderService;
             _mapper = mapper;
         }
 
@@ -55,11 +57,10 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Client)]
         public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery] int orderId)
         {
-            this.GetUserId();
-            //if (userId is null)
-            //    return StatusCode(StatusCodes.Status400BadRequest, grade);
-            //if (grade.Rating > 5 || grade.Rating < 0)
-            //    return StatusCode(StatusCodes.Status400BadRequest, "Рейтинг от 0 до 5");
+            var clientId = this.GetUserId();
+            var orders = _orderService.GetOrdersByClientId(clientId);
+            this.CheckCustomerOrder(orders, orderId);
+
             var model = _mapper.Map<GradeModel>(grade);
             _gradeService.AddGrade(model, orderId);
             return StatusCode(StatusCodes.Status201Created, grade);

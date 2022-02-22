@@ -3,6 +3,7 @@ using CleanMOQasine.API.Infrastructures;
 using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data;
+using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +33,9 @@ builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
+builder.Services.AddScoped<IWorkingTimeService, WorkingTimeService>();
+
 
 builder.Services.AddAutoMapper(typeof(AutoMapperToData), typeof(OrderMapper));
 

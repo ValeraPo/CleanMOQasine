@@ -1,11 +1,11 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
     public class WorkingTimeRepository : IWorkingTimeRepository
     {
         private readonly CleanMOQasineContext _context;
-
         public WorkingTimeRepository(CleanMOQasineContext context)
         {
             _context = context;
@@ -31,9 +31,24 @@ namespace CleanMOQasine.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void AddWorkingTime(WorkingTime newWorkingTime)
+        public List<WorkingTime> GetCleanersWorkingTimes(int userId)
         {
-            _context.WorkingHours.Add(newWorkingTime);
+            var cleanerWorkingTimes = _context.WorkingHours.Include(u => u.User).Where(w => !w.IsDeleted
+            && w.StartTime > DateTime.Now).ToList();
+            foreach(var working in cleanerWorkingTimes)
+            {
+                if (working.User.Id != userId)
+                    cleanerWorkingTimes.Remove(working);
+            }
+            return cleanerWorkingTimes;
+        }
+
+        public void AddWorkingTime(WorkingTime newWorkingTime, int userId)
+        {
+            //var user = _context.Users.Include(u => u.WorkingHours).FirstOrDefault(u => u.Id == userId && !u.IsDeleted);
+            var users = _context.Users.Where(u => !u.IsDeleted).ToList();
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId && !u.IsDeleted);
+            user.WorkingHours.Add(newWorkingTime);
             _context.SaveChanges();
         }
     }

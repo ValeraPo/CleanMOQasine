@@ -49,12 +49,5 @@ namespace CleanMOQasine.Business.Services
                 throw new NotFoundException($"Working time with id {id} does not exists");
             _repository.DeleteWorkingTime(id);
         }
-
-        public void AddWorkingTime(WorkingTimeModel workingTimeModel)
-        {
-            //TODO перекинуть в юзера, скорее всего
-            _repository.AddWorkingTime();
-        }
-
     }
 }

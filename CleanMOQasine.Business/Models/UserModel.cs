@@ -23,11 +23,14 @@ namespace CleanMOQasine.Business.Models
             {
                 if (Role is Role.Cleaner)
                 {
-                    var grades = Orders.Where(o=>o.Grade is not null).Select(o => o.Grade);
-                    if (grades.Count() != 0)
-                        return ((double)grades.Select(g => g.Rating).Sum()) / grades.Count();
-                    else
-                        return null;
+                    if (Orders is not null)
+                    {
+                        var grades = Orders.Where(o=>o.Grade is not null).Select(o => o.Grade);
+                        if (grades.Count() != 0)
+                            return ((double)grades.Select(g => g.Rating).Sum()) / grades.Count();
+                        else
+                            return null;
+                    }
                 }
                 return null;
             }

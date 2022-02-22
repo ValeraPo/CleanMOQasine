@@ -45,9 +45,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public void AddWorkingTime(WorkingTime newWorkingTime, int userId)
         {
-            //var user = _context.Users.Include(u => u.WorkingHours).FirstOrDefault(u => u.Id == userId && !u.IsDeleted);
-            var users = _context.Users.Where(u => !u.IsDeleted).ToList();
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId && !u.IsDeleted);
+            var user = _context.Users.Include(u => u.WorkingHours).FirstOrDefault(u => u.Id == userId && !u.IsDeleted);
             user.WorkingHours.Add(newWorkingTime);
             _context.SaveChanges();
         }

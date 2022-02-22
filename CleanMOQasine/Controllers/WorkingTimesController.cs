@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -44,11 +45,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult UpdateWorkingTime(WorkingTimeModel workingTime)
+        public ActionResult UpdateWorkingTime(WorkingTimeOutputModel workingTime, [FromQuery] int id)
         {
-            //if () WorkingTime is null
-            return BadRequest();
-            //else
+            var workingTimeBusinesModel = _autoMapper.Map<WorkingTimeModel>(workingTime);
+            _workingTimeService.UpdateWorkingTime(workingTimeBusinesModel, id);
             return Ok();
         }
     }

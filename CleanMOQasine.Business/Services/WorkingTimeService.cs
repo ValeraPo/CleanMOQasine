@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Entities;
-using CleanMOQasine.Data.Exceptions;
 using CleanMOQasine.Data.Repositories;
 using System;
 using System.Collections.Generic;

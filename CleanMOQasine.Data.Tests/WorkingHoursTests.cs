@@ -107,7 +107,7 @@ namespace CleanMOQasine.Data.Tests
             _context.SaveChanges();
 
             //when
-            _repo.AddWorkingTime(workingHours, user);
+            _repo.AddWorkingTime(workingHours, user.Id);
             var actual = _context.WorkingHours.FirstOrDefault(w => w.Id == workingHours.Id);
 
             //then

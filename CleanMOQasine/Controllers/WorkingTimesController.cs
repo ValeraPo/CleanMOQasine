@@ -31,6 +31,7 @@ namespace CleanMOQasine.API.Controllers
             //else
             return Ok();
         }
+
         [HttpPost]
         public ActionResult AddWorkingTime(WorkingTimeModel workingTime)
         {

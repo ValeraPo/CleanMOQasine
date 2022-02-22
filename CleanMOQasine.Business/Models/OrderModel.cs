@@ -1,6 +1,4 @@
-﻿
-using CleanMOQasine.Business.Extensions;
-using System.Linq;
+﻿using CleanMOQasine.Business.Extensions;
 
 namespace CleanMOQasine.Business.Models
 {
@@ -13,6 +11,13 @@ namespace CleanMOQasine.Business.Models
         public CleaningTypeModel CleaningType { get; set; }
         public GradeModel Grade { get; set; }
         public string Address { get; set; }
+        public DateTime Date { get; set; }
+        public List<RoomModel> Rooms { get; set; }
+        public List<CleaningAdditionModel> CleaningAdditions { get; set; }
+        public List<UserModel> Cleaners { get; set; }
+        public List<PaymentModel> Payments { get; set; }
+        public bool IsDeleted { get; set; }
+
         public decimal TotalPrice 
         {
             get => (CleaningType.CleaningAdditions.Select(c => c.Price).Sum()
@@ -31,7 +36,6 @@ namespace CleanMOQasine.Business.Models
             set { }
         }
 
-        public DateTime Date { get; set; }
         public bool IsCompleted 
         {
             get => Date.Add(TotalDuration) <= DateTime.Now;
@@ -41,12 +45,6 @@ namespace CleanMOQasine.Business.Models
                 _isCompleted = value;
             } 
         }
-        public bool IsDeleted { get; set; }
-
-        public List<RoomModel> Rooms { get; set; }
-        public List<CleaningAdditionModel> CleaningAdditions { get; set; }
-        public List<UserModel> Cleaners { get; set; }
-        public List<PaymentModel> Payments { get; set; }
 
         private bool Equals(OrderModel order)
         {
@@ -65,6 +63,7 @@ namespace CleanMOQasine.Business.Models
                 && order.Cleaners.Select(r => r.Login).SequenceEqual<string>(Cleaners.Select(r => r.Login))
                 && order.Payments.Select(r => r.Amount).SequenceEqual<decimal>(Payments.Select(r => r.Amount));
         }
+
         public override bool Equals(object? obj)
         {
             if (obj is null)
@@ -72,6 +71,5 @@ namespace CleanMOQasine.Business.Models
 
             return obj.GetType() == GetType() && Equals((OrderModel)obj);
         }
-
     }
 }

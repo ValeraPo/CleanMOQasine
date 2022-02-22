@@ -22,7 +22,5 @@ namespace CleanMOQasine.Business
                    IsDeleted == model.IsDeleted;
         }
 
-        //TODO:
-        //public ICollection<UserModel> Users { get; set; //наверное это и не надо здесь
     }
 }

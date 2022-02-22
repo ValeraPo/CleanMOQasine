@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using CleanMOQasine.Business.Security;
+﻿using CleanMOQasine.Business.Security;
 using NUnit.Framework;
+using System;
+using System.Security.Cryptography;
 
 namespace CleanMOQasine.Business.Tests
 {
     public class PasswordHashTests
     {
-
         [TestCase("pipi12")]
         [TestCase("")]
         [TestCase("     ")]

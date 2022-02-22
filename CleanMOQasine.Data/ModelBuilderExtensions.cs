@@ -5,7 +5,6 @@ namespace CleanMOQasine.Data
 {
     public static class ModelBuilderExtensions
     {
-
         public static void CreateEntities(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Order>()

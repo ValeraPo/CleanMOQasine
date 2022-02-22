@@ -18,22 +18,22 @@ namespace CleanMOQasine.API.Controllers
         private readonly IUserService _userService;
         private readonly ICleaningAdditionService _cleaningAdditionService;
         private readonly ICleaningTypeService _cleaningTypeService;
-       private readonly IRoomService _roomService;
+        private readonly IRoomService _roomService;
         private readonly IMapper _mapper;
 
         public OrdersController(IOrderService orderService,
             IUserService userService,
-            IMapper maper,
+            IMapper mapper,
             ICleaningAdditionService cleaningAdditionService,
             ICleaningTypeService cleaningTypeService,
-           IRoomService roomService)
+            IRoomService roomService)
         {
             _orderService = orderService;
             _userService = userService;
-            _mapper = maper;
+            _mapper = mapper;
             _cleaningAdditionService = cleaningAdditionService;
             _cleaningTypeService = cleaningTypeService;
-           _roomService = roomService;
+            _roomService = roomService;
         }
 
         //api/Orders/admin
@@ -81,12 +81,7 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Client)]
         public ActionResult AddOrder([FromBody] OrderUpdateInputModel order)
         {
-            var modelOrder = _mapper.Map<OrderModel>(order);
-            foreach(var c in order.CleaningAdditionIds)
-                modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
-            modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
-            foreach (var r in order.RoomIds)
-                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            var modelOrder = CreateOrder(order);
             modelOrder.Client = _userService.GetUserById(GetUserId());
 
             _orderService.AddOrder(modelOrder);
@@ -98,14 +93,8 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
         {
-            var modelOrder = _mapper.Map<OrderModel>(order);
-            foreach (var c in order.CleaningAdditionIds)
-                modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
-            modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
-            foreach (var r in order.RoomIds)
-                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            var modelOrder = CreateOrder(order);
             modelOrder.Client = _userService.GetUserById(order.ClientId);
-
             _orderService.AddOrder(modelOrder);
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -125,7 +114,6 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
-            var model = _mapper.Map<OrderModel>(cleaner);
             _orderService.AddCleaner(id, cleaner.CleanerId);
             return Ok($"Cleaner with id = {cleaner.CleanerId} was added");
         }
@@ -135,7 +123,6 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
-            var model = _mapper.Map<OrderModel>(cleaner);
             _orderService.RemoveCleaner(id, cleaner.CleanerId);
             return Ok($"Cleaner with id = {cleaner.CleanerId} was removed");
         }
@@ -172,6 +159,18 @@ namespace CleanMOQasine.API.Controllers
             List<Claim> claims = identity.Claims.ToList();
             var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
             return idUser;
+        }
+
+        private OrderModel CreateOrder(OrderUpdateInputModel order)
+        {
+            var modelOrder = _mapper.Map<OrderModel>(order);
+            foreach (var c in order.CleaningAdditionIds)
+                modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
+            modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
+            foreach (var r in order.RoomIds)
+                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+
+            return modelOrder;
         }
     }
 }

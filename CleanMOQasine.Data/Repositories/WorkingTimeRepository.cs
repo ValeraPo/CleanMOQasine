@@ -12,7 +12,7 @@ namespace CleanMOQasine.Data.Repositories
         }
 
         public WorkingTime? GetWorkingTimeById(int id)
-           => _context.WorkingHours.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
+            => _context.WorkingHours.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public IEnumerable<WorkingTime> GetAllWorkingTimes()
             => _context.WorkingHours.Where(p => !p.IsDeleted).ToList();

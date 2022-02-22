@@ -1,8 +1,6 @@
 ﻿using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Web.Helpers;
 
 namespace CleanMOQasine.API.Controllers
 {

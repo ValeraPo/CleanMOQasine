@@ -1,4 +1,7 @@
-﻿using CleanMOQasine.Business.Models;
+﻿using AutoMapper;
+using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Models;
+using CleanMOQasine.Business.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -7,29 +10,32 @@ namespace CleanMOQasine.API.Controllers
     [Route("api/[controller]")]
     public class WorkingTimesController : Controller
     {
+        private readonly IWorkingTimeService _workingTimeService;
+        private readonly IMapper _autoMapper;
+
+        public WorkingTimesController(IWorkingTimeService workingTimeService, IMapper autoMapper)
+        {
+            _workingTimeService = workingTimeService;
+            _autoMapper = autoMapper;
+        }
+
         [HttpGet("{id}")]
         public ActionResult<WorkingTimeModel> GetWorkingTimeById(int id)
         {
-            //if () WorkingTime is null
-            return BadRequest();
-            //else
-            return Ok();
-
+            return Ok(_workingTimeService.GetWorkingTimeById(id));
         }
 
         [HttpGet]
         public ActionResult<List<WorkingTimeModel>> GetAllWorkingTimes()
         {
-            return Ok();
+            return Ok(_workingTimeService.GetAllWorkingTimes());
         }
 
         [HttpDelete]
         public ActionResult DeleteWorkingTimeById(int id)
         {
-            //if () WorkingTime is null
-            return BadRequest();
-            //else
-            return Ok();
+            _workingTimeService.DeleteWorkingTimeById(id);
+            return NoContent();
         }
 
         [HttpPost]
@@ -39,11 +45,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult UpdateWorkingTime(WorkingTimeModel workingTime)
+        public ActionResult UpdateWorkingTime(WorkingTimeOutputModel workingTime, [FromQuery] int id)
         {
-            //if () WorkingTime is null
-            return BadRequest();
-            //else
+            var workingTimeBusinesModel = _autoMapper.Map<WorkingTimeModel>(workingTime);
+            _workingTimeService.UpdateWorkingTime(workingTimeBusinesModel, id);
             return Ok();
         }
     }

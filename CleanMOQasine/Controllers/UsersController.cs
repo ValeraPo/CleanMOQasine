@@ -107,6 +107,15 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users/23
+        [HttpPost("workingtime/{id}")]
+        public ActionResult AddCleanersWorkingTime([FromBody] WorkingTimeOutputModel workingTimeOutput,int id)
+        {
+            var workingTime = _autoMapper.Map<WorkingTimeModel>(workingTimeOutput);
+            _userService.AddWorkingTime(workingTime,id);
+            return StatusCode(StatusCodes.Status201Created, workingTime);
+        }
+
+        //api/Users/23
         [HttpPatch("{id}")]
         [AuthorizeEnum(Role.Admin)]
         public ActionResult RestoreUser(int id)

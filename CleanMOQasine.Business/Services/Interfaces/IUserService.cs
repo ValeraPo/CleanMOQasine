@@ -15,5 +15,7 @@ namespace CleanMOQasine.Business.Services
         UserModel GetUserById(int id);
         void RestoreUserById(int id);
         void UpdateUser(int id, UserModel userModel);
+        void AddWorkingTime(WorkingTimeModel workingTimeModel, int userId);
+
     }
 }

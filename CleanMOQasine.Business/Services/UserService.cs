@@ -11,12 +11,14 @@ namespace CleanMOQasine.Business.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IWorkingTimeRepository _workingTimeRepository;
         private readonly IMapper _autoMapper;
 
-        public UserService(IMapper autoMapper, IUserRepository userRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository)
         {
             _userRepository = userRepository;
             _autoMapper = autoMapper;
+            _workingTimeRepository = workingTimeRepository;
         }
 
         public UserModel GetUserById(int id)
@@ -96,6 +98,29 @@ namespace CleanMOQasine.Business.Services
             CheckUser(user, id);
             _userRepository.UpdateUser(id, false);
         }
+
+        public void AddWorkingTime(WorkingTimeModel workingTimeModel, int userId)
+        {
+            var workingTimes = _workingTimeRepository.GetCleanersWorkingTimes(userId);
+            foreach(var workTime in workingTimes)
+            {
+                if (workTime.StartTime < workingTimeModel.StartTime
+                    && workTime.EndTime > workingTimeModel.EndTime)
+                    return;
+                else if (workTime.StartTime > workingTimeModel.StartTime
+                    || workTime.EndTime < workingTimeModel.EndTime)
+                {
+                    workTime.StartTime = workingTimeModel.StartTime;
+                    workTime.EndTime = workingTimeModel.EndTime;
+                    _workingTimeRepository.UpdateWorkingTime(workTime);
+                    return;
+                }
+            }
+            var workingTimeForEntity = _autoMapper.Map<WorkingTime>(workingTimeModel);
+            var user = GetUserById(userId);
+            _workingTimeRepository.AddWorkingTime(workingTimeForEntity, userId);
+        }
+
 
         private void CheckUser(User user, int id)
         {

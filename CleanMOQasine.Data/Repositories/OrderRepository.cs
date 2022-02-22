@@ -6,7 +6,6 @@ namespace CleanMOQasine.Data.Repositories
     public class OrderRepository : IOrderRepository
     {
         private readonly CleanMOQasineContext _dbContext;
-        public bool _isInitialized;
 
         public OrderRepository(CleanMOQasineContext dbContext)
         {
@@ -27,6 +26,17 @@ namespace CleanMOQasine.Data.Repositories
             oldOrder.Rooms = newOrder.Rooms;
             oldOrder.CleaningAdditions = newOrder.CleaningAdditions;
             Save();
+        }
+
+        public List<Order> GetOrdersByCleaner(User cleaner)
+        {
+            var orders = new List<Order>();
+            foreach (var order in GetAllOrders())
+            {
+                if (order.Cleaners.Contains(cleaner))
+                    orders.Add(order);
+            }
+            return orders;
         }
 
         public void AddOrder(Order order)

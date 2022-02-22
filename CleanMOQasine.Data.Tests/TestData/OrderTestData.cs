@@ -300,14 +300,65 @@ namespace CleanMOQasine.Data.Tests.TestData
         {
             return new User
             {
-                Email = "kusin@kmail.com",
-                FirstName = "Петр",
-                LastName = "Кузин",
-                Login = "kusin",
-                Password = "123qwe",
-                PhoneNumber = "+7(917)234-44-55",
+                Email = "bugaga@mail.com",
+                FirstName = "Сергей",
+                LastName = "Бугаев",
+                Login = "Bugai",
+                Password = "fhryr352",
+                PhoneNumber = "+7(921)765-45-23",
                 IsDeleted = false,
-                Role = Enums.Role.Cleaner,
+                Role = Enums.Role.Client,
+                Rank = 4.5666,
+                WorkingHours = new List<WorkingTime> {
+                    new WorkingTime {
+                        IsDeleted = false,
+                        Day = Enums.WeekDay.Thursday
+                    },
+                    new WorkingTime {
+                        IsDeleted = false,
+                        Day = Enums.WeekDay.Saturday
+                    },
+                },
+                CleaningAdditions = new List<CleaningAddition> {
+                    new CleaningAddition
+                    {
+                        Duration = System.TimeSpan.Zero,
+                        IsDeleted = false,
+                        Name = "Вынести мусор",
+                        Price = 300,
+                        Orders = new List<Order> {
+                            new Order {
+                                Address ="Арктическая 7, кв 23",
+                                Cleaners = new List<User> { }
+                            }
+                        }
+                    },
+                    new CleaningAddition
+                    {
+                        Duration = System.TimeSpan.Zero,
+                        IsDeleted = false,
+                        Name = "Помыть пол",
+                        Price = 600,
+                        Orders = new List<Order> {
+                            new Order {
+                                Address = "Арктическая 7, кв 23",
+                                Cleaners = new List<User> { }
+                            }
+                        }
+                    },
+                },
+                ClientOrders = new List<Order> {
+                    new Order {
+                        Address = "Арктическая 7, кв 23",
+                        Cleaners =  new List<User> { }
+                    }
+                },
+                CleanerOrders = new List<Order> {
+                    new Order {
+                        Address = "Арктическая 7, кв 23",
+                        Cleaners = new List<User> { }
+                    }
+                }
             };
         }
 

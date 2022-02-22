@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
+using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
-using AutoMapper;
-using CleanMOQasine.API.Configurations;
-using CleanMOQasine.API.Models;
+using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -12,16 +15,30 @@ namespace CleanMOQasine.API.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IUserService _userService;
+        private readonly ICleaningAdditionService _cleaningAdditionService;
+        private readonly ICleaningTypeService _cleaningTypeService;
+       private readonly IRoomService _roomService;
         private readonly IMapper _mapper;
 
-        public OrdersController(IOrderService orderService, IMapper maper)
+        public OrdersController(IOrderService orderService,
+            IUserService userService,
+            IMapper maper,
+            ICleaningAdditionService cleaningAdditionService,
+            ICleaningTypeService cleaningTypeService,
+           IRoomService roomService)
         {
             _orderService = orderService;
+            _userService = userService;
             _mapper = maper;
+            _cleaningAdditionService = cleaningAdditionService;
+            _cleaningTypeService = cleaningTypeService;
+           _roomService = roomService;
         }
 
-        //api/Orders
-        [HttpGet]
+        //api/Orders/admin
+        [HttpGet("admin")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
             var models = _orderService.GetAllOrders();
@@ -29,8 +46,29 @@ namespace CleanMOQasine.API.Controllers
             return Ok(outputs);
         }
 
+        //api/Orders/client
+        [HttpGet("client")]
+        [AuthorizeEnum(Role.Client)]
+        public ActionResult<List<OrderOutputModel>> GetOrdersByClient()
+        {
+            var models = _orderService.GetOrdersByClientId(GetUserId());
+            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
+            return Ok(outputs);
+        }
+
+        //api/Orders/cleaner
+        [HttpGet("cleaner")]
+        [AuthorizeEnum(Role.Cleaner)]
+        public ActionResult<List<OrderOutputModel>> GetOrdersByCleaner()
+        {
+            var models = _orderService.GetOrdersByCleanerId(GetUserId());
+            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
+            return Ok(outputs);
+        }
+
         //api/Orders/42
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<OrderOutputModel> GetOrderById(int id)
         {
             var model = _orderService.GetOrderById(id);
@@ -40,15 +78,41 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders
         [HttpPost]
-        public ActionResult AddOrder([FromBody]OrderInsertInputModel order)
+        [AuthorizeEnum(Role.Client)]
+        public ActionResult AddOrder([FromBody] OrderUpdateInputModel order)
         {
-            var model = _mapper.Map<OrderModel>(order);
-            _orderService.AddOrder(model);
+            var modelOrder = _mapper.Map<OrderModel>(order);
+            foreach(var c in order.CleaningAdditionIds)
+                modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
+            modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
+            foreach (var r in order.RoomIds)
+                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            modelOrder.Client = _userService.GetUserById(GetUserId());
+
+            _orderService.AddOrder(modelOrder);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        //api/Orders/admin
+        [HttpPost("admin")]
+        [AuthorizeEnum(Role.Admin)]
+        public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
+        {
+            var modelOrder = _mapper.Map<OrderModel>(order);
+            foreach (var c in order.CleaningAdditionIds)
+                modelOrder.CleaningAdditions.Add(_cleaningAdditionService.GetCleaningAdditionById(c));
+            modelOrder.CleaningType = _cleaningTypeService.GetCleaningTypeById(order.CleaningTypeId);
+            foreach (var r in order.RoomIds)
+                modelOrder.Rooms.Add(_roomService.GetRoomById(r));
+            modelOrder.Client = _userService.GetUserById(order.ClientId);
+
+            _orderService.AddOrder(modelOrder);
             return StatusCode(StatusCodes.Status201Created);
         }
 
         //api/Orders/42
         [HttpPut("{id}")]
+        [AuthorizeEnum(Role.Admin, Role.Client)]
         public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
             var model = _mapper.Map<OrderModel>(order);
@@ -58,6 +122,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders/42/cleaner
         [HttpPut("{id}/cleaner")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             var model = _mapper.Map<OrderModel>(cleaner);
@@ -67,6 +132,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Orders/42/remove-cleaner
         [HttpPut("{id}/remove-cleaner")]
+        [AuthorizeEnum(Role.Admin)]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             var model = _mapper.Map<OrderModel>(cleaner);
@@ -75,6 +141,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Orders/42
+        [AuthorizeEnum(Role.Admin)]
         [HttpDelete("{id}")]
         public ActionResult DeleteOrder(int id)
         {
@@ -83,6 +150,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Orders/42
+        [AuthorizeEnum(Role.Admin)]
         [HttpPatch("{id}")]
         public ActionResult RestoreOrder(int id)
         {
@@ -96,6 +164,14 @@ namespace CleanMOQasine.API.Controllers
             var paymentModel = _mapper.Map<PaymentModel>(payment);
             _orderService.AddPayment(paymentModel, orderId);
             return StatusCode(StatusCodes.Status201Created, payment);
+        }
+
+        private int GetUserId()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            List<Claim> claims = identity.Claims.ToList();
+            var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
+            return idUser;
         }
     }
 }

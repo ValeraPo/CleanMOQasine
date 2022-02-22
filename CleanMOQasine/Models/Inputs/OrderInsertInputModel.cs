@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CleanMOQasine.API.Models
 {
     public class OrderInsertInputModel : OrderUpdateInputModel
     {
-        public int ClientId { get; set; } //СЃРєРѕСЂРµРµ РІСЃРµРіРѕ Р·РґРµСЃСЊ Р±СѓРґРµС‚ РЅРµ int, Р° РєР°РєРѕР№-РЅРёР±СѓРґСЊ UserInputModel
+        [Required(ErrorMessage = "Поле Клиент нельзя оставлять пустым.")]
+        public int ClientId { get; set; } 
     }
 }
 

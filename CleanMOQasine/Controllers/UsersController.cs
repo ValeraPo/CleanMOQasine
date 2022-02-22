@@ -6,6 +6,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -76,11 +77,22 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users
+        [HttpPost("clients")]
+        public ActionResult<UserModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
+        {
+            var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
+            CheckUser(userModel);
+            _userService.RegisterNewClient(userModel);
+            return StatusCode(StatusCodes.Status201Created, userModel);
+        }
+
+        //api/Users
         [HttpPost]
         [AuthorizeEnum(Role.Admin)]
         public ActionResult<UserModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
+            CheckUser(userModel);
             _userService.AddUser(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
@@ -110,6 +122,14 @@ namespace CleanMOQasine.API.Controllers
         {
             _userService.RestoreUserById(id);
             return Ok($"User with Id = {id} was restored");
+        }
+
+        private void CheckUser(UserModel userModel)
+        {
+            if (_userService.CheckIfLoginExists(userModel.Login))
+                throw new AuthenticationException("Пользователь с таким логином уже существует");
+            else if (_userService.CheckIfLoginExists(userModel.Email))
+                throw new AuthenticationException("Пользователь с таким email уже существует");
         }
     }
 }

@@ -27,7 +27,6 @@ namespace CleanMOQasine.Business.Services
                                            new Claim(ClaimTypes.Surname, user.LastName),
                                            new Claim(ClaimTypes.UserData, user.Id.ToString()),
                                            new Claim(ClaimTypes.Email, user.Email),
-                                           new Claim(ClaimTypes.UserData, user.Id.ToString()),
                                            new Claim(ClaimTypes.Role, user.Role.ToString())};
             var jwt = new JwtSecurityToken(
                 issuer: AuthOptions.Issuer,

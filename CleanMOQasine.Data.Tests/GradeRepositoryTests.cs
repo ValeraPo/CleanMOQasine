@@ -1,14 +1,10 @@
-using Microsoft.EntityFrameworkCore.InMemory;
+using CleanMOQasine.Data.Entities;
+using CleanMOQasine.Data.Repositories;
+using CleanMOQasine.Data.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using CleanMOQasine.Data.Repositories;
-using CleanMOQasine.Data.Entities;
-using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
-using Moq;
 using System.Linq;
-using CleanMOQasine.Data.Tests.TestData;
 
 namespace CleanMOQasine.Data.Tests
 {
@@ -127,7 +123,6 @@ namespace CleanMOQasine.Data.Tests
 
             //when
             var actual = repo.GetGradesByCleaner(cleanerId);
-
 
             //then
             CollectionAssert.AreEqual(actual, expected);

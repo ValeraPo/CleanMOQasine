@@ -6,8 +6,7 @@ namespace CleanMOQasine.API.Models
     public class UserInsertInputModel
     {
         [Required(ErrorMessage ="Поле Email нельзя оставлять пустым.")]
-        [RegularExpression(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*" + "@" 
-            + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$", ErrorMessage = "Email введен некорректно!")]
+        [EmailAddress(ErrorMessage = "Email введен некорректно!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Поле логина нельзя оставлять пустым.")]

@@ -37,31 +37,17 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Orders/admin
-        [HttpGet("admin")]
-        [AuthorizeEnum(Role.Admin)]
+        [HttpGet]
+        [Authorize]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
-            var models = _orderService.GetAllOrders();
-            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
-            return Ok(outputs);
-        }
-
-        //api/Orders/client
-        [HttpGet("client")]
-        [AuthorizeEnum(Role.Client)]
-        public ActionResult<List<OrderOutputModel>> GetOrdersByClient()
-        {
-            var models = _orderService.GetOrdersByClientId(GetUserId());
-            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
-            return Ok(outputs);
-        }
-
-        //api/Orders/cleaner
-        [HttpGet("cleaner")]
-        [AuthorizeEnum(Role.Cleaner)]
-        public ActionResult<List<OrderOutputModel>> GetOrdersByCleaner()
-        {
-            var models = _orderService.GetOrdersByCleanerId(GetUserId());
+            var models = new List<OrderModel>();
+            if (GetUserRole() == 1)
+                models = _orderService.GetAllOrders();
+            else if (GetUserRole() == 2)
+                models = _orderService.GetOrdersByClientId(GetUserId());
+            else
+               models = _orderService.GetOrdersByCleanerId(GetUserId());
             var outputs = _mapper.Map<List<OrderOutputModel>>(models);
             return Ok(outputs);
         }
@@ -159,6 +145,14 @@ namespace CleanMOQasine.API.Controllers
             List<Claim> claims = identity.Claims.ToList();
             var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
             return idUser;
+        }
+
+        private int GetUserRole()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            List<Claim> claims = identity.Claims.ToList();
+            var role = int.Parse(claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault());
+            return role;
         }
 
         private OrderModel CreateOrder(OrderUpdateInputModel order)

@@ -112,11 +112,8 @@ namespace CleanMOQasine.Business.Services
 
         public List<UserModel> SearchCleaners(OrderModel orderModel)
         {
-            var cleaningAdditionModels = new List<CleaningAdditionModel>();
-            cleaningAdditionModels.AddRange(orderModel.CleaningType.CleaningAdditions);
-            if (orderModel.CleaningType != null)
-                cleaningAdditionModels.AddRange(orderModel.CleaningAdditions);
-            var cleaningAdditions = _mapper.Map<List<CleaningAddition>>(cleaningAdditionModels);
+            // Берем список 
+            var cleaningAdditions = GetCleaningAdditionByOrder(orderModel);
 
             var cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
             // Смотрим даты на меся вперед
@@ -142,6 +139,17 @@ namespace CleanMOQasine.Business.Services
                 throw new NotFoundException($"Order with id {orderId} does not exist");
             var newPayment = _mapper.Map<Payment>(payment);
             _orderRepository.AddPayment(newPayment, order);
+        }
+
+        // Получение списка адишенов по ордеру
+        public List<CleaningAddition> GetCleaningAdditionByOrder(OrderModel orderModel)
+        {
+            var cleaningAdditionModels = new List<CleaningAdditionModel>();
+            cleaningAdditionModels.AddRange(orderModel.CleaningType.CleaningAdditions);
+            if (orderModel.CleaningType != null)
+                cleaningAdditionModels.AddRange(orderModel.CleaningAdditions);
+            var cleaningAdditions = _mapper.Map<List<CleaningAddition>>(cleaningAdditionModels);
+            return cleaningAdditions;
         }
     }
 }

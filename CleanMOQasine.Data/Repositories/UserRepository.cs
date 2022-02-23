@@ -57,7 +57,7 @@ namespace CleanMOQasine.Data.Repositories
                 .Where(h => (int)h.Day % 7 == (int)orderDate.DayOfWeek)
                 .ToList()
                 .TrueForAll(h => h.StartTime <= orderDate
-                    && h.EndTime >= orderDate + duration)),
+                    && h.EndTime >= orderDate.Add(duration))),
                 // Выбираем тех кто не занят в это время
                 new Func<User, bool>(u => u.CleanerOrders
                 .Select(o => o.Date)

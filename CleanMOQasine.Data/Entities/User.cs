@@ -12,7 +12,6 @@ namespace CleanMOQasine.Data.Entities
         public string Email { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public double? Rank { get; set; }
         public bool IsDeleted { get; set; }
 
         public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; }
@@ -33,7 +32,6 @@ namespace CleanMOQasine.Data.Entities
                 && user.Email == Email
                 && user.Login == Login
                 && user.Password == Password
-                && user.Rank == Rank
                 && user.IsDeleted == IsDeleted)
                 return true;
 

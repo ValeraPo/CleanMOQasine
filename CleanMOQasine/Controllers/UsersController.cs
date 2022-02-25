@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Authentication;
 
 namespace CleanMOQasine.API.Controllers
@@ -26,12 +29,16 @@ namespace CleanMOQasine.API.Controllers
         //api/Users/23
         [HttpGet("{id}")]
         [Authorize]
+        [Description("Get user by id")]
+        [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult<UserOutputModel> GetUserById(int id)
         {
             var userModel = _userService.GetUserById(id);
 
             if (userModel is null)
-                return NotFound($"User with Id = {id} was not found");
+                return NotFound($"User with id = {id} was not found");
 
             var output = _autoMapper.Map<UserOutputModel>(userModel);
             return Ok(output);
@@ -40,6 +47,9 @@ namespace CleanMOQasine.API.Controllers
         //api/Users
         [HttpGet("admins")]
         [AuthorizeEnum(Role.Admin)]
+        [Description("Get all admins")]
+        [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
@@ -49,6 +59,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpGet("cleaners")]
+        [Description("Get all cleaners")]
         public ActionResult<List<UserOutputModel>> GetAllCleaners()
         {
             var userModels = _userService.GetAllCleaners();
@@ -59,6 +70,7 @@ namespace CleanMOQasine.API.Controllers
         //api/Users
         [HttpGet("clients")]
         [AuthorizeEnum(Role.Admin)]
+        [Description("Get all clients")]
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();
@@ -69,6 +81,8 @@ namespace CleanMOQasine.API.Controllers
         //api/Users/23
         [HttpPut("{id}")]
         [Authorize]
+        [Description("Update user by id")]
+        [ProducesResponseType(typeof(ValidationException), StatusCodes.Status422UnprocessableEntity)]
         public ActionResult UpdateUser(int id, [FromBody] UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);
@@ -78,6 +92,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost("clients")]
+        [Description("Register new client")]
         public ActionResult<UserModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
@@ -89,6 +104,7 @@ namespace CleanMOQasine.API.Controllers
         //api/Users
         [HttpPost]
         [AuthorizeEnum(Role.Admin)]
+        [Description("Add a user")]
         public ActionResult<UserModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);

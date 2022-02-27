@@ -1,4 +1,6 @@
 ﻿using CleanMOQasine.Data.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CleanMOQasine.Data.Entities
 {
     public class WorkingTime

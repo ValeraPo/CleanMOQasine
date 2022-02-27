@@ -17,7 +17,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 PhoneNumber = "+7(921)765-45-23",
                 IsDeleted = false,
                 Role = Enums.Role.Client,
-                Rank = 4.5666,
                 WorkingHours = new List<WorkingTime> {
                     new WorkingTime {
                         IsDeleted = false,
@@ -86,7 +85,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                 PhoneNumber = "+7(777)777-77-77",
                 IsDeleted = false,
                 Role = Enums.Role.Client,
-                Rank = 4.5666,
                 WorkingHours = new List<WorkingTime> {
                     new WorkingTime {
                         IsDeleted = false,
@@ -156,7 +154,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                     PhoneNumber = "+7(921)765-45-23",
                     IsDeleted = false,
                     Role = Enums.Role.Client,
-                    Rank = 4.5666,
                     WorkingHours = new List<WorkingTime> {
                         new WorkingTime {
                             IsDeleted = false,
@@ -218,7 +215,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                     PhoneNumber = "+7(921)8746325",
                     IsDeleted = false,
                     Role = Enums.Role.Client,
-                    Rank = 4.5666,
                     WorkingHours = new List<WorkingTime> {
                         new WorkingTime {
                             IsDeleted = false,
@@ -280,7 +276,6 @@ namespace CleanMOQasine.Data.Tests.TestData
                     PhoneNumber = "+78126543524",
                     IsDeleted = true,
                     Role = Enums.Role.Cleaner,
-                    Rank = 4.5666,
                     WorkingHours = new List<WorkingTime> {
                         new WorkingTime {
                             IsDeleted = false,

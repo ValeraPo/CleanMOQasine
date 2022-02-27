@@ -22,6 +22,20 @@ namespace CleanMOQasine.Data
                 .HasMany(o => o.Cleaners)
                 .WithMany(u => u.CleanerOrders)
                 .UsingEntity("OrderCleaner");
+
+            modelBuilder.Entity<WorkingTime>().Property(w => w.StartTime).HasConversion<TimeConverter>();
+
+            modelBuilder.Entity<WorkingTime>().Property(w => w.EndTime).HasConversion<TimeConverter>();
+
+            modelBuilder.Entity<CleaningAddition>().HasIndex(p=>p.Name).IsUnique();
+
+            modelBuilder.Entity<CleaningType>().HasIndex(p => p.Name).IsUnique();
+
+            modelBuilder.Entity<User>().HasIndex(p => p.Login).IsUnique();
+
+            modelBuilder.Entity<User>().HasIndex(p => p.Email).IsUnique();
+
+            modelBuilder.Entity<Room>().HasIndex(p => p.Name).IsUnique();
         }
 
         public static void SetOnDeleteNoAction(this ModelBuilder modelBuilder)

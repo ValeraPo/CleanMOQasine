@@ -17,20 +17,20 @@ namespace CleanMOQasine.Business.Tests.TestData
             WorkingTimeModel workingTimeModel = new()
             {
                 Day = 1,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddHours(8)
+                StartTime = TimeOnly.FromDateTime(DateTime.Now),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8))
             };
             WorkingTimeModel workingTimeModel1 = new()
             {
                 Day = 2,
-                StartTime = DateTime.Now.AddDays(2),
-                EndTime = DateTime.Now.AddDays(2).AddHours(6)
+                StartTime = TimeOnly.FromDateTime(DateTime.Now.AddDays(2)),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddDays(2).AddHours(6))
             };
             WorkingTimeModel workingTimeModel2 = new()
             {
                 Day = 3,
-                StartTime = DateTime.Now.AddDays(3),
-                EndTime = DateTime.Now.AddDays(3).AddHours(3)
+                StartTime = TimeOnly.FromDateTime(DateTime.Now.AddDays(3)),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddDays(3).AddHours(3))
             };
             List<WorkingTimeModel> workingTimeModels = new();
             workingTimeModels.Add(workingTimeModel);
@@ -72,8 +72,8 @@ namespace CleanMOQasine.Business.Tests.TestData
             WorkingTimeModel workingTimeModel = new()
             {
                 Day = 1,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddHours(8)
+                StartTime = TimeOnly.FromDateTime(DateTime.Now),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8))
             };
             WorkingTime workingTime = new()
             {
@@ -91,15 +91,15 @@ namespace CleanMOQasine.Business.Tests.TestData
             WorkingTimeModel workingTimeModel = new()
             {
                 Day = 1,
-                StartTime = DateTime.Now,
-                EndTime = DateTime.Now.AddHours(8)
+                StartTime = TimeOnly.FromDateTime(DateTime.Now),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8))
             };
             WorkingTime workingTime = new()
             {
                 Id = 1,
                 Day = Data.Enums.WeekDay.Monday,
-                StartTime = DateTime.Now.AddDays(-2),
-                EndTime = DateTime.Now.AddDays(-2).AddHours(3)
+                StartTime = TimeOnly.FromDateTime(DateTime.Now.AddDays(-2)),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddDays(-2).AddHours(3))
             };
             yield return new TestCaseData(workingTimeModel, workingTime);
         }

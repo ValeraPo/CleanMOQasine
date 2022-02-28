@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Authentication;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -26,12 +28,16 @@ namespace CleanMOQasine.API.Controllers
         //api/Users/23
         [HttpGet("{id}")]
         [Authorize]
+        [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<UserOutputModel> GetUserById(int id)
         {
             var userModel = _userService.GetUserById(id);
 
             if (userModel is null)
-                return NotFound($"User with Id = {id} was not found");
+                return NotFound($"User with id = {id} was not found");
 
             var output = _autoMapper.Map<UserOutputModel>(userModel);
             return Ok(output);
@@ -40,6 +46,9 @@ namespace CleanMOQasine.API.Controllers
         //api/Users
         [HttpGet("admins")]
         [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(typeof(List<UserOutputModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
@@ -49,6 +58,9 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpGet("cleaners")]
+        [ProducesResponseType(typeof(List<UserOutputModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public ActionResult<List<UserOutputModel>> GetAllCleaners()
         {
             var userModels = _userService.GetAllCleaners();
@@ -59,6 +71,9 @@ namespace CleanMOQasine.API.Controllers
         //api/Users
         [HttpGet("clients")]
         [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(typeof(List<UserOutputModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();
@@ -69,16 +84,22 @@ namespace CleanMOQasine.API.Controllers
         //api/Users/23
         [HttpPut("{id}")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult UpdateUser(int id, [FromBody] UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);
             _userService.UpdateUser(id, userModel);
-            return Ok($"User with Id = {id} was updated");
+            return Ok($"User with id = {id} was updated");
         }
 
         //api/Users
         [HttpPost("clients")]
-        public ActionResult<UserModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
+        [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public ActionResult<UserOutputModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
             CheckUser(userModel);
@@ -89,7 +110,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Users
         [HttpPost]
         [AuthorizeEnum(Role.Admin)]
-        public ActionResult<UserModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
+        [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public ActionResult<UserOutputModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
             CheckUser(userModel);
@@ -100,6 +125,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Users/23
         [HttpDelete("{id}")]
         [AuthorizeEnum(Role.Admin, Role.Client)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteUser(int id)
         {
             _userService.DeleteUserById(id);
@@ -108,7 +137,12 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpPost("workingtime/{id}")]
-        public ActionResult AddCleanersWorkingTime([FromBody] WorkingTimeOutputModel workingTimeOutput,int id)
+        [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(typeof(WorkingTimeOutputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public ActionResult<WorkingTimeOutputModel> AddCleanersWorkingTime([FromBody] WorkingTimeOutputModel workingTimeOutput,int id)
         {
             var workingTime = _autoMapper.Map<WorkingTimeModel>(workingTimeOutput);
             _userService.AddWorkingTime(workingTime,id);
@@ -118,10 +152,14 @@ namespace CleanMOQasine.API.Controllers
         //api/Users/23
         [HttpPatch("{id}")]
         [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult RestoreUser(int id)
         {
             _userService.RestoreUserById(id);
-            return Ok($"User with Id = {id} was restored");
+            return Ok($"User with id = {id} was restored");
         }
 
         private void CheckUser(UserModel userModel)

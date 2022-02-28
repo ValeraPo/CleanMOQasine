@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Business.Exceptions;
+using Microsoft.Data.SqlClient;
 using System.Net;
 using System.Text.Json;
 
@@ -29,7 +30,7 @@ namespace CleanMOQasine.API.Infrastructures
             }
             catch (NotFoundException error)
             {
-                await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
+                await ConstructResponse(context, HttpStatusCode.NotFound, error.Message);
             }
             catch (NoAccessException error)
             {
@@ -38,6 +39,10 @@ namespace CleanMOQasine.API.Infrastructures
             catch (EntityNotFoundException error)
             {
                 await ConstructResponse(context, HttpStatusCode.BadRequest, error.Message);
+            }
+            catch (SqlException error)
+            {
+                await ConstructResponse(context, HttpStatusCode.InternalServerError, error.Message);
             }
             catch (Exception error)
             {

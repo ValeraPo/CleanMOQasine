@@ -36,7 +36,7 @@ namespace CleanMOQasine.Data.Repositories
         public List<WorkingTime> GetCleanersWorkingTimes(int userId)
         {
             var cleanerWorkingTimes = _context.WorkingHours.Include(u => u.User).Where(w => !w.IsDeleted
-            && w.StartTime > DateTime.Now).ToList();
+            && w.StartTime > TimeOnly.FromDateTime(DateTime.Now)).ToList();
             foreach(var working in cleanerWorkingTimes)
             {
                 if (working.User.Id != userId)

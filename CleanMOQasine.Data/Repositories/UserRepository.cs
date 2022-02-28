@@ -33,7 +33,6 @@ namespace CleanMOQasine.Data.Repositories
             entity.LastName = user.LastName;
             entity.Login = user.Login;
             entity.PhoneNumber = user.PhoneNumber;
-            entity.Rank = user.Rank;
             _dbContext.SaveChanges();
         }
 
@@ -56,8 +55,8 @@ namespace CleanMOQasine.Data.Repositories
                 new Func<User, bool>(u => u.WorkingHours
                 .Where(h => (int)h.Day % 7 == (int)orderDate.DayOfWeek)
                 .ToList()
-                .TrueForAll(h => h.StartTime <= orderDate
-                    && h.EndTime >= orderDate + duration)),
+                .TrueForAll(h => h.StartTime <= TimeOnly.FromDateTime(orderDate)
+                    && h.EndTime >= TimeOnly.FromDateTime(orderDate + duration))),
                 // Выбираем тех кто не занят в это время
                 new Func<User, bool>(u => u.CleanerOrders
                 .Select(o => o.Date)

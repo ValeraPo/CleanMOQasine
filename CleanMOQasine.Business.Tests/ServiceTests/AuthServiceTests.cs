@@ -48,7 +48,6 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
             Assert.True(claimValues.Contains(AuthOptions.Issuer));
             Assert.True(claimValues.Contains(AuthOptions.Audience));
             Assert.False(claimValues.Contains(user.PhoneNumber));
-            Assert.False(claimValues.Contains(user.Rank.ToString()));
             Assert.False(claimValues.Contains(user.IsDeleted.ToString()));
         }
 

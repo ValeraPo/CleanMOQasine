@@ -76,7 +76,8 @@ namespace CleanMOQasine.API.Controllers
         [HttpPost]
         [AuthorizeEnum(Role.Client)]
         [Description("Add order by client")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status302Found)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
@@ -84,9 +85,14 @@ namespace CleanMOQasine.API.Controllers
         {
             var modelOrder = CreateOrder(order);
             modelOrder.Client = _userService.GetUserById(GetUserId());
-
-            _orderService.AddOrder(modelOrder);
-            return StatusCode(StatusCodes.Status201Created);
+            var createdModelOrder = _orderService.AddOrder(modelOrder);
+            // Если не нашли необходимое количество клинеров
+            if(createdModelOrder == null)
+                return StatusCode(StatusCodes.Status404NotFound);
+            // Если нашли клинеров только на другие даты
+            if(createdModelOrder.Date != modelOrder.Date)
+                return StatusCode(StatusCodes.Status302Found, createdModelOrder);
+            return StatusCode(StatusCodes.Status201Created, createdModelOrder);
         }
 
         //api/Orders/admin

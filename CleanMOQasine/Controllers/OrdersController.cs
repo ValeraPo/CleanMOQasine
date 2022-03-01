@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
+using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.Security.Claims;
 
 namespace CleanMOQasine.API.Controllers
@@ -37,31 +39,21 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Orders/admin
-        [HttpGet("admin")]
-        [AuthorizeEnum(Role.Admin)]
+        [HttpGet]
+        [Authorize]
+        [Description("Get order by role")]
+        [ProducesResponseType(typeof(List<OrderOutputModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
-            var models = _orderService.GetAllOrders();
-            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
-            return Ok(outputs);
-        }
-
-        //api/Orders/client
-        [HttpGet("client")]
-        [AuthorizeEnum(Role.Client)]
-        public ActionResult<List<OrderOutputModel>> GetOrdersByClient()
-        {
-            var models = _orderService.GetOrdersByClientId(GetUserId());
-            var outputs = _mapper.Map<List<OrderOutputModel>>(models);
-            return Ok(outputs);
-        }
-
-        //api/Orders/cleaner
-        [HttpGet("cleaner")]
-        [AuthorizeEnum(Role.Cleaner)]
-        public ActionResult<List<OrderOutputModel>> GetOrdersByCleaner()
-        {
-            var models = _orderService.GetOrdersByCleanerId(GetUserId());
+            var models = new List<OrderModel>();
+            if (GetUserRole() == 1)
+                models = _orderService.GetAllOrders();
+            else if (GetUserRole() == 2)
+                models = _orderService.GetOrdersByClientId(GetUserId());
+            else
+               models = _orderService.GetOrdersByCleanerId(GetUserId());
             var outputs = _mapper.Map<List<OrderOutputModel>>(models);
             return Ok(outputs);
         }
@@ -69,6 +61,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [HttpGet("{id}")]
         [Authorize]
+        [Description("Get order by id")]
+        [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult<OrderOutputModel> GetOrderById(int id)
         {
             var model = _orderService.GetOrderById(id);
@@ -79,6 +75,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders
         [HttpPost]
         [AuthorizeEnum(Role.Client)]
+        [Description("Add order by client")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult AddOrder([FromBody] OrderUpdateInputModel order)
         {
             var modelOrder = CreateOrder(order);
@@ -91,6 +92,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/admin
         [HttpPost("admin")]
         [AuthorizeEnum(Role.Admin)]
+        [Description("Add order by admin")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
         {
             var modelOrder = CreateOrder(order);
@@ -102,6 +108,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [HttpPut("{id}")]
         [AuthorizeEnum(Role.Admin, Role.Client)]
+        [Description("Update order")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
             var model = _mapper.Map<OrderModel>(order);
@@ -112,6 +122,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42/cleaner
         [HttpPut("{id}/cleaner")]
         [AuthorizeEnum(Role.Admin)]
+        [Description("Add cleaner to order")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             _orderService.AddCleaner(id, cleaner.CleanerId);
@@ -121,6 +136,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42/remove-cleaner
         [HttpPut("{id}/remove-cleaner")]
         [AuthorizeEnum(Role.Admin)]
+        [Description("Remove cleaner from order")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             _orderService.RemoveCleaner(id, cleaner.CleanerId);
@@ -130,6 +150,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [AuthorizeEnum(Role.Admin)]
         [HttpDelete("{id}")]
+        [Description("Delete order")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult DeleteOrder(int id)
         {
             _orderService.DeleteOrder(id);
@@ -139,13 +163,22 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [AuthorizeEnum(Role.Admin)]
         [HttpPatch("{id}")]
+        [Description("Restore order")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult RestoreOrder(int id)
         {
             _orderService.RestoreOrder(id);
             return Ok($"Order with id = {id} was restored");
         }
 
+        [AuthorizeEnum(Role.Admin, Role.Client)]
         [HttpPost("{orderId}/payment")]
+        [Description("Delete order")]
+        [ProducesResponseType(typeof(PaymentInputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
         public ActionResult AddPayment([FromBody] PaymentInputModel payment, int orderId)
         {
             var paymentModel = _mapper.Map<PaymentModel>(payment);
@@ -159,6 +192,14 @@ namespace CleanMOQasine.API.Controllers
             List<Claim> claims = identity.Claims.ToList();
             var idUser = int.Parse(claims.Where(c => c.Type == ClaimTypes.UserData).Select(c => c.Value).SingleOrDefault());
             return idUser;
+        }
+
+        private int GetUserRole()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            List<Claim> claims = identity.Claims.ToList();
+            var role = int.Parse(claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault());
+            return role;
         }
 
         private OrderModel CreateOrder(OrderUpdateInputModel order)

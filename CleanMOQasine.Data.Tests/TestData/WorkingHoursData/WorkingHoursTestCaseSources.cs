@@ -16,21 +16,21 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 1,
                 Day = Enums.WeekDay.Monday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
                 IsDeleted = false
             };
             WorkingTime workingTimeMock1 = new()
             {
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
                 IsDeleted = true
             };
             WorkingTime workingTimeMock2 = new()
             {
                 Id = 3,
                 Day = Enums.WeekDay.Saturday,
-                EndTime = DateTime.Now.AddHours(5),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(5)),
                 IsDeleted = false
             };
             List<WorkingTime> allWorkingTimes = new();
@@ -49,7 +49,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 1,
                 Day = Enums.WeekDay.Monday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
                 IsDeleted = false
             };
             yield return new TestCaseData(workingTimeMock, workingTimeMock);
@@ -57,7 +57,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(2),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(2)),
                 IsDeleted = true
             };
             yield return new TestCaseData(workingTimeMock1, null);
@@ -69,14 +69,14 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 1,
                 Day = Enums.WeekDay.Monday,
-                EndTime = DateTime.Now.AddHours(4),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(4)),
                 IsDeleted = false
             };
             WorkingTime expected = new()
             {
                 Id = 1,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
                 IsDeleted = false
             };
             WorkingTime mockToUpdate = new()
@@ -91,7 +91,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(2),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(2)),
                 IsDeleted = false
             };
             WorkingTime updatedWorkingTimeMock1 = new()
@@ -117,7 +117,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 1,
                 Day = Enums.WeekDay.Monday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
                 IsDeleted = false
             };
             WorkingTime expected = new()
@@ -132,7 +132,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 2,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(2),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(2)),
                 IsDeleted = false
             };
             WorkingTime expected1 = new()
@@ -151,7 +151,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 4,
                 Day = Enums.WeekDay.Monday,
-                EndTime = DateTime.Now.AddHours(8),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(8)),
                 IsDeleted = false
             };
             yield return new TestCaseData(workingTimeMock, workingTimeMock);
@@ -159,7 +159,7 @@ namespace CleanMOQasine.Data.Tests.TestData
             {
                 Id = 5,
                 Day = Enums.WeekDay.Friday,
-                EndTime = DateTime.Now.AddHours(2),
+                EndTime = TimeOnly.FromDateTime(DateTime.Now.AddHours(2)),
                 IsDeleted = false
             };
             yield return new TestCaseData(workingTimeMock1, workingTimeMock1);

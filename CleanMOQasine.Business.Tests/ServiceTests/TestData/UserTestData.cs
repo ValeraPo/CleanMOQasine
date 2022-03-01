@@ -50,7 +50,6 @@ namespace CleanMOQasine.Business.Tests.TestData
                 PhoneNumber = "+7(921)765-45-23",
                 IsDeleted = false,
                 Role = Role.Client,
-                Rank = 4.5666,
                 CleaningAdditions = new List<CleaningAddition> {
                     new CleaningAddition { },
                     new CleaningAddition { }
@@ -85,7 +84,6 @@ namespace CleanMOQasine.Business.Tests.TestData
                     PhoneNumber = "+7(921)765-45-23",
                     IsDeleted = false,
                     Role = Role.Client,
-                    Rank = 4.5666,
                     CleaningAdditions = new List<CleaningAddition> {
                         new CleaningAddition { },
                         new CleaningAddition { }
@@ -105,7 +103,6 @@ namespace CleanMOQasine.Business.Tests.TestData
                     PhoneNumber = "+7(777)777-77-77",
                     IsDeleted = false,
                     Role = Role.Client,
-                    Rank = 4.5666,
                     CleaningAdditions = new List<CleaningAddition> {
                         new CleaningAddition { },
                         new CleaningAddition { },
@@ -127,7 +124,6 @@ namespace CleanMOQasine.Business.Tests.TestData
                     PhoneNumber = "+79116534523",
                     IsDeleted = false,
                     Role = Role.Cleaner,
-                    Rank = 4.5666,
                     CleaningAdditions = new List<CleaningAddition> {
                         new CleaningAddition { },
                         new CleaningAddition { }
@@ -147,7 +143,6 @@ namespace CleanMOQasine.Business.Tests.TestData
                     PhoneNumber = "+76666666666",
                     IsDeleted = false,
                     Role = Role.Cleaner,
-                    Rank = 4.5666,
                     CleaningAdditions = new List<CleaningAddition> {
                         new CleaningAddition { },
                         new CleaningAddition { },

@@ -110,7 +110,7 @@ namespace CleanMOQasine.Business.Tests
                 Assert.IsNotNull(actual[i].Login);
                 Assert.IsNotNull(actual[i].Password);
                 Assert.IsNotNull(actual[i].PhoneNumber);
-                Assert.IsNotNull(actual[i].Rank);
+                Assert.IsNull(actual[i].Rank);
                 Assert.IsNotNull(actual[i].CleaningAdditions);
                 Assert.IsNotNull(actual[i].WorkingHours);
                 Assert.IsTrue(actual[i].CleaningAdditions.Count > 0);
@@ -140,7 +140,7 @@ namespace CleanMOQasine.Business.Tests
                 Assert.IsNotNull(actual[i].Login);
                 Assert.IsNotNull(actual[i].Password);
                 Assert.IsNotNull(actual[i].PhoneNumber);
-                Assert.IsNotNull(actual[i].Rank);
+                Assert.IsNull(actual[i].Rank);
             }
         }
 

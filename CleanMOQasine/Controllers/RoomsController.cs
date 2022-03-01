@@ -25,6 +25,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Rooms/23
         [HttpGet("{id}")]
         [Authorize]
+        [ProducesResponseType(typeof(RoomOutputModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<RoomOutputModel> GetRoomById(int id)
         {
             var roomModel = _roomService.GetRoomById(id);
@@ -39,6 +43,9 @@ namespace CleanMOQasine.API.Controllers
         //api/Rooms
         [HttpGet()]
         [Authorize]
+        [ProducesResponseType(typeof(List<RoomOutputModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public ActionResult<List<RoomOutputModel>> GetAllRooms()
         {
             var roomModels = _roomService.GetAllRooms();
@@ -49,6 +56,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Rooms/23
         [HttpPut("{id}")]
         [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult UpdateRoom(int id, [FromBody] RoomInputModel roomInputModel)
         {
             var roomModel = _autoMapper.Map<RoomModel>(roomInputModel);
@@ -59,7 +70,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Rooms
         [HttpPost]
         [AuthorizeEnum(Role.Admin)]
-        public ActionResult<RoomModel> AddRoom([FromBody] RoomInputModel roomInputModel)
+        [ProducesResponseType(typeof(RoomOutputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        public ActionResult<RoomOutputModel> AddRoom([FromBody] RoomInputModel roomInputModel)
         {
             var roomModel = _autoMapper.Map<RoomModel>(roomInputModel);
             _roomService.AddRoom(roomModel);
@@ -69,6 +84,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Rooms/23
         [HttpDelete("{id}")]
         [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteRoom(int id)
         {
             _roomService.DeleteRoomById(id);
@@ -78,6 +97,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Rooms/23
         [HttpPatch("{id}")]
         [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult RestoreRoom(int id)
         {
             _roomService.RestoreRoomById(id);

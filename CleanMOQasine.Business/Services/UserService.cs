@@ -121,7 +121,6 @@ namespace CleanMOQasine.Business.Services
             _workingTimeRepository.AddWorkingTime(workingTimeForEntity, userId);
         }
 
-
         private void CheckUser(User user, int id)
         {
             if (user is null)

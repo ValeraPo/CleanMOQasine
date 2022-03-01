@@ -25,6 +25,8 @@ namespace CleanMOQasine.API.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(CleaningAdditionOutputModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<CleaningTypeOutputModel> GetCleaningTypeById(int id)
         {
             var model = _cleaningTypeService.GetCleaningTypeById(id);
@@ -34,6 +36,7 @@ namespace CleanMOQasine.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(List<CleaningAdditionOutputModel>), StatusCodes.Status200OK)]
         public ActionResult<List<CleaningTypeOutputModel>> GetAllCleaningTypes()
         {
             var models = _cleaningTypeService.GetAllCleaningTypes();
@@ -42,6 +45,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult AddCleaningType([FromBody]CleaningTypeInsertInputModel cleaningTypeInsertInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningTypeModel>(cleaningTypeInsertInputModel);
@@ -50,6 +57,11 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut("{id}/cleaning-additions")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult AddCleaningAdditionToCleaningType(int id, int cleaningAdditionId)
         { 
             _cleaningTypeService.AddCleaningAdditionToCleaningType(id, cleaningAdditionId);
@@ -58,6 +70,11 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult UpdateCleaningType(int id, [FromBody]CleaningTypeUpdateInputModel cleaningTypeUpdateInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningTypeModel>(cleaningTypeUpdateInputModel);
@@ -65,8 +82,11 @@ namespace CleanMOQasine.API.Controllers
             return Ok($"Cleaning type with {id} was updated");
         }
 
-
         [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteCleaningType(int id)
         {
             _cleaningTypeService.DeleteCleaningType(id);
@@ -74,6 +94,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult RestoreCleaningType(int id)
         {
             _cleaningTypeService.RestoreCleaningType(id);
@@ -81,6 +105,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpDelete("{id}/cleaning-additions")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public ActionResult DeleteCleaningAdditionFromCleaningType(int id, int cleaningAdditionId)
         {
             _cleaningTypeService.DeleteCleaningAdditionFromCleaningType(id, cleaningAdditionId);

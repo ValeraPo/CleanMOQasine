@@ -42,6 +42,20 @@ namespace CleanMOQasine.Business.Services
             var upd = _mapper.Map<Payment>(payment);
             _paymentRepository.UpdatePayment(upd);
         }
+
+        public List<PaymentModel> GetPaymentsByClientId(int clientId)
+        {
+            var payments = _paymentRepository.GetAllPayments();
+            List<PaymentModel> neededPayments = new();
+
+            foreach(var pay in  payments)
+            {
+                if (pay.Order.Client.Id == clientId)
+                    neededPayments.Add(_mapper.Map<PaymentModel>(pay));
+            }
+            return neededPayments;
+        }
+
     }
 }
  

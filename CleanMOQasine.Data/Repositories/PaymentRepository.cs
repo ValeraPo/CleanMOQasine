@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -15,7 +16,7 @@ namespace CleanMOQasine.Data.Repositories
             => _context.Payments.FirstOrDefault(g => g.Id == id && !g.IsDeleted);
 
         public List<Payment> GetAllPayments()
-            => _context.Payments.Where(p => !p.IsDeleted).ToList();
+            => _context.Payments.Include(o => o.Order).Where(p => !p.IsDeleted).ToList();
 
         public void DeletePayment(int id)
         {

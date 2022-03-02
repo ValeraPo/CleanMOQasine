@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanMOQasine.API.Controllers
@@ -20,6 +22,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
             var payment = _paymentService.GetPaymentById(id);
@@ -27,6 +33,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpGet]
+        [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<List<PaymentInputModel>> GetAllPayments()
         {
             return Ok(_mapper
@@ -34,6 +44,10 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpDelete]
+        [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult DeletePaymentById(int id)
         {
             _paymentService.DeletePayment(id);
@@ -41,11 +55,26 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut]
+        [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult UpdatePayment([FromBody] PaymentOutputModel payment)
         {
             var paymentModelToUpdate = _mapper.Map<PaymentModel>(payment);
             _paymentService.UpdatePayment(paymentModelToUpdate);
             return Ok();
         }
+
+        [HttpPut]
+        [AuthorizeEnum(Role.Admin)]
+        [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult GetPaymentsByCleanerId(int clientId)
+        {
+            return Ok(_mapper.Map<List<PaymentOutputModel>>(_paymentService.GetPaymentsByClientId(clientId)));
+        }
+
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
-using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
@@ -102,7 +101,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
-            CheckUser(userModel);
+            _userService.CheckUser(userModel);
             _userService.RegisterNewClient(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
@@ -117,7 +116,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            CheckUser(userModel);
+            _userService.CheckUser(userModel);
             _userService.AddUser(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
@@ -160,14 +159,6 @@ namespace CleanMOQasine.API.Controllers
         {
             _userService.RestoreUserById(id);
             return Ok($"User with id = {id} was restored");
-        }
-
-        private void CheckUser(UserModel userModel)
-        {
-            if (_userService.CheckIfLoginExists(userModel.Login))
-                throw new AuthenticationException("Пользователь с таким логином уже существует");
-            else if (_userService.CheckIfLoginExists(userModel.Email))
-                throw new AuthenticationException("Пользователь с таким email уже существует");
         }
     }
 }

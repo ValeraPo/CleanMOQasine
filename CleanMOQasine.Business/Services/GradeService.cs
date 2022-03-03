@@ -12,12 +12,16 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IGradeRepository _gradeRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public GradeService(IGradeRepository gradeRpository, IMapper mapper, IOrderRepository orderRepository)
+
+        public GradeService(IGradeRepository gradeRpository, IMapper mapper,
+            IOrderRepository orderRepository, IUserRepository userRepository)
         {
             _gradeRepository = gradeRpository;
             _mapper = mapper;
             _orderRepository = orderRepository;
+            _userRepository = userRepository;
         }
 
         public GradeModel GetGradeById(int id)
@@ -57,6 +61,10 @@ namespace CleanMOQasine.Business.Services
 
         public List<GradeModel> GetAllGradesByCleanerId(int cleanerId)
         {
+            var cleaner = _userRepository.GetUserById(cleanerId);
+            CheckEntity(cleaner, typeof(User));
+            if (cleaner.Role is not Data.Enums.Role.Cleaner)
+                throw new NotFoundException($"The cleaner {cleaner.Id} was not found");
             var grades = _gradeRepository.GetGradesByCleaner(cleanerId);
             return _mapper.Map<List<GradeModel>>(grades);
         }

@@ -8,7 +8,6 @@ using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -29,9 +28,10 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet("{id}")]
         [Authorize]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Description("Get user by id")]
         public ActionResult<UserOutputModel> GetUserById(int id)
         {
             var userModel = _userService.GetUserById(id);

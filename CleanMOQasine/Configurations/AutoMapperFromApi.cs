@@ -20,7 +20,8 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<CleaningTypeUpdateInputModel, CleaningTypeModel>();
             CreateMap<RoomInputModel, RoomModel>();
             CreateMap<RoomModel, RoomOutputModel>();
-            CreateMap<WorkingTimeOutputModel, WorkingTimeModel>();
+            CreateMap<WorkingTimeModel, WorkingTimeOutputModel>();
+            CreateMap<WorkingTimeInsertInputModel, WorkingTimeModel>();
             CreateMap<PaymentOutputModel, PaymentModel>();
             CreateMap<PaymentModel, PaymentInputModel>();
         }

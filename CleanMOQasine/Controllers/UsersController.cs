@@ -101,7 +101,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
-            _userService.CheckUser(userModel);
+            _userService.CheckIfThatUserAlreadyExists(userModel);
             _userService.RegisterNewClient(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
@@ -116,7 +116,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            _userService.CheckUser(userModel);
+            _userService.CheckIfThatUserAlreadyExists(userModel);
             _userService.AddUser(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }

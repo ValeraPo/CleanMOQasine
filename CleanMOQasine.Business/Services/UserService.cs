@@ -72,7 +72,7 @@ namespace CleanMOQasine.Business.Services
             return true;
         }
 
-        public void CheckUser(UserModel userModel)
+        public void CheckIfThatUserAlreadyExists(UserModel userModel)
         {
             if (CheckIfLoginExists(userModel.Login))
                 throw new AuthenticationException("Пользователь с таким логином уже существует");

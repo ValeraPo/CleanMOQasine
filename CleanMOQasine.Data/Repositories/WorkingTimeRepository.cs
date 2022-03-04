@@ -51,5 +51,11 @@ namespace CleanMOQasine.Data.Repositories
             user.WorkingHours.Add(newWorkingTime);
             _context.SaveChanges();
         }
+
+        public List<WorkingTime> GetWorkingTimesByCleaner(int cleanerId)
+        {
+            var cleanerWorkingTimes = _context.WorkingHours.Where(wh=>wh.User.Id==cleanerId).ToList();
+            return cleanerWorkingTimes;
+        }
     }
 }

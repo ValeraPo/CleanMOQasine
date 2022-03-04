@@ -19,10 +19,12 @@ namespace CleanMOQasine.Business.Tests
     {
         private readonly IMapper _mapper;
         private readonly Mock<IWorkingTimeRepository> _workingTimeRepositoryMock;
+        private readonly Mock<IUserRepository> _userRepositoryMock;
 
         public WorkingTimeTests()
         {
             _workingTimeRepositoryMock = new Mock<IWorkingTimeRepository>();
+            _userRepositoryMock = new Mock<IUserRepository>();
             _mapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
         }
@@ -34,7 +36,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _workingTimeRepositoryMock.Setup(m => m.GetAllWorkingTimes()).Returns(workingTimes);
-            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _userRepositoryMock.Object, _mapper);
             
             //when
             var actual = workingTimeService.GetAllWorkingTimes();
@@ -49,7 +51,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(workingTime.Id)).Returns(workingTime);
-            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _userRepositoryMock.Object, _mapper);
 
             //when
             var actual = workingTimeService.GetWorkingTimeById(workingTime.Id);
@@ -65,7 +67,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(workingTime.Id)).Returns(workingTime);
             _workingTimeRepositoryMock.Setup(m => m.UpdateWorkingTime(workingTime));
-            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _userRepositoryMock.Object, _mapper);
 
             //when
             workingTimeService.UpdateWorkingTime(new WorkingTimeModel(), workingTime.Id);
@@ -81,7 +83,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             _workingTimeRepositoryMock.Setup(m => m.GetWorkingTimeById(id)).Returns(new WorkingTime() { Id = 1});
             _workingTimeRepositoryMock.Setup(m => m.DeleteWorkingTime(id));
-            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _mapper);
+            var workingTimeService = new WorkingTimeService(_workingTimeRepositoryMock.Object, _userRepositoryMock.Object, _mapper);
 
             //when
             workingTimeService.DeleteWorkingTimeById(id);

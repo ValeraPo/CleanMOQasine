@@ -66,7 +66,7 @@ namespace CleanMOQasine.API.Controllers
             return Ok();
         }
 
-        [HttpGet("{id}/cleaners")]
+        [HttpGet("{clientId}")] //иначе ошибка сваггера, да и по логике нужен гет (Т_Т)
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

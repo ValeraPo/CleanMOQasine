@@ -66,7 +66,7 @@ namespace CleanMOQasine.API.Controllers
             return Ok();
         }
 
-        [HttpPut]
+        [HttpGet("{id}/cleaners")]
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

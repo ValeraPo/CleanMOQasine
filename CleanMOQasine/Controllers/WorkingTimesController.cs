@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Mvc;
+using CleanMOQasine.API.Extensions;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -50,6 +53,20 @@ namespace CleanMOQasine.API.Controllers
             var workingTimeBusinesModel = _autoMapper.Map<WorkingTimeModel>(workingTime);
             _workingTimeService.UpdateWorkingTime(workingTimeBusinesModel, id);
             return Ok();
+        }
+
+        [HttpGet("cleaners/{id}/workingtimes")]
+        [AuthorizeEnum(Role.Admin, Role.Cleaner)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<WorkingTimeOutputModel>> GetWorkingTimesByCleaner(int id)
+        {
+            this.CheckAccessCleanerToWorkingTime(id);
+            var workingTimeModels = _workingTimeService.GetWorkingTimesByCleaner(id);
+            var workingTimeOutputModels = _autoMapper.Map<List<WorkingTimeOutputModel>>(workingTimeModels);
+
+            return Ok(workingTimeOutputModels);
         }
     }
 }

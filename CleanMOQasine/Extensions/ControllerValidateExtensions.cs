@@ -1,6 +1,7 @@
 ﻿using CleanMOQasine.API.Controllers;
 using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
+using CleanMOQasine.Data.Enums;
 using System.Security.Claims;
 
 namespace CleanMOQasine.API.Extensions
@@ -31,6 +32,26 @@ namespace CleanMOQasine.API.Extensions
             bool containsThisOrder = orders.Any(o => o.Id == orderId);
             if (!containsThisOrder)
                 throw new NoAccessException("У этого клиента не было такого заказа");
+        }
+
+        public static void CheckAccessCleanerToWorkingTime(this WorkingTimesController controller, int cleanerId)
+        {
+            var identity = controller.HttpContext.User.Identity as ClaimsIdentity;
+            if (identity == null)
+                return;
+            
+            var roleStr = identity.FindFirst(ClaimTypes.Role)?.Value;
+            if (roleStr == Role.Admin.ToString())
+                return;
+            
+            int userId = Int32.Parse(identity.FindFirst(ClaimTypes.UserData)?.Value);
+            if (userId != cleanerId)
+            {
+                throw new NoAccessException("Клинер не может получить информацию о чужих рабочих часах");
+            }
+
+
+
         }
     }
 }

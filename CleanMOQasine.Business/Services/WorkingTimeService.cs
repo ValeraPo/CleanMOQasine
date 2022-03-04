@@ -49,5 +49,10 @@ namespace CleanMOQasine.Business.Services
                 throw new NotFoundException($"Working time with id {id} does not exists");
             _repository.DeleteWorkingTime(id);
         }
+        public List<WorkingTimeModel> GetWorkingTimesByCleaner(int cleanerId)
+        {
+            var workingHours = _repository.GetWorkingTimesByCleaner(cleanerId);
+            return _mapper.Map<List<WorkingTimeModel>>(workingHours);
+        }
     }
 }

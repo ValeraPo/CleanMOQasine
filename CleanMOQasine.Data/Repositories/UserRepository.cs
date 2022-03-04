@@ -50,7 +50,7 @@ namespace CleanMOQasine.Data.Repositories
                 // Выбираем неудаленных
                 new Func<User, bool>(u => !u.IsDeleted),
                 // Выбираем только клинеров
-                new Func<User, bool>(u => u.Role == Data.Enums.Role.Cleaner),
+                new Func<User, bool>(u => u.Role == Enums.Role.Cleaner),
                 // Выбираем тех кто работает в это время
                 new Func<User, bool>(u => u.WorkingHours
                 .Where(h => (int)h.Day % 7 == (int)orderDate.DayOfWeek)

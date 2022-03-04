@@ -5,6 +5,7 @@ namespace CleanMOQasine.Business.Services
     public interface IUserService
     {
         void RegisterNewClient(UserModel userModel);
+        void CheckIfThatUserAlreadyExists(UserModel userModel);
         bool CheckIfLoginExists(string login);
         bool CheckIfEmailExists(string email);
         void AddUser(UserModel userModel);

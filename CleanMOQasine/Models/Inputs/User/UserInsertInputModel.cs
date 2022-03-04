@@ -1,5 +1,4 @@
-﻿using CleanMOQasine.API.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CleanMOQasine.API.Models
 {
@@ -12,6 +11,7 @@ namespace CleanMOQasine.API.Models
         [Required(ErrorMessage = "Поле логина нельзя оставлять пустым.")]
         public string Login { get; set; }
 
+
         [Required(ErrorMessage = "Введите имя.")]
         public string FirstName { get; set; }
 
@@ -19,12 +19,16 @@ namespace CleanMOQasine.API.Models
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Выберите роль пользователя.")]
-        [RegularExpression(@"^[1-3]$", ErrorMessage = "Выберите роль пользователя.")]
+        [RegularExpression(@"^[1-3]$", ErrorMessage = "Выберите роль пользователя (введите цифру 1 - админ, 2 - клинер, 3 - клиент).")]
         public int Role { get; set; }
 
         [Required(ErrorMessage = "Поле пароля нельзя оставлять пустым.")]
         [MinLength(9, ErrorMessage = "Ваш пароль недостаточно надежный.")]
         [MaxLength(30, ErrorMessage = "Пароль не может быть длиннее 30 символов.")]
         public string Password { get; set; }
+
+        public List<CleaningTypeInsertInputModel>? CleaningTypes { get; set; }
+        public List<CleaningAdditionInputModel>? CleaningAdditions { get; set; }
+        public List<WorkingTimeInputModel>? WorkingHours { get; set; }
     }
 }

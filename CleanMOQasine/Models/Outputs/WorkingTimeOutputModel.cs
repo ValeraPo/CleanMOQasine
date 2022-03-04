@@ -1,6 +1,6 @@
 ﻿namespace CleanMOQasine.API.Models
 {
-    public class WorkingTimeOutputModel
+    public class WorkingTimeOutputModel 
     {
         public UserOutputModel User { get; set; }
         public DateTime StartTime { get; set; }

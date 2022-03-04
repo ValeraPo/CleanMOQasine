@@ -72,6 +72,14 @@ namespace CleanMOQasine.Business.Services
             return true;
         }
 
+        public void CheckIfThatUserAlreadyExists(UserModel userModel)
+        {
+            if (CheckIfLoginExists(userModel.Login))
+                throw new AuthenticationException("Пользователь с таким логином уже существует");
+            else if (CheckIfEmailExists(userModel.Email))
+                throw new AuthenticationException("Пользователь с таким email уже существует");
+        }
+
         public void AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);

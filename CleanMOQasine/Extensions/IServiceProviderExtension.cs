@@ -64,6 +64,18 @@ namespace CleanMOQasine.API.Extensions
         {
             services.AddSwaggerGen(config =>
             {
+                config.EnableAnnotations();
+                config.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "MyAPI",
+                    Version = "v1",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Git Repository",
+                        Url = new Uri("https://github.com/ValeraPo/CleanMOQasine"),
+                    }
+                });
+
                 config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",

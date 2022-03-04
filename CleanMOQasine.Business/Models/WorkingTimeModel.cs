@@ -2,7 +2,8 @@
 {
     public class WorkingTimeModel
     {
-        //public int Id { get; set; }
+        public int Id { get; set; }
+        public UserModel User { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public int Day { get; set; }

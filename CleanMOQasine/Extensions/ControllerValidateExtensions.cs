@@ -2,13 +2,14 @@
 using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Data.Enums;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace CleanMOQasine.API.Extensions
 {
     public static class ControllerValidateExtensions
     {
-        public static int GetUserId(this GradesController controller)
+        public static int GetUserId(this ControllerBase controller)
         {
             var identity = controller.HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
@@ -47,7 +48,7 @@ namespace CleanMOQasine.API.Extensions
             int userId = Int32.Parse(identity.FindFirst(ClaimTypes.UserData)?.Value);
             if (userId != cleanerId)
             {
-                throw new NoAccessException("Клинер не может получить информацию о чужих рабочих часах");
+                throw new NoAccessException("Клинер может взаимодействовать только со своими рабочими часами");
             }
 
 

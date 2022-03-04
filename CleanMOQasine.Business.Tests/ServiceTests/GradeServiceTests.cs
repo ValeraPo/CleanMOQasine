@@ -18,6 +18,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
     {
         private Mock<IGradeRepository> _gradeRepositoryMock;
         private Mock<IOrderRepository> _orderRepositoryMock;
+        private Mock<IUserRepository> _userRepositoryMock;
         private readonly GradeServiceTestData _gradeTestData;
         private readonly IMapper _autoMapper;
 
@@ -33,6 +34,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             _gradeRepositoryMock = new Mock<IGradeRepository>();
             _orderRepositoryMock = new Mock<IOrderRepository>();
+            _userRepositoryMock = new Mock<IUserRepository>();
         }
 
         [Test]
@@ -41,7 +43,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
             //given
             var grade = _gradeTestData.GetGrade();
             _gradeRepositoryMock.Setup(m => m.GetGradeById(It.IsAny<int>())).Returns(grade);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
             var expected = _autoMapper.Map<GradeModel>(grade);
             //when
             var actual = sut.GetGradeById(It.IsAny<int>());
@@ -56,7 +58,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _gradeRepositoryMock.Setup(m => m.GetGradeById(It.IsAny<int>())).Returns((Grade)null);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.GetGradeById(It.IsAny<int>()));
@@ -70,7 +72,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
             var grade = _gradeTestData.GetGrade();
             _gradeRepositoryMock.Setup(m => m.GetGradeById(It.IsAny<int>())).Returns(grade);
             _gradeRepositoryMock.Setup(m => m.UpdateGradeById(grade));
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //when
             sut.UpdateGrade(new GradeModel(), It.IsAny<int>());
@@ -86,7 +88,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _gradeRepositoryMock.Setup(m => m.GetGradeById(It.IsAny<int>())).Returns((Grade)null);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.UpdateGrade(new GradeModel(), It.IsAny<int>()));
@@ -99,7 +101,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _gradeRepositoryMock.Setup(m => m.GetAllGrades()).Returns(grades);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //when
             var actual = sut.GetAllGrades();
@@ -114,7 +116,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _gradeRepositoryMock.Setup(m => m.GetGradeById(It.IsAny<int>())).Returns(new Grade());
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //when
             sut.DeleteGradeById(It.IsAny<int>());
@@ -129,7 +131,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _gradeRepositoryMock.Setup(m => m.GetGradeById(It.IsAny<int>())).Returns((Grade)null);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.DeleteGradeById(It.IsAny<int>()));
@@ -143,7 +145,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns(new Order());
             _gradeRepositoryMock.Setup(m => m.AddGrade(new Grade(), It.IsAny<int>()));
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //when
             sut.AddGrade(new GradeModel(), It.IsAny<int>());
@@ -158,7 +160,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _orderRepositoryMock.Setup(m => m.GetOrderById(It.IsAny<int>())).Returns((Order)null);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.AddGrade(new GradeModel(), It.IsAny<int>()));
@@ -171,7 +173,7 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         {
             //given
             _gradeRepositoryMock.Setup(m => m.GetGradesByCleaner(It.IsAny<int>())).Returns(grades);
-            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object);
+            var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 
             //when
             var actual = sut.GetAllGradesByCleanerId(It.IsAny<int>());

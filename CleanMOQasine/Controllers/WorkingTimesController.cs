@@ -39,7 +39,7 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddWorkingTime(WorkingTimeModel workingTime)
+        public ActionResult AddWorkingTime(WorkingTimeInputModel workingTime)
         {
             return StatusCode(StatusCodes.Status201Created, workingTime);
         }

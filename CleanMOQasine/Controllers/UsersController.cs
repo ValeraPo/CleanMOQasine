@@ -106,7 +106,7 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [SwaggerOperation("Registrate a brand new client. Roles: Admin, Anonymous.")]
+        [SwaggerOperation("Register a brand new client. Roles: Admin, Anonymous.")]
         public ActionResult<UserOutputModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
@@ -116,13 +116,13 @@ namespace CleanMOQasine.API.Controllers
         }
 
         //api/Users
-        [HttpPost]
+        [HttpPost("cleaners")]
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [SwaggerOperation("Add a user. Roles: Admin.")]
+        [SwaggerOperation("Add a brand new cleaner. Roles: Admin.")]
         public ActionResult<UserOutputModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);

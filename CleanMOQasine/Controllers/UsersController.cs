@@ -107,10 +107,9 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [SwaggerOperation("Register a brand new client. Roles: Admin, Anonymous.")]
-        public ActionResult<UserOutputModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
+        public ActionResult<UserOutputModel> RegisterNewClient([FromBody] ClientInsertInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
-            _userService.CheckIfThatUserAlreadyExists(userModel);
             _userService.RegisterNewClient(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
@@ -122,12 +121,11 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [SwaggerOperation("Add a brand new cleaner. Roles: Admin.")]
-        public ActionResult<UserOutputModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
+        [SwaggerOperation("Register a brand new cleaner. Roles: Admin.")]
+        public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            _userService.CheckIfThatUserAlreadyExists(userModel);
-            _userService.AddUser(userModel);
+            _userService.RegisterNewCleaner(userModel);
             return StatusCode(StatusCodes.Status201Created, userModel);
         }
 

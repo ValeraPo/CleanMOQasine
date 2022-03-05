@@ -89,7 +89,15 @@ namespace CleanMOQasine.Business.Services
 
         public void RegisterNewClient(UserModel userModel)
         {
+            CheckIfThatUserAlreadyExists(userModel);
             userModel.Role = Role.Client;
+            AddUser(userModel);
+        }
+
+        public void RegisterNewCleaner(UserModel userModel)
+        {
+            CheckIfThatUserAlreadyExists(userModel);
+            userModel.Role = Role.Cleaner;
             AddUser(userModel);
         }
 

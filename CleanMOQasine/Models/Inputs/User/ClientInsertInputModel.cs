@@ -2,7 +2,7 @@
 
 namespace CleanMOQasine.API.Models
 {
-    public class UserRegisterInputModel
+    public class ClientInsertInputModel
     {
         [Required(ErrorMessage = "Поле Email нельзя оставлять пустым.")]
         [EmailAddress(ErrorMessage = "Email введен некорректно!")]

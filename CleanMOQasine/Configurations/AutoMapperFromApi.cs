@@ -12,7 +12,7 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
             CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
 
-            CreateMap<CleanerInsertInputModel, UserModel>();//.ForMember(ciim => ciim.CleaningAdditions, opt=>opt.Ignore());
+            CreateMap<CleanerInsertInputModel, UserModel>();
             CreateMap<UserUpdateInputModel, UserModel>();
             CreateMap<ClientInsertInputModel, UserModel>();
             CreateMap<UserModel, UserOutputModel>();

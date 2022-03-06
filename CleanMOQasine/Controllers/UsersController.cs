@@ -18,12 +18,14 @@ namespace CleanMOQasine.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly ICleaningAdditionService _cleaningAdditionService;
+        private readonly IWorkingTimeService _workingTimeService;
         private readonly IMapper _autoMapper;
 
-        public UsersController(IUserService userService, ICleaningAdditionService cleaningAdditionService, IMapper autoMapper)
+        public UsersController(IUserService userService, ICleaningAdditionService cleaningAdditionService, IWorkingTimeService workingTimeService, IMapper autoMapper)
         {
             _userService = userService;
             _cleaningAdditionService = cleaningAdditionService;
+            _workingTimeService = workingTimeService;
             _autoMapper = autoMapper;
         }
 
@@ -118,7 +120,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost("cleaners")]
-        [AuthorizeEnum(Role.Admin)]
+        //[AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -126,10 +128,15 @@ namespace CleanMOQasine.API.Controllers
         [SwaggerOperation("Register a brand new cleaner. Roles: Admin.")]
         public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
-            var cleaningAdditions = _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
+            //var cleaningAdditions = _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            userModel.CleaningAdditions = cleaningAdditions;
+            //userModel.CleaningAdditions = cleaningAdditions;
             var user = _userService.RegisterNewCleaner(userModel);
+            foreach (var item in userModel.WorkingHours)
+                _workingTimeService.AddWorkingTime(item, user.Id);
+
+            _cleaningAdditionService.AddCleaningAdditionsByListIdsToCleaner(userInsertInputModel.CleaningAdditionIds, user.Id);
+            
             return StatusCode(StatusCodes.Status201Created, user);
         }
 

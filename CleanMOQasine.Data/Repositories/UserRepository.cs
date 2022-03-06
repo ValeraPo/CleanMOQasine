@@ -23,6 +23,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public int AddUser(User user)
         {
+            _dbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Added;
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return user.Id;

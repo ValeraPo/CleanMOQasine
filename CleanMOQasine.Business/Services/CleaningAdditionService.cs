@@ -40,9 +40,13 @@ namespace CleanMOQasine.Business.Services
             return listModels;
         }
 
-        public void AddCleaningAdditionsByListIds(List<int> ids)
+        public void AddCleaningAdditionsByListIdsToCleaner(List<int> ids, int userId)
         {
-            
+            foreach (int id in ids)
+            {
+                var model = GetCleaningAdditionById(id);
+                _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userId);
+            }
         }
 
         public int AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)

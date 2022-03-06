@@ -14,8 +14,10 @@ namespace CleanMOQasine.Data.Repositories
 
         public CleaningAddition? GetCleaningAdditionById(int id)
         {
-            return _context.CleaningAdditions.Include(ca => ca.CleaningTypes)
+            var entity = _context.CleaningAdditions/*.Include(ca => ca.CleaningTypes)*/
                            .FirstOrDefault(ca => ca.Id == id);
+            //_context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public List<CleaningAddition> GetAllCleaningAdditions()
@@ -39,6 +41,14 @@ namespace CleanMOQasine.Data.Repositories
             cleaningAddition.Price = updatedCleaningAddition.Price;
             cleaningAddition.Duration = updatedCleaningAddition.Duration;
             cleaningAddition.Name = updatedCleaningAddition.Name;
+            _context.SaveChanges();
+        }
+
+        public void AddCleaningAdditionToCleaner(int cleaningAdditionId, int userId)
+        {
+           var user = _context.Users.First(u => u.Id == userId);
+            var cleaningAddition = GetCleaningAdditionById(cleaningAdditionId);
+            user.CleaningAdditions.Add(cleaningAddition);
             _context.SaveChanges();
         }
 

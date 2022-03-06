@@ -6,6 +6,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -27,6 +28,7 @@ namespace CleanMOQasine.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(typeof(CleaningAdditionOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Get cleaning type by id. Roles: all and anonymus.")]
         public ActionResult<CleaningTypeOutputModel> GetCleaningTypeById(int id)
         {
             var model = _cleaningTypeService.GetCleaningTypeById(id);
@@ -37,6 +39,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(typeof(List<CleaningAdditionOutputModel>), StatusCodes.Status200OK)]
+        [SwaggerOperation("Get all cleaning types. Roles: all and anonymus.")]
         public ActionResult<List<CleaningTypeOutputModel>> GetAllCleaningTypes()
         {
             var models = _cleaningTypeService.GetAllCleaningTypes();
@@ -49,6 +52,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Add cleaning type. Roles: Admin.")]
         public ActionResult AddCleaningType([FromBody]CleaningTypeInsertInputModel cleaningTypeInsertInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningTypeModel>(cleaningTypeInsertInputModel);
@@ -62,11 +66,11 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Add cleaning addition to cleaning type. Create row in link table \"CleaningAdditionCleaningType\". Roles: Admin.")]
         public ActionResult AddCleaningAdditionToCleaningType(int id, int cleaningAdditionId)
         { 
             _cleaningTypeService.AddCleaningAdditionToCleaningType(id, cleaningAdditionId);
             return Ok();
-
         }
 
         [HttpPut("{id}")]
@@ -75,6 +79,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Update cleaning cleaning type. Roles: Admin.")]
         public ActionResult UpdateCleaningType(int id, [FromBody]CleaningTypeUpdateInputModel cleaningTypeUpdateInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningTypeModel>(cleaningTypeUpdateInputModel);
@@ -87,6 +92,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Soft delete cleaning cleaning type. Roles: Admin.")]
         public ActionResult DeleteCleaningType(int id)
         {
             _cleaningTypeService.DeleteCleaningType(id);
@@ -98,6 +104,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Restore cleaning cleaning type. Roles: Admin.")]
         public ActionResult RestoreCleaningType(int id)
         {
             _cleaningTypeService.RestoreCleaningType(id);
@@ -109,6 +116,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Delete cleaning addition from cleaning type. Hard delete row from link table \"CleaningAdditionCleaningType\". Roles: Admin.")]
         public ActionResult DeleteCleaningAdditionFromCleaningType(int id, int cleaningAdditionId)
         {
             _cleaningTypeService.DeleteCleaningAdditionFromCleaningType(id, cleaningAdditionId);

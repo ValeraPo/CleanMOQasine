@@ -4,12 +4,12 @@ namespace CleanMOQasine.Business.Services
 {
     public interface IUserService
     {
-        void RegisterNewCleaner(UserModel userModel);
-        void RegisterNewClient(UserModel userModel);
+        UserModel RegisterNewCleaner(UserModel userModel);
+        UserModel RegisterNewClient(UserModel userModel);
         void CheckIfThatUserAlreadyExists(UserModel userModel);
         bool CheckIfLoginExists(string login);
         bool CheckIfEmailExists(string email);
-        void AddUser(UserModel userModel);
+        UserModel AddUser(UserModel userModel);
         void DeleteUserById(int id);
         List<UserModel> GetAllAdmins();
         List<UserModel> GetAllCleaners();

@@ -110,8 +110,8 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> RegisterNewClient([FromBody] ClientInsertInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
-            _userService.RegisterNewClient(userModel);
-            return StatusCode(StatusCodes.Status201Created, userModel);
+            var user = _userService.RegisterNewClient(userModel);
+            return StatusCode(StatusCodes.Status201Created, user);
         }
 
         //api/Users
@@ -125,8 +125,8 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            _userService.RegisterNewCleaner(userModel);
-            return StatusCode(StatusCodes.Status201Created, userModel);
+            var user = _userService.RegisterNewCleaner(userModel);
+            return StatusCode(StatusCodes.Status201Created, user);
         }
 
         //api/Users/23

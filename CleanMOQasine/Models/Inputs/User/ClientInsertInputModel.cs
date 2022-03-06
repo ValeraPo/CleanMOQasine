@@ -12,9 +12,11 @@ namespace CleanMOQasine.API.Models
         public string Login { get; set; }
 
         [Required(ErrorMessage = "Введите имя.")]
+        [RegularExpression(@"^[а-яА-ЯёЁa-zA-Z]+$", ErrorMessage = "Посторонние символы. Используйте только буквы латинского алфавита или Кириллицу")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Введите фамилию.")]
+        [RegularExpression(@"^[а-яА-ЯёЁa-zA-Z]+$", ErrorMessage = "Посторонние символы. Используйте только буквы латинского алфавита или Кириллицу")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Поле пароля нельзя оставлять пустым.")]

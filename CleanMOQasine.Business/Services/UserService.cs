@@ -80,25 +80,28 @@ namespace CleanMOQasine.Business.Services
                 throw new AuthenticationException("Пользователь с таким email уже существует");
         }
 
-        public void AddUser(UserModel userModel)
+        public UserModel AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
             mappedUser.Password = PasswordHash.HashPassword(mappedUser.Password);
-            _userRepository.AddUser(mappedUser);
+            userModel.Id = _userRepository.AddUser(mappedUser);
+            return userModel;
         }
 
-        public void RegisterNewClient(UserModel userModel)
+        public UserModel RegisterNewClient(UserModel userModel)
         {
             CheckIfThatUserAlreadyExists(userModel);
             userModel.Role = Role.Client;
-            AddUser(userModel);
+            var user = AddUser(userModel);
+            return user;
         }
 
-        public void RegisterNewCleaner(UserModel userModel)
+        public UserModel RegisterNewCleaner(UserModel userModel)
         {
             CheckIfThatUserAlreadyExists(userModel);
             userModel.Role = Role.Cleaner;
-            AddUser(userModel);
+            var user = AddUser(userModel);
+            return user;
         }
 
         public void DeleteUserById(int id)

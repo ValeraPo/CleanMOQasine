@@ -17,11 +17,13 @@ namespace CleanMOQasine.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ICleaningAdditionService _cleaningAdditionService;
         private readonly IMapper _autoMapper;
 
-        public UsersController(IUserService userService, IMapper autoMapper)
+        public UsersController(IUserService userService, ICleaningAdditionService cleaningAdditionService, IMapper autoMapper)
         {
             _userService = userService;
+            _cleaningAdditionService = cleaningAdditionService;
             _autoMapper = autoMapper;
         }
 
@@ -124,7 +126,9 @@ namespace CleanMOQasine.API.Controllers
         [SwaggerOperation("Register a brand new cleaner. Roles: Admin.")]
         public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
+            var cleaningAdditions = _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
+            userModel.CleaningAdditions = cleaningAdditions;
             var user = _userService.RegisterNewCleaner(userModel);
             return StatusCode(StatusCodes.Status201Created, user);
         }

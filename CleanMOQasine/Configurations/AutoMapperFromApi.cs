@@ -11,17 +11,24 @@ namespace CleanMOQasine.API.Configurations
         {
             CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
             CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
-            CreateMap<CleanerInsertInputModel, UserModel>();
+
+            CreateMap<CleanerInsertInputModel, UserModel>();//.ForMember(ciim => ciim.CleaningAdditions, opt=>opt.Ignore());
             CreateMap<UserUpdateInputModel, UserModel>();
             CreateMap<ClientInsertInputModel, UserModel>();
             CreateMap<UserModel, UserOutputModel>();
+
             CreateMap<CleaningTypeModel, CleaningTypeOutputModel>();
             CreateMap<CleaningTypeInsertInputModel, CleaningTypeModel>();
             CreateMap<CleaningTypeUpdateInputModel, CleaningTypeModel>();
+
             CreateMap<RoomInputModel, RoomModel>();
             CreateMap<RoomModel, RoomOutputModel>();
+
             CreateMap<WorkingTimeModel, WorkingTimeOutputModel>();
-            CreateMap<WorkingTimeInsertInputModel, WorkingTimeModel>();
+            CreateMap<WorkingTimeInsertInputModel, WorkingTimeModel>()
+                .ForMember(wtm => wtm.StartTime, opt => opt.ConvertUsing(new TimeOnlyFromStringConverter(), src => src.StartTime))
+                .ForMember(wtm => wtm.EndTime, opt => opt.ConvertUsing(new TimeOnlyFromStringConverter(), src => src.EndTime));
+
             CreateMap<PaymentOutputModel, PaymentModel>();
             CreateMap<PaymentModel, PaymentInputModel>();
         }

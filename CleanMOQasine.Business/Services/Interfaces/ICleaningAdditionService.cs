@@ -8,5 +8,6 @@
         CleaningAdditionModel GetCleaningAdditionById(int id);
         void RestoreCleaningAddition(int id);
         void UpdateCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel);
+        List<CleaningAdditionModel> GetCleaningAdditionsByListIds(List<int> ids);
     }
 }

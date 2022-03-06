@@ -28,7 +28,7 @@ namespace CleanMOQasine.API.Controllers
         [AllowAnonymous]
         [ProducesResponseType(typeof(CleaningAdditionOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [SwaggerOperation("Get cleaning type by id. Roles: all and anonymus.")]
+        [SwaggerOperation("Get cleaning type by id with not deleted cleaning additions. Roles: all and anonymus.")]
         public ActionResult<CleaningTypeOutputModel> GetCleaningTypeById(int id)
         {
             var model = _cleaningTypeService.GetCleaningTypeById(id);
@@ -39,7 +39,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(typeof(List<CleaningAdditionOutputModel>), StatusCodes.Status200OK)]
-        [SwaggerOperation("Get all cleaning types. Roles: all and anonymus.")]
+        [SwaggerOperation("Get all cleaning types with not deleted cleaning additions. Roles: all and anonymus.")]
         public ActionResult<List<CleaningTypeOutputModel>> GetAllCleaningTypes()
         {
             var models = _cleaningTypeService.GetAllCleaningTypes();

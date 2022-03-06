@@ -41,7 +41,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet()]
         [AllowAnonymous]
         [ProducesResponseType(typeof(List<CleaningAdditionOutputModel>), StatusCodes.Status200OK)]
-        [SwaggerOperation("Get all cleaning additions. Roles: all and anonymus.")]
+        [SwaggerOperation("Get all not deleted cleaning additions. Roles: all and anonymus.")]
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
             var models = _cleaningAdditionService.GetAllCleaningAdditions();
@@ -70,7 +70,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [SwaggerOperation("Update cleaning addition. Roles: Admin.")]
+        [SwaggerOperation("Update not deleted cleaning addition. Roles: Admin.")]
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);

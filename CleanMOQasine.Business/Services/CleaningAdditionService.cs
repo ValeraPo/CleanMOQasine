@@ -29,6 +29,26 @@ namespace CleanMOQasine.Business.Services
             return _autoMapperInstance.Map<List<CleaningAdditionModel>>(entities);
         }
 
+        public List<CleaningAdditionModel> GetCleaningAdditionsByListIds(List<int> ids)
+        {
+            var listModels = new List<CleaningAdditionModel>();
+            foreach (int id in ids)
+            {
+                var model = GetCleaningAdditionById(id);
+                listModels.Add(model);
+            }
+            return listModels;
+        }
+
+        public void AddCleaningAdditionsByListIdsToCleaner(List<int> ids, int userId)
+        {
+            foreach (int id in ids)
+            {
+                var model = GetCleaningAdditionById(id);
+                _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userId);
+            }
+        }
+
         public int AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)
         {
             var entity = _autoMapperInstance.Map<CleaningAddition>(cleaningAdditionModel);

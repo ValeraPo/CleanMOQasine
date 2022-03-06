@@ -17,11 +17,15 @@ namespace CleanMOQasine.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ICleaningAdditionService _cleaningAdditionService;
+        private readonly IWorkingTimeService _workingTimeService;
         private readonly IMapper _autoMapper;
 
-        public UsersController(IUserService userService, IMapper autoMapper)
+        public UsersController(IUserService userService, ICleaningAdditionService cleaningAdditionService, IWorkingTimeService workingTimeService, IMapper autoMapper)
         {
             _userService = userService;
+            _cleaningAdditionService = cleaningAdditionService;
+            _workingTimeService = workingTimeService;
             _autoMapper = autoMapper;
         }
 
@@ -126,6 +130,11 @@ namespace CleanMOQasine.API.Controllers
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
             var user = _userService.RegisterNewCleaner(userModel);
+            foreach (var item in userModel.WorkingHours)
+                _workingTimeService.AddWorkingTime(item, user.Id);
+
+            _cleaningAdditionService.AddCleaningAdditionsByListIdsToCleaner(userInsertInputModel.CleaningAdditionIds, user.Id);
+            
             return StatusCode(StatusCodes.Status201Created, user);
         }
 

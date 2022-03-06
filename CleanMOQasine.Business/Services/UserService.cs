@@ -12,13 +12,15 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IWorkingTimeRepository _workingTimeRepository;
+        private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapper;
 
-        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository, ICleaningAdditionRepository cleaningAdditionRepository)
         {
             _userRepository = userRepository;
             _autoMapper = autoMapper;
             _workingTimeRepository = workingTimeRepository;
+            _cleaningAdditionRepository = cleaningAdditionRepository;
         }
 
         public UserModel GetUserById(int id)
@@ -100,6 +102,7 @@ namespace CleanMOQasine.Business.Services
         {
             CheckIfThatUserAlreadyExists(userModel);
             userModel.Role = Role.Cleaner;
+            
             var user = AddUser(userModel);
             return user;
         }

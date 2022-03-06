@@ -1,4 +1,5 @@
 ﻿using CleanMOQasine.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanMOQasine.Data.Repositories
 {
@@ -11,7 +12,9 @@ namespace CleanMOQasine.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public User? GetUserById(int id) => _dbContext.Users.FirstOrDefault(u => u.Id == id);
+        public User? GetUserById(int id) => _dbContext.Users.Include(u=>u.CleaningAdditions)
+                                                            .Include(u=>u.WorkingHours)
+                                                            .FirstOrDefault(u => u.Id == id);
 
         public List<User> GetUsers() => _dbContext.Users.Where(u => !u.IsDeleted).ToList();
 
@@ -23,6 +26,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public int AddUser(User user)
         {
+            _dbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Added;
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return user.Id;

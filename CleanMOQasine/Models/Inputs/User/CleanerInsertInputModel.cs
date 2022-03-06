@@ -12,6 +12,6 @@ namespace CleanMOQasine.API.Models
         public List<int> CleaningAdditionIds { get; set; }
 
         [Required(ErrorMessage = "Введите дни и время работы.")]
-        public List<WorkingTimeInputModel> WorkingHours { get; set; }
+        public List<WorkingTimeInsertInputModel> WorkingHours { get; set; }
     }
 }

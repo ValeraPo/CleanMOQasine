@@ -31,7 +31,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [SwaggerOperation("Получение рабочего дня по Id")]
+        [SwaggerOperation("Get working time by Id. Roles: Admin, Cleaner")]
         public ActionResult<WorkingTimeOutputModel> GetWorkingTimeById(int id)
         {
             var workingTime = _workingTimeService.GetWorkingTimeById(id);
@@ -44,7 +44,7 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [SwaggerOperation("Получение всех рабочих дней")]
+        [SwaggerOperation("Get all not deleted working times. Roles: Admin")]
         public ActionResult<List<WorkingTimeOutputModel>> GetAllWorkingTimes()
         {
             var workingTimes = _workingTimeService.GetAllWorkingTimes();
@@ -57,7 +57,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [SwaggerOperation("Удаление рабочего дня по Id")]
+        [SwaggerOperation("Soft delete working time by Id. Roles: Admin")]
         public ActionResult DeleteWorkingTimeById(int id)
         {
             _workingTimeService.DeleteWorkingTimeById(id);
@@ -69,7 +69,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [SwaggerOperation("Добавление рабочего дня с использованием Id пользователя (который клинер)")]
+        [SwaggerOperation("Add working time with using cleaner Id. Roles: Admin, Cleaner")]
         public ActionResult AddWorkingTime([FromBody]WorkingTimeInsertInputModel workingTime, [FromQuery] int cleanerId)
         {
             var workingTimeModel = _autoMapper.Map<WorkingTimeModel>(workingTime);
@@ -79,13 +79,13 @@ namespace CleanMOQasine.API.Controllers
         }
 
         [HttpPut]
-        [AuthorizeEnum(Role.Admin)]
+        [AuthorizeEnum(Role.Admin, Role.Cleaner)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [SwaggerOperation("Обновление рабочего дня по Id")]
+        [SwaggerOperation("Update working time by Id. Roles: Admin, Cleaner")]
         public ActionResult UpdateWorkingTime(WorkingTimeOutputModel workingTime, [FromQuery] int id)
         {
             var workingTimeBusinesModel = _autoMapper.Map<WorkingTimeModel>(workingTime);
@@ -98,7 +98,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [SwaggerOperation("Получение всех рабочих дней по Id клинера")]
+        [SwaggerOperation("Get cleaner working times by cleaner Id. Roles: Admin, Cleaner")]
         public ActionResult<List<WorkingTimeOutputModel>> GetWorkingTimesByCleaner(int id)
         {
             this.CheckAccessCleanerToWorkingTime(id);

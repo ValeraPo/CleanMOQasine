@@ -15,7 +15,9 @@ namespace CleanMOQasine.Data.Repositories
 
         public List<User> GetUsers() => _dbContext.Users.Where(u => !u.IsDeleted).ToList();
 
-        public User? GetUserByLogin(string login) => _dbContext.Users.FirstOrDefault(u => u.Login == login);
+        public User? GetUserByLogin(string login) => _dbContext.Users.Where(u => !u.IsDeleted)
+            .ToList()
+            .FirstOrDefault(u => u.Login == login);
 
         public User? GetUserByEmail(string email) => _dbContext.Users.FirstOrDefault(u => u.Email == email);
 

@@ -1,6 +1,6 @@
 ﻿namespace CleanMOQasine.API.Models
 {
-    public class UserOutputModel : UserUpdateInputModel
+    public class UserOutputModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

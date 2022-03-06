@@ -16,7 +16,6 @@ namespace CleanMOQasine.Data.Repositories
         {
             var entity = _context.CleaningAdditions/*.Include(ca => ca.CleaningTypes)*/
                            .FirstOrDefault(ca => ca.Id == id);
-            //_context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 

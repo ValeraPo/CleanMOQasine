@@ -102,18 +102,8 @@ namespace CleanMOQasine.Business.Services
         {
             CheckIfThatUserAlreadyExists(userModel);
             userModel.Role = Role.Cleaner;
-            //var cleaningAdditions = userModel.CleaningAdditions;
-            //var workingTimes = userModel.WorkingHours;
             
             var user = AddUser(userModel);
-            //foreach (var wt in workingTimes)
-            //{
-            //    _workingTimeRepository.AddWorkingTime(_autoMapper.Map<WorkingTime>(wt), user.Id);
-            //}
-            //foreach (var ca in cleaningAdditions)
-            //{
-            //    _cleaningAdditionRepository.AddCleaningAdditionToCleaner(ca.Id, user);
-            //}
             return user;
         }
 

@@ -128,9 +128,7 @@ namespace CleanMOQasine.API.Controllers
         [SwaggerOperation("Register a brand new cleaner. Roles: Admin.")]
         public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
-            //var cleaningAdditions = _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            //userModel.CleaningAdditions = cleaningAdditions;
             var user = _userService.RegisterNewCleaner(userModel);
             foreach (var item in userModel.WorkingHours)
                 _workingTimeService.AddWorkingTime(item, user.Id);

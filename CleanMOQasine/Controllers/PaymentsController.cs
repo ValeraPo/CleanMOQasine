@@ -5,6 +5,7 @@ using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -26,6 +27,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Get payment by id. Roles: Admin.")]
         public ActionResult<PaymentModel> GetPaymentById(int id)
         {
             var payment = _paymentService.GetPaymentById(id);
@@ -37,6 +39,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Get all payments. Roles: Admin.")]
         public ActionResult<List<PaymentInputModel>> GetAllPayments()
         {
             return Ok(_mapper
@@ -48,6 +51,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Delete payment by id. Roles: Admin.")]
         public ActionResult DeletePaymentById(int id)
         {
             _paymentService.DeletePayment(id);
@@ -59,6 +63,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Update payment. Roles: Admin.")]
         public ActionResult UpdatePayment([FromBody] PaymentOutputModel payment)
         {
             var paymentModelToUpdate = _mapper.Map<PaymentModel>(payment);
@@ -71,9 +76,11 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public ActionResult GetPaymentsByCleanerId(int clientId)
+        [SwaggerOperation("Get Client payments. Roles: Admin.")]
+        public ActionResult GetPaymentsByClientId(int clientId)
         {
-            return Ok(_mapper.Map<List<PaymentOutputModel>>(_paymentService.GetPaymentsByClientId(clientId)));
+            var s = _mapper.Map<List<PaymentOutputModel>>(_paymentService.GetPaymentsByClientId(clientId));
+            return Ok(s);
         }
 
     }

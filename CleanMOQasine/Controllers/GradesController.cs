@@ -7,6 +7,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -29,6 +30,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Get grade by id. Roles: Admin.")]
         public ActionResult GetGradeById(int id)
         {
             var model = _gradeService.GetGradeById(id);
@@ -42,6 +44,7 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(typeof(List<GradeBaseOutputModel>), StatusCodes.Status200OK)]
+        [SwaggerOperation("Get all grades. Roles: All.")]
         public ActionResult GetAllGrades()
         {
             var model = _gradeService.GetAllGrades();
@@ -54,6 +57,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Delete grade. Roles: Admin.")]
         public ActionResult DeleteGradeById(int id)
         {
             _gradeService.DeleteGradeById(id);
@@ -65,6 +69,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Add a new grade to order. Only for user which made an order.")]
         public ActionResult AddGrade([FromBody] GradeBaseInputModel grade, [FromQuery] int orderId)
         {
             var clientId = this.GetUserId();
@@ -80,6 +85,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(GradeBaseOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Update grade. Roles: Admin.")]
         public ActionResult UpdateGrade(int id, [FromBody] GradeBaseInputModel grade)
         {
             var model = _mapper.Map<GradeModel>(grade);
@@ -93,6 +99,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Get cleaners grades. Roles: Admin.")]
         public ActionResult GetCleanerGrades(int id)
         {
             var cleanerGrades = _gradeService.GetAllGradesByCleanerId(id);

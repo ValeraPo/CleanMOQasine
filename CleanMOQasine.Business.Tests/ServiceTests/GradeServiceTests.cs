@@ -3,14 +3,12 @@ using CleanMOQasine.Business.Configurations;
 using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
+using CleanMOQasine.Business.Tests.TestData;
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 
 namespace CleanMOQasine.Business.Tests.ServiceTests
 {
@@ -172,6 +170,9 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
         public void GetAllGradesByCleanerId(List<Grade> grades)
         {
             //given
+            UserTestData userTestData = new();
+            var cleaner = userTestData.GetUserForTests();
+            _userRepositoryMock.Setup(u => u.GetUserById(It.IsAny<int>())).Returns(cleaner);
             _gradeRepositoryMock.Setup(m => m.GetGradesByCleaner(It.IsAny<int>())).Returns(grades);
             var sut = new GradeService(_gradeRepositoryMock.Object, _autoMapper, _orderRepositoryMock.Object, _userRepositoryMock.Object);
 

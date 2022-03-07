@@ -65,8 +65,8 @@ namespace CleanMOQasine.Business.Services
 
         public void AddWorkingTime(WorkingTimeModel workingTimeModel, UserModel userModel)
         {
-            if (workingTimeModel.StartTime >= workingTimeModel.EndTime)
-                throw new Exception("Время начала рабочего дня не может быть больше или равно времени окончания");
+            //if (workingTimeModel.StartTime >= workingTimeModel.EndTime)
+            //    throw new Exception("Время начала рабочего дня не может быть больше или равно времени окончания");
 
             var user = _userRepository.GetUserById(userModel.Id);
             if (user == null || user.IsDeleted)

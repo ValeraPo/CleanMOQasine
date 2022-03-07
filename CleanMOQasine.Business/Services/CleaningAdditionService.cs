@@ -37,8 +37,10 @@ namespace CleanMOQasine.Business.Services
             var listModels = new List<CleaningAdditionModel>();
             foreach (int id in ids)
             {
-                var model = GetCleaningAdditionById(id);
-                listModels.Add(model);
+                var cleaningAddition = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+                if (cleaningAddition == null || cleaningAddition.IsDeleted)
+                    throw new NotFoundException($"Дополнение к уборке c Id={cleaningAddition.Id} не найдено или удалено");
+                listModels.Add(_autoMapperInstance.Map<CleaningAdditionModel>(cleaningAddition));
             }
             return listModels;
         }

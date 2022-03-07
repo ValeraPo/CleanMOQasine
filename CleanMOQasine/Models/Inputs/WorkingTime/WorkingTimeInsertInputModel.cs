@@ -9,6 +9,7 @@ namespace CleanMOQasine.API.Models
         public string StartTime { get; set; }
 
         [IsTimeSpan(ErrorMessage = "Время должно быть указано в формате 'чч:мм'. Максимальное значение 23:59.")]
+        [IsEndTimeMoreThanStartTime(nameof(StartTime))]
         public string EndTime { get; set; }
 
         [Range(1, 7, ErrorMessage ="Цифра должна соответствовать дню недели, то есть от 1 (понедельник) до 7 (воскресенье)")]

@@ -120,7 +120,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost("cleaners")]
-        [AuthorizeEnum(Role.Admin)]
+        //[AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -129,6 +129,7 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
+            _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
             _userService.RegisterNewCleaner(userModel);
             foreach (var wh in userModel.WorkingHours)
                 _workingTimeService.AddWorkingTime(wh, userModel);

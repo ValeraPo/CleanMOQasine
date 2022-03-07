@@ -8,6 +8,8 @@ using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 
 namespace CleanMOQasine.Business.Tests
 {
@@ -104,20 +106,21 @@ namespace CleanMOQasine.Business.Tests
         public void GetOrdersByCleanerIdTest()
         {
             //given
-            var orders = _orderTestData.GetListOfOrdersForTests();
-            _orderRepositoryMock.Setup(m => m.GetAllOrders()).Returns(orders);
+            var orders = _orderTestData.GetListOfCleanerOrdersForTests();
+            _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(new User());
+            _orderRepositoryMock.Setup(m => m.GetOrdersByCleaner(new User())).Returns(orders);
             var sut = new OrderService(_orderRepositoryMock.Object,
-                _userRepositoryMock.Object, _autoMapper,
+                _userRepositoryMock.Object, _autoMapper, 
                 _cleaningAdditionRepositoryMock.Object,
                 _cleaningTypeRepositoryMock.Object,
                 _roomRepositoryMock.Object);
 
             //when
-            var actual = sut.GetOrdersByCleanerId(2);
+            var actual = sut.GetOrdersByCleanerId(42);
 
             //then
             Assert.IsNotNull(actual);
-            Assert.IsTrue(actual.Count == 1);
+            Assert.IsTrue(actual.Count > 0);
             Assert.IsNotNull(actual[0].Rooms);
             Assert.IsTrue(actual[0].Rooms.Count > 0);
             Assert.IsNotNull(actual[0].CleaningAdditions);
@@ -166,9 +169,12 @@ namespace CleanMOQasine.Business.Tests
         [Test]
         public void AddOrderTest()
         {
-            // given
+            //given
             var orderModel = _orderTestData.GetOrderModelForTests();
+            var userModel = _orderTestData.GetUserModelForTests();
+            var user = _autoMapper.Map<User>(userModel);
             _orderRepositoryMock.Setup(m => m.AddOrder(It.IsAny<Order>()));
+            _userRepositoryMock.Setup(m => m.GetCleaners(It.IsAny<List<CleaningAddition>>(), It.IsAny<DateTime>(), It.IsAny<TimeSpan>())).Returns(new List<User> { user });
             var sut = new OrderService(_orderRepositoryMock.Object,
                 _userRepositoryMock.Object, _autoMapper,
                 _cleaningAdditionRepositoryMock.Object,

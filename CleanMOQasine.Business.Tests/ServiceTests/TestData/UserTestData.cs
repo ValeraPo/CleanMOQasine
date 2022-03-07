@@ -49,7 +49,7 @@ namespace CleanMOQasine.Business.Tests.TestData
                 Password = "fhryr352",
                 PhoneNumber = "+7(921)765-45-23",
                 IsDeleted = false,
-                Role = Role.Client,
+                Role = Role.Cleaner,
                 CleaningAdditions = new List<CleaningAddition> {
                     new CleaningAddition { },
                     new CleaningAddition { }

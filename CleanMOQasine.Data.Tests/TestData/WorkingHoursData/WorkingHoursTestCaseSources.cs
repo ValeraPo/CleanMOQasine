@@ -2,9 +2,6 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Tests.TestData
 {
@@ -53,6 +50,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsDeleted = false
             };
             yield return new TestCaseData(workingTimeMock, workingTimeMock);
+
             WorkingTime workingTimeMock1 = new()
             {
                 Id = 2,
@@ -87,6 +85,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsDeleted = true
             };
             yield return new TestCaseData(workingTimeMock, expected, mockToUpdate);
+
             WorkingTime workingTimeMock1 = new()
             {
                 Id = 2,
@@ -128,6 +127,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsDeleted = true
             };
             yield return new TestCaseData(workingTimeMock, expected);
+
             WorkingTime workingTimeMock1 = new()
             {
                 Id = 2,
@@ -155,6 +155,7 @@ namespace CleanMOQasine.Data.Tests.TestData
                 IsDeleted = false
             };
             yield return new TestCaseData(workingTimeMock, workingTimeMock);
+
             WorkingTime workingTimeMock1 = new()
             {
                 Id = 5,

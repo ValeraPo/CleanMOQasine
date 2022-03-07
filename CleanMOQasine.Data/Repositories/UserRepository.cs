@@ -26,7 +26,7 @@ namespace CleanMOQasine.Data.Repositories
 
         public int AddUser(User user)
         {
-            _dbContext.Entry(user).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+            _dbContext.Entry(user).State = EntityState.Added;
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return user.Id;
@@ -77,6 +77,5 @@ namespace CleanMOQasine.Data.Repositories
 
         private List<User> GetUsersByConditions(List<Func<User, bool>> conditions) =>
            _dbContext.Users.ToList().Where(u => conditions.TrueForAll(condition => condition(u))).ToList();
-
     }
 }

@@ -22,9 +22,6 @@ namespace CleanMOQasine.Business.Tests
 
         public UserServiceTests()
         {
-            _userRepositoryMock = new Mock<IUserRepository>();
-            _workingTimeRepositoryMock = new Mock<IWorkingTimeRepository>();
-            _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
             _userTestData = new UserTestData();
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
@@ -34,6 +31,8 @@ namespace CleanMOQasine.Business.Tests
         public void Setup()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
+            _workingTimeRepositoryMock = new Mock<IWorkingTimeRepository>();
+            _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
         }
 
         [Test]

@@ -1,27 +1,31 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
-using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanMOQasine.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [SwaggerTag("The controller is used to get all users separately; register new clients; " +
+        "add new admins, cleaners, clients; delete users and restore them")]
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ICleaningAdditionService _cleaningAdditionService;
+        private readonly IWorkingTimeService _workingTimeService;
         private readonly IMapper _autoMapper;
 
-        public UsersController(IUserService userService, IMapper autoMapper)
+        public UsersController(IUserService userService, ICleaningAdditionService cleaningAdditionService, IWorkingTimeService workingTimeService, IMapper autoMapper)
         {
             _userService = userService;
+            _cleaningAdditionService = cleaningAdditionService;
+            _workingTimeService = workingTimeService;
             _autoMapper = autoMapper;
         }
 
@@ -29,9 +33,10 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet("{id}")]
         [Authorize]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [SwaggerOperation("Get user by id. Roles: All.")]
         public ActionResult<UserOutputModel> GetUserById(int id)
         {
             var userModel = _userService.GetUserById(id);
@@ -49,6 +54,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(List<UserOutputModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation("Get all admins. Roles: Admin.")]
         public ActionResult<List<UserOutputModel>> GetAllAdmins()
         {
             var userModels = _userService.GetAllAdmins();
@@ -61,6 +67,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(List<UserOutputModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation("Get all cleaners. Roles: All, Anonymous.")]
         public ActionResult<List<UserOutputModel>> GetAllCleaners()
         {
             var userModels = _userService.GetAllCleaners();
@@ -74,6 +81,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(typeof(List<UserOutputModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [SwaggerOperation("Get all clients. Roles: Admin.")]
         public ActionResult<List<UserOutputModel>> GetAllCLients()
         {
             var userModels = _userService.GetAllClients();
@@ -83,11 +91,12 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users/23
         [HttpPut("{id}")]
-        [Authorize]
+        [AuthorizeEnum(Role.Admin, Role.Client)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Update a user by id. Roles: Admin, Client.")]
         public ActionResult UpdateUser(int id, [FromBody] UserUpdateInputModel userUpdateInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userUpdateInputModel);
@@ -97,29 +106,39 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost("clients")]
+        [AllowAnonymous]
+        [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public ActionResult<UserOutputModel> RegisterNewClient([FromBody] UserRegisterInputModel userRegisterInputModel)
+        [SwaggerOperation("Register a brand new client. Roles: Admin, Anonymous.")]
+        public ActionResult<UserOutputModel> RegisterNewClient([FromBody] ClientInsertInputModel userRegisterInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userRegisterInputModel);
-            CheckUser(userModel);
-            _userService.RegisterNewClient(userModel);
-            return StatusCode(StatusCodes.Status201Created, userModel);
+            var user = _userService.RegisterNewClient(userModel);
+            return StatusCode(StatusCodes.Status201Created, user);
         }
 
         //api/Users
-        [HttpPost]
+        [HttpPost("cleaners")]
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public ActionResult<UserOutputModel> AddUser([FromBody] UserInsertInputModel userInsertInputModel)
+        [SwaggerOperation("Register a brand new cleaner. Roles: Admin.")]
+        public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            CheckUser(userModel);
-            _userService.AddUser(userModel);
-            return StatusCode(StatusCodes.Status201Created, userModel);
+            _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
+            _userService.RegisterNewCleaner(userModel);
+            foreach (var wh in userModel.WorkingHours)
+                _workingTimeService.AddWorkingTime(wh, userModel);
+
+            foreach (var caId in userInsertInputModel.CleaningAdditionIds)
+                _cleaningAdditionService.AddCleaningAdditionToCleaner(caId, userModel);
+            
+            var output = _autoMapper.Map<UserOutputModel>(userModel);
+            return StatusCode(StatusCodes.Status201Created, output);
         }
 
         //api/Users/23
@@ -129,6 +148,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Delete a user. Roles: Admin, Client.")]
         public ActionResult DeleteUser(int id)
         {
             _userService.DeleteUserById(id);
@@ -156,18 +176,11 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Restore a user. Roles: Admin.")]
         public ActionResult RestoreUser(int id)
         {
             _userService.RestoreUserById(id);
             return Ok($"User with id = {id} was restored");
-        }
-
-        private void CheckUser(UserModel userModel)
-        {
-            if (_userService.CheckIfLoginExists(userModel.Login))
-                throw new AuthenticationException("Пользователь с таким логином уже существует");
-            else if (_userService.CheckIfLoginExists(userModel.Email))
-                throw new AuthenticationException("Пользователь с таким email уже существует");
         }
     }
 }

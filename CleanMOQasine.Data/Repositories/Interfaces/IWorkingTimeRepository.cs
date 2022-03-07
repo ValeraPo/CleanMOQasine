@@ -10,5 +10,6 @@ namespace CleanMOQasine.Data.Repositories
         WorkingTime? GetWorkingTimeById(int id);
         void UpdateWorkingTime(WorkingTime workingTime);
         List<WorkingTime> GetCleanersWorkingTimes(int userId);
+        List<WorkingTime> GetWorkingTimesByCleaner(int cleanerId);
     }
 }

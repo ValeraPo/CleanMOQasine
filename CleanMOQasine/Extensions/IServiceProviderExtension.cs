@@ -87,6 +87,8 @@ namespace CleanMOQasine.API.Extensions
                          new string[] {}
                     }
                 });
+
+                config.EnableAnnotations();
             });
         }
     }

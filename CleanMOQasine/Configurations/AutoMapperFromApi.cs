@@ -11,16 +11,27 @@ namespace CleanMOQasine.API.Configurations
         {
             CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
             CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
-            CreateMap<UserInsertInputModel, UserModel>();
+
+            CreateMap<CleanerInsertInputModel, UserModel>();
             CreateMap<UserUpdateInputModel, UserModel>();
-            CreateMap<UserRegisterInputModel, UserModel>();
+            CreateMap<ClientInsertInputModel, UserModel>();
             CreateMap<UserModel, UserOutputModel>();
+
             CreateMap<CleaningTypeModel, CleaningTypeOutputModel>();
             CreateMap<CleaningTypeInsertInputModel, CleaningTypeModel>();
             CreateMap<CleaningTypeUpdateInputModel, CleaningTypeModel>();
+
             CreateMap<RoomInputModel, RoomModel>();
             CreateMap<RoomModel, RoomOutputModel>();
-            CreateMap<WorkingTimeOutputModel, WorkingTimeModel>();
+
+            CreateMap<WorkingTimeModel, WorkingTimeOutputModel>()
+                .ForMember(output => output.StartTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.StartTime))
+                .ForMember(output => output.EndTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.EndTime))
+                .ForMember(output=>output.UserId, opt=>opt.MapFrom(model=>model.User.Id));
+            CreateMap<WorkingTimeInsertInputModel, WorkingTimeModel>()
+                .ForMember(wtm => wtm.StartTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.StartTime))
+                .ForMember(wtm => wtm.EndTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.EndTime));
+
             CreateMap<PaymentOutputModel, PaymentModel>();
             CreateMap<PaymentModel, PaymentInputModel>();
         }

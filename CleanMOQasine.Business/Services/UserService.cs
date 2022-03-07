@@ -12,13 +12,16 @@ namespace CleanMOQasine.Business.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IWorkingTimeRepository _workingTimeRepository;
+        private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapper;
 
-        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository, 
+            ICleaningAdditionRepository cleaningAdditionRepository)
         {
             _userRepository = userRepository;
             _autoMapper = autoMapper;
             _workingTimeRepository = workingTimeRepository;
+            _cleaningAdditionRepository = cleaningAdditionRepository;
         }
 
         public UserModel GetUserById(int id)
@@ -72,17 +75,30 @@ namespace CleanMOQasine.Business.Services
             return true;
         }
 
-        public void AddUser(UserModel userModel)
+        public UserModel AddUser(UserModel userModel)
         {
             var mappedUser = _autoMapper.Map<User>(userModel);
             mappedUser.Password = PasswordHash.HashPassword(mappedUser.Password);
-            _userRepository.AddUser(mappedUser);
+            userModel.Id = _userRepository.AddUser(mappedUser);
+            return userModel;
         }
 
-        public void RegisterNewClient(UserModel userModel)
+        public UserModel RegisterNewClient(UserModel userModel)
         {
+            CheckIfThatUserAlreadyExists(userModel);
             userModel.Role = Role.Client;
-            AddUser(userModel);
+            var user = AddUser(userModel);
+            return user;
+        }
+
+        public UserModel RegisterNewCleaner(UserModel userModel)
+        {
+            CheckIfThatUserAlreadyExists(userModel);
+            userModel.Role = Role.Cleaner;
+            
+            var user = AddUser(userModel);
+            userModel.Id = user.Id;
+            return user;
         }
 
         public void DeleteUserById(int id)
@@ -121,11 +137,18 @@ namespace CleanMOQasine.Business.Services
             _workingTimeRepository.AddWorkingTime(workingTimeForEntity, userId);
         }
 
-
         private void CheckUser(User user, int id)
         {
             if (user is null)
                 throw new NotFoundException($"Пользователь с id = {id} не найден");
+        }
+
+        private void CheckIfThatUserAlreadyExists(UserModel userModel)
+        {
+            if (CheckIfLoginExists(userModel.Login))
+                throw new AuthenticationException("Пользователь с таким логином уже существует");
+            else if (CheckIfEmailExists(userModel.Email))
+                throw new AuthenticationException("Пользователь с таким email уже существует");
         }
     }
 }

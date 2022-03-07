@@ -6,6 +6,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace CleanMOQasine.API.Controllers
 {
@@ -26,6 +27,9 @@ namespace CleanMOQasine.API.Controllers
         //api/CleaningAdditions/228
         [HttpGet("{id}")]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(CleaningAdditionOutputModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Get cleaning addition by id. Roles: all and anonymus.")]
         public ActionResult<CleaningAdditionOutputModel> GetCleaningAdditionById(int id)
         {
             var model = _cleaningAdditionService.GetCleaningAdditionById(id);
@@ -36,6 +40,8 @@ namespace CleanMOQasine.API.Controllers
         //api/CleaningAdditions
         [HttpGet()]
         [AllowAnonymous]
+        [ProducesResponseType(typeof(List<CleaningAdditionOutputModel>), StatusCodes.Status200OK)]
+        [SwaggerOperation("Get all not deleted cleaning additions. Roles: all and anonymus.")]
         public ActionResult<List<CleaningAdditionOutputModel>> GetAllCleaningAdditions()
         {
             var models = _cleaningAdditionService.GetAllCleaningAdditions();
@@ -45,6 +51,11 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Add cleaning addition. Roles: Admin.")]
         public ActionResult AddCleaningAddition([FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
@@ -54,6 +65,12 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions/228
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Update not deleted cleaning addition. Roles: Admin.")]
         public ActionResult UpdateCleaningAddition(int id, [FromBody] CleaningAdditionInputModel cleaningAdditionInputModel)
         {
             var model = _autoMapperInstance.Map<CleaningAdditionModel>(cleaningAdditionInputModel);
@@ -63,6 +80,11 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions/228
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Soft delete cleaning addition. Roles: Admin.")]
         public ActionResult DeleteCleaningAddition(int id)
         {
             _cleaningAdditionService.DeleteCleaningAddition(id);
@@ -71,6 +93,11 @@ namespace CleanMOQasine.API.Controllers
 
         //api/CleaningAdditions/228
         [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Restore cleaning addition. Roles: Admin.")]
         public ActionResult RestoreCleaningAddition(int id)
         {
             _cleaningAdditionService.RestoreCleaningAddition(id);

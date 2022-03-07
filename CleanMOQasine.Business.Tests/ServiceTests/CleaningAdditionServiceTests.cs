@@ -13,6 +13,7 @@ namespace CleanMOQasine.Business.Tests
     public class CleaningAdditionServiceTests
     {
         private Mock<ICleaningAdditionRepository> _cleaningAdditionRepositoryMock;
+        private Mock<IUserRepository> _userRepoMock;
         private readonly CleaningAdditionTestData _cleaningAdditionTestData;
         private readonly IMapper _autoMapper;
 
@@ -27,6 +28,7 @@ namespace CleanMOQasine.Business.Tests
         public void Setup()
         {
             _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
+            _userRepoMock = new Mock<IUserRepository>();
         }
 
         [Test]
@@ -35,7 +37,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var cleaningAddition = _cleaningAdditionTestData.GetCleaningAdditionForTests();
             _cleaningAdditionRepositoryMock.Setup(x => x.GetCleaningAdditionById(It.IsAny<int>())).Returns(cleaningAddition);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
             var expected = _autoMapper.Map<CleaningAdditionModel>(cleaningAddition);
 
             //when
@@ -51,7 +53,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns((CleaningAddition)null);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.GetCleaningAdditionById(666));
@@ -63,7 +65,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var cleaningAdditions = _cleaningAdditionTestData.GetCleaningAdditionsForTests();
             _cleaningAdditionRepositoryMock.Setup(m => m.GetAllCleaningAdditions()).Returns(cleaningAdditions);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //when
             var actual = sut.GetAllCleaningAdditions();
@@ -81,7 +83,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var cleaningAdditionModel = _cleaningAdditionTestData.GetCleaningAdditionModelForTests();
             _cleaningAdditionRepositoryMock.Setup(m => m.AddCleaningAddition(It.IsAny<CleaningAddition>())).Returns(23);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //when
             sut.AddCleaningAddition(cleaningAdditionModel);
@@ -97,7 +99,7 @@ namespace CleanMOQasine.Business.Tests
             var cleaningAddition = new CleaningAddition();
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns(cleaningAddition);
             _cleaningAdditionRepositoryMock.Setup(m => m.DeleteCleaningAddition(It.IsAny<int>()));
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //when
             sut.DeleteCleaningAddition(23);
@@ -112,7 +114,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns((CleaningAddition)null);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.DeleteCleaningAddition(5678));
@@ -125,7 +127,7 @@ namespace CleanMOQasine.Business.Tests
             var cleaningAddition = new CleaningAddition();
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns(cleaningAddition);
             _cleaningAdditionRepositoryMock.Setup(m => m.RestoreCleaningAddition(It.IsAny<int>()));
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //when
             sut.RestoreCleaningAddition(23);
@@ -140,7 +142,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns((CleaningAddition)null);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.RestoreCleaningAddition(5678));
@@ -154,7 +156,7 @@ namespace CleanMOQasine.Business.Tests
             var cleaningAdditionModel = new CleaningAdditionModel();
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns(cleaningAddition);
             _cleaningAdditionRepositoryMock.Setup(m => m.UpdateCleaningAddition(It.IsAny<int>(), cleaningAddition));
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //when
             sut.UpdateCleaningAddition(It.IsAny<int>(), cleaningAdditionModel);
@@ -169,7 +171,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _cleaningAdditionRepositoryMock.Setup(m => m.GetCleaningAdditionById(It.IsAny<int>())).Returns((CleaningAddition)null);
-            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _autoMapper);
+            var sut = new CleaningAdditionService(_cleaningAdditionRepositoryMock.Object, _userRepoMock.Object, _autoMapper);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.UpdateCleaningAddition(It.IsAny<int>(), new CleaningAdditionModel()));

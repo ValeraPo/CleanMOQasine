@@ -15,14 +15,14 @@ namespace CleanMOQasine.Business.Services
         private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRpository, 
+        public OrderService(IOrderRepository orderRepository, 
             IUserRepository userRepository, 
             IMapper mapper,
             ICleaningAdditionRepository cleaningAdditionRepository,
             ICleaningTypeRepository cleaningTypeRepository,
             IRoomRepository roomRepository)
         {
-            _orderRepository = orderRpository;
+            _orderRepository = orderRepository;
             _userRepository = userRepository;
             _mapper = mapper;
             _cleaningAdditionRepository = cleaningAdditionRepository;
@@ -112,14 +112,11 @@ namespace CleanMOQasine.Business.Services
 
         public List<UserModel> SearchCleaners(OrderModel orderModel)
         {
-            var cleaningAdditionModels = new List<CleaningAdditionModel>();
-            cleaningAdditionModels.AddRange(orderModel.CleaningType.CleaningAdditions);
-            if (orderModel.CleaningType != null)
-                cleaningAdditionModels.AddRange(orderModel.CleaningAdditions);
-            var cleaningAdditions = _mapper.Map<List<CleaningAddition>>(cleaningAdditionModels);
+            // Берем список 
+            var cleaningAdditions = GetCleaningAdditionByOrder(orderModel);
 
             var cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
-            // Смотрим даты на меся вперед
+            // Смотрим даты на месяц вперед
             var maxDays = 30;
             var count = 0;
             while (cleaners.Count == 0 || count >= maxDays)
@@ -128,9 +125,9 @@ namespace CleanMOQasine.Business.Services
                 cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
                 count++;
             }
-            //Если в желаемый день не нашли клинеров говорим что можем сдвинуть заказ на несколько дней
+            // Если в желаемый день не нашли клинеров, говорим, что можем сдвинуть заказ на несколько дней
             if (count > 0)
-            { //выводим сообщение пользователю
+            { // Выводим сообщение пользователю
             }
             return _mapper.Map<List<UserModel>>(cleaners);
         }
@@ -142,6 +139,17 @@ namespace CleanMOQasine.Business.Services
                 throw new NotFoundException($"Order with id {orderId} does not exist");
             var newPayment = _mapper.Map<Payment>(payment);
             _orderRepository.AddPayment(newPayment, order);
+        }
+
+        // Получение списка адишенов по ордеру
+        public List<CleaningAddition> GetCleaningAdditionByOrder(OrderModel orderModel)
+        {
+            var cleaningAdditionModels = new List<CleaningAdditionModel>();
+            cleaningAdditionModels.AddRange(orderModel.CleaningType.CleaningAdditions);
+            if (orderModel.CleaningType != null)
+                cleaningAdditionModels.AddRange(orderModel.CleaningAdditions);
+            var cleaningAdditions = _mapper.Map<List<CleaningAddition>>(cleaningAdditionModels);
+            return cleaningAdditions;
         }
     }
 }

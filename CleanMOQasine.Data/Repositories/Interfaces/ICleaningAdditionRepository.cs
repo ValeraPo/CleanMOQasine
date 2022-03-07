@@ -11,5 +11,7 @@ namespace CleanMOQasine.Data.Repositories
         //List<CleaningAddition> GetCleaningAdditionsByCleaningType(CleaningType cleaningType);
         void RestoreCleaningAddition(int id);
         void UpdateCleaningAddition(int id, CleaningAddition updatedCleaningAddition);
+
+        void AddCleaningAdditionToCleaner(int cleaningAdditionId, int userId);
     }
 }

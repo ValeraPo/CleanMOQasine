@@ -18,11 +18,10 @@ namespace CleanMOQasine.Business.Tests
         private readonly UserTestData _userTestData;
         private readonly IMapper _autoMapper;
         private Mock<IWorkingTimeRepository> _workingTimeRepositoryMock;
+        private Mock<ICleaningAdditionRepository> _cleaningAdditionRepositoryMock;
 
         public UserServiceTests()
         {
-            _userRepositoryMock = new Mock<IUserRepository>();
-            _workingTimeRepositoryMock = new Mock<IWorkingTimeRepository>();
             _userTestData = new UserTestData();
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
@@ -32,6 +31,8 @@ namespace CleanMOQasine.Business.Tests
         public void Setup()
         {
             _userRepositoryMock = new Mock<IUserRepository>();
+            _workingTimeRepositoryMock = new Mock<IWorkingTimeRepository>();
+            _cleaningAdditionRepositoryMock = new Mock<ICleaningAdditionRepository>();
         }
 
         [Test]
@@ -40,7 +41,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var user = _userTestData.GetUserForTests();
             _userRepositoryMock.Setup(x => x.GetUserById(It.IsAny<int>())).Returns(user);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
             var expected = _autoMapper.Map<UserModel>(user);
 
             //when
@@ -56,7 +57,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns((User)null);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.GetUserById(23));
@@ -68,7 +69,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var users = _userTestData.GetListOfUsersForTests();
             _userRepositoryMock.Setup(m => m.GetUsers()).Returns(users);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             var actual = sut.GetAllAdmins();
@@ -94,7 +95,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var users = _userTestData.GetListOfUsersForTests();
             _userRepositoryMock.Setup(m => m.GetUsers()).Returns(users);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             var actual = sut.GetAllCleaners();
@@ -110,7 +111,7 @@ namespace CleanMOQasine.Business.Tests
                 Assert.IsNotNull(actual[i].Login);
                 Assert.IsNotNull(actual[i].Password);
                 Assert.IsNotNull(actual[i].PhoneNumber);
-                Assert.IsNotNull(actual[i].Rank);
+                Assert.IsNull(actual[i].Rank);
                 Assert.IsNotNull(actual[i].CleaningAdditions);
                 Assert.IsNotNull(actual[i].WorkingHours);
                 Assert.IsTrue(actual[i].CleaningAdditions.Count > 0);
@@ -124,7 +125,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var users = _userTestData.GetListOfUsersForTests();
             _userRepositoryMock.Setup(m => m.GetUsers()).Returns(users);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             var actual = sut.GetAllClients();
@@ -140,7 +141,7 @@ namespace CleanMOQasine.Business.Tests
                 Assert.IsNotNull(actual[i].Login);
                 Assert.IsNotNull(actual[i].Password);
                 Assert.IsNotNull(actual[i].PhoneNumber);
-                Assert.IsNotNull(actual[i].Rank);
+                Assert.IsNull(actual[i].Rank);
             }
         }
 
@@ -150,7 +151,7 @@ namespace CleanMOQasine.Business.Tests
             //given
             var userModel = _userTestData.GetUserModelForTests();
             _userRepositoryMock.Setup(m => m.AddUser(It.IsAny<User>())).Returns(23);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             sut.AddUser(userModel);
@@ -166,7 +167,7 @@ namespace CleanMOQasine.Business.Tests
             var user = new User();
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(user);
             _userRepositoryMock.Setup(m => m.UpdateUser(user));
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             sut.UpdateUser(23, new UserModel());
@@ -181,7 +182,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns((User)null);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.UpdateUser(23, new UserModel()));
@@ -194,7 +195,7 @@ namespace CleanMOQasine.Business.Tests
             var user = new User();
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(user);
             _userRepositoryMock.Setup(m => m.UpdateUser(It.IsAny<int>(), true));
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             sut.DeleteUserById(23);
@@ -209,7 +210,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns((User)null);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.DeleteUserById(23));
@@ -222,7 +223,7 @@ namespace CleanMOQasine.Business.Tests
             var user = new User();
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns(user);
             _userRepositoryMock.Setup(m => m.UpdateUser(It.IsAny<int>(), It.IsAny<bool>()));
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //when
             sut.RestoreUserById(23);
@@ -237,7 +238,7 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             _userRepositoryMock.Setup(m => m.GetUserById(It.IsAny<int>())).Returns((User)null);
-            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object);
+            var sut = new UserService(_autoMapper, _userRepositoryMock.Object, _workingTimeRepositoryMock.Object, _cleaningAdditionRepositoryMock.Object);
 
             //then
             Assert.Throws<NotFoundException>(() => sut.DeleteUserById(23));

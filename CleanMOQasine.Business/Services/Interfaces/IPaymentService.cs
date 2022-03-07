@@ -8,5 +8,6 @@ namespace CleanMOQasine.Business.Services
         List<PaymentModel> GetAllPayments();
         PaymentModel GetPaymentById(int id);
         void UpdatePayment(PaymentModel payment);
+        List<PaymentModel> GetPaymentsByClientId(int clientId);
     }
 }

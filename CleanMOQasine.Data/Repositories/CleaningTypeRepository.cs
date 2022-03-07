@@ -14,13 +14,14 @@ namespace CleanMOQasine.Data.Repositories
 
         public CleaningType? GetCleaningTypeById(int id)
         {
-            return _context.CleaningTypes.Include(ca => ca.CleaningAdditions)
+            return _context.CleaningTypes.Include(ca => ca.CleaningAdditions.Where(ca => !ca.IsDeleted))
                            .FirstOrDefault(ct => ct.Id == id);
         }
 
         public List<CleaningType> GetAllCleaningTypes()
         {
-            return _context.CleaningTypes.Include(ca => ca.CleaningAdditions).ToList();
+            return _context.CleaningTypes.Include(ca => ca.CleaningAdditions.Where(ca => !ca.IsDeleted))
+                                         .Where(ct => !ct.IsDeleted).ToList();
         }
 
         public int AddCleaningType(CleaningType cleaningType)

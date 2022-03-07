@@ -62,9 +62,9 @@ namespace CleanMOQasine.API.Extensions
 
         public static void RegisterSwaggerGen(this IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(config =>
             {
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
@@ -73,7 +73,7 @@ namespace CleanMOQasine.API.Extensions
                     Description = "JWT Authorization header using the Bearer scheme."
 
                 });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                config.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                           new OpenApiSecurityScheme
@@ -87,6 +87,8 @@ namespace CleanMOQasine.API.Extensions
                          new string[] {}
                     }
                 });
+
+                config.EnableAnnotations();
             });
         }
     }

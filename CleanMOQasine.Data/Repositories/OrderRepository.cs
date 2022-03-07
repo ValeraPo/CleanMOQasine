@@ -18,7 +18,6 @@ namespace CleanMOQasine.Data.Repositories
 
         public void UpdateOrder(Order oldOrder, Order newOrder)
         {
-            //var oldOrder = GetOrderById(newOrder.Id);
             oldOrder.CleaningType = newOrder.CleaningType;
             oldOrder.Grade = newOrder.Grade;
             oldOrder.Address = newOrder.Address;

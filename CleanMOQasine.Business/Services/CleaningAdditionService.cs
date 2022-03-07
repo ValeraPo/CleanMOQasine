@@ -44,7 +44,6 @@ namespace CleanMOQasine.Business.Services
         {
             foreach (int id in ids)
             {
-                var model = GetCleaningAdditionById(id);
                 _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userId);
             }
         }

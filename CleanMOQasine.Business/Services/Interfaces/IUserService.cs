@@ -6,7 +6,6 @@ namespace CleanMOQasine.Business.Services
     {
         UserModel RegisterNewCleaner(UserModel userModel);
         UserModel RegisterNewClient(UserModel userModel);
-        void CheckIfThatUserAlreadyExists(UserModel userModel);
         bool CheckIfLoginExists(string login);
         bool CheckIfEmailExists(string email);
         UserModel AddUser(UserModel userModel);

@@ -63,24 +63,25 @@ namespace CleanMOQasine.Business.Services
             return _mapper.Map<List<WorkingTimeModel>>(workingHours);
         }
 
-        public void AddWorkingTime(WorkingTimeModel workingTimeModel, int userId)
+        public void AddWorkingTime(WorkingTimeModel workingTimeModel, UserModel userModel)
         {
             if (workingTimeModel.StartTime >= workingTimeModel.EndTime)
                 throw new Exception("Время начала рабочего дня не может быть больше или равно времени окончания");
 
-            var user = _userRepository.GetUserById(userId);
+            var user = _userRepository.GetUserById(userModel.Id);
             if (user == null)
                 throw new NotFoundException("Вы пытаетесь добавить время работы к несуществующему пользователю");
             if (user.Role != Data.Enums.Role.Cleaner)
                 throw new NoAccessException("Пользователь не является уборщиком");
             
-            var isValidDay = GetWorkingTimesByCleaner(userId).Any(wt => wt.Day == workingTimeModel.Day);
+            var isValidDay = GetWorkingTimesByCleaner(userModel.Id).Any(wt => wt.Day == workingTimeModel.Day);
             if (isValidDay)
                 throw new Exception("Такой день недели уже существует у данного работника");
 
             var workingTime = _mapper.Map<WorkingTime>(workingTimeModel);
+            workingTimeModel.User = userModel;
             workingTime.User = user;
-            _workingTimeRepository.AddWorkingTime(workingTime, userId);
+            _workingTimeRepository.AddWorkingTime(workingTime, userModel.Id);
 
         }
         

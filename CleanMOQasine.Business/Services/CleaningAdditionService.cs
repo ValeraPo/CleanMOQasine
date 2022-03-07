@@ -2,17 +2,20 @@
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Business.Exceptions;
+using CleanMOQasine.Business.Models;
 
 namespace CleanMOQasine.Business.Services
 {
     public class CleaningAdditionService : ICleaningAdditionService
     {
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
+        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IUserRepository userRepository, IMapper mapper)
         {
             _cleaningAdditionRepository = cleaningAdditionRepository;
+            _userRepository = userRepository;
             _autoMapperInstance = mapper;
         }
 
@@ -47,6 +50,23 @@ namespace CleanMOQasine.Business.Services
                 var model = GetCleaningAdditionById(id);
                 _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userId);
             }
+        }
+
+        public void AddCleaningAdditionToCleaner(int id, UserModel userModel)
+        {
+            var user = _userRepository.GetUserById(userModel.Id);
+            if (user == null)
+                throw new NotFoundException("Пользователь не найден");
+
+            if (user.Role != Data.Enums.Role.Cleaner)
+                throw new NoAccessException("Пользователь не является клинером");
+
+            var cleaningAdditionModel = GetCleaningAdditionById(id);
+            if (userModel.CleaningAdditions == null)
+                userModel.CleaningAdditions = new();
+            userModel.CleaningAdditions.Add(cleaningAdditionModel);
+            _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userModel.Id);
+
         }
 
         public int AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)

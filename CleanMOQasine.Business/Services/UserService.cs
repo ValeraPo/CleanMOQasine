@@ -104,6 +104,7 @@ namespace CleanMOQasine.Business.Services
             userModel.Role = Role.Cleaner;
             
             var user = AddUser(userModel);
+            userModel.Id = user.Id;
             return user;
         }
 

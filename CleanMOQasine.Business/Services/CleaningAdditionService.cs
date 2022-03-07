@@ -43,28 +43,23 @@ namespace CleanMOQasine.Business.Services
             return listModels;
         }
 
-        public void AddCleaningAdditionsByListIdsToCleaner(List<int> ids, int userId)
-        {
-            foreach (int id in ids)
-            {
-                var model = GetCleaningAdditionById(id);
-                _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userId);
-            }
-        }
-
         public void AddCleaningAdditionToCleaner(int id, UserModel userModel)
         {
             var user = _userRepository.GetUserById(userModel.Id);
-            if (user == null)
-                throw new NotFoundException("Пользователь не найден");
+            if (user == null || user.IsDeleted)
+                throw new NotFoundException("Вы пытаетеь добавить навык к несуществующему или удалённому пользователю");
 
             if (user.Role != Data.Enums.Role.Cleaner)
                 throw new NoAccessException("Пользователь не является клинером");
 
-            var cleaningAdditionModel = GetCleaningAdditionById(id);
+            var cleaningAddition = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+            if (cleaningAddition == null || cleaningAddition.IsDeleted)
+                throw new NotFoundException("Дополнение к уборке не найдено или удалено");
+
             if (userModel.CleaningAdditions == null)
                 userModel.CleaningAdditions = new();
-            userModel.CleaningAdditions.Add(cleaningAdditionModel);
+
+            userModel.CleaningAdditions.Add(_autoMapperInstance.Map<CleaningAdditionModel>(cleaningAddition));
             _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userModel.Id);
 
         }

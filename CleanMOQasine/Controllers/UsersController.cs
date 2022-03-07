@@ -120,7 +120,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Users
         [HttpPost("cleaners")]
-       // [AuthorizeEnum(Role.Admin)]
+        [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

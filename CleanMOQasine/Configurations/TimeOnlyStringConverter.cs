@@ -2,7 +2,7 @@
 
 namespace CleanMOQasine.API.Configurations
 {
-    public class TimeOnlyFromStringConverter : IValueConverter<string, TimeOnly>, IValueConverter<TimeOnly, string>
+    public class TimeOnlyStringConverter : IValueConverter<string, TimeOnly>, IValueConverter<TimeOnly, string>
     {
         public TimeOnly Convert(string sourceMember, ResolutionContext context)
         {

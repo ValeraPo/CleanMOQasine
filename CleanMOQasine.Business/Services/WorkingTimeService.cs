@@ -69,14 +69,14 @@ namespace CleanMOQasine.Business.Services
                 throw new Exception("Время начала рабочего дня не может быть больше или равно времени окончания");
 
             var user = _userRepository.GetUserById(userModel.Id);
-            if (user == null)
-                throw new NotFoundException("Вы пытаетесь добавить время работы к несуществующему пользователю");
+            if (user == null || user.IsDeleted)
+                throw new NotFoundException("Вы пытаетесь добавить время работы к несуществующему или удалённому пользователю");
             if (user.Role != Data.Enums.Role.Cleaner)
                 throw new NoAccessException("Пользователь не является уборщиком");
             
             var isValidDay = GetWorkingTimesByCleaner(userModel.Id).Any(wt => wt.Day == workingTimeModel.Day);
             if (isValidDay)
-                throw new Exception("Такой день недели уже существует у данного работника");
+                throw new Exception("Такой день недели уже существует у данного работника. В день возможна только одна смена.");
 
             var workingTime = _mapper.Map<WorkingTime>(workingTimeModel);
             workingTimeModel.User = userModel;

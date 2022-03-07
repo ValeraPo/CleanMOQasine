@@ -24,10 +24,13 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<RoomInputModel, RoomModel>();
             CreateMap<RoomModel, RoomOutputModel>();
 
-            CreateMap<WorkingTimeModel, WorkingTimeOutputModel>();
+            CreateMap<WorkingTimeModel, WorkingTimeOutputModel>()
+                .ForMember(output => output.StartTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.StartTime))
+                .ForMember(output => output.EndTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.EndTime))
+                .ForMember(output=>output.UserId, opt=>opt.MapFrom(model=>model.User.Id));
             CreateMap<WorkingTimeInsertInputModel, WorkingTimeModel>()
-                .ForMember(wtm => wtm.StartTime, opt => opt.ConvertUsing(new TimeOnlyFromStringConverter(), src => src.StartTime))
-                .ForMember(wtm => wtm.EndTime, opt => opt.ConvertUsing(new TimeOnlyFromStringConverter(), src => src.EndTime));
+                .ForMember(wtm => wtm.StartTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.StartTime))
+                .ForMember(wtm => wtm.EndTime, opt => opt.ConvertUsing(new TimeOnlyStringConverter(), src => src.EndTime));
 
             CreateMap<PaymentOutputModel, PaymentModel>();
             CreateMap<PaymentModel, PaymentInputModel>();

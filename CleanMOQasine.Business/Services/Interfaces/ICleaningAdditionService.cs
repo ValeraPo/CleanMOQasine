@@ -1,4 +1,6 @@
-﻿namespace CleanMOQasine.Business.Services
+﻿using CleanMOQasine.Business.Models;
+
+namespace CleanMOQasine.Business.Services
 {
     public interface ICleaningAdditionService
     {
@@ -9,6 +11,6 @@
         void RestoreCleaningAddition(int id);
         void UpdateCleaningAddition(int id, CleaningAdditionModel cleaningAdditionModel);
         List<CleaningAdditionModel> GetCleaningAdditionsByListIds(List<int> ids);
-        void AddCleaningAdditionsByListIdsToCleaner(List<int> ids, int userId);
+        void AddCleaningAdditionToCleaner(int id, UserModel userModel);
     }
 }

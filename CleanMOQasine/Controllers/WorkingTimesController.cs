@@ -74,7 +74,8 @@ namespace CleanMOQasine.API.Controllers
         {
             var workingTimeModel = _autoMapper.Map<WorkingTimeModel>(workingTime);
             this.CheckAccessCleanerToWorkingTime(cleanerId);
-            _workingTimeService.AddWorkingTime(workingTimeModel, cleanerId);
+            var userModel = _userService.GetUserById(cleanerId);
+            _workingTimeService.AddWorkingTime(workingTimeModel, userModel);
             return StatusCode(StatusCodes.Status201Created, workingTime);
         }
 

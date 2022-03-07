@@ -129,13 +129,16 @@ namespace CleanMOQasine.API.Controllers
         public ActionResult<UserOutputModel> RegisterNewCleaner([FromBody] CleanerInsertInputModel userInsertInputModel)
         {
             var userModel = _autoMapper.Map<UserModel>(userInsertInputModel);
-            var user = _userService.RegisterNewCleaner(userModel);
-            foreach (var item in userModel.WorkingHours)
-                _workingTimeService.AddWorkingTime(item, user.Id);
+            _cleaningAdditionService.GetCleaningAdditionsByListIds(userInsertInputModel.CleaningAdditionIds);
+            _userService.RegisterNewCleaner(userModel);
+            foreach (var wh in userModel.WorkingHours)
+                _workingTimeService.AddWorkingTime(wh, userModel);
 
-            _cleaningAdditionService.AddCleaningAdditionsByListIdsToCleaner(userInsertInputModel.CleaningAdditionIds, user.Id);
+            foreach (var caId in userInsertInputModel.CleaningAdditionIds)
+                _cleaningAdditionService.AddCleaningAdditionToCleaner(caId, userModel);
             
-            return StatusCode(StatusCodes.Status201Created, user);
+            var output = _autoMapper.Map<UserOutputModel>(userModel);
+            return StatusCode(StatusCodes.Status201Created, output);
         }
 
         //api/Users/23

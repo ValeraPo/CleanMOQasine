@@ -2,17 +2,20 @@
 using CleanMOQasine.Data.Entities;
 using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Business.Exceptions;
+using CleanMOQasine.Business.Models;
 
 namespace CleanMOQasine.Business.Services
 {
     public class CleaningAdditionService : ICleaningAdditionService
     {
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _autoMapperInstance;
 
-        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IMapper mapper)
+        public CleaningAdditionService(ICleaningAdditionRepository cleaningAdditionRepository, IUserRepository userRepository, IMapper mapper)
         {
             _cleaningAdditionRepository = cleaningAdditionRepository;
+            _userRepository = userRepository;
             _autoMapperInstance = mapper;
         }
 
@@ -34,19 +37,33 @@ namespace CleanMOQasine.Business.Services
             var listModels = new List<CleaningAdditionModel>();
             foreach (int id in ids)
             {
-                var model = GetCleaningAdditionById(id);
-                listModels.Add(model);
+                var cleaningAddition = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+                if (cleaningAddition == null || cleaningAddition.IsDeleted)
+                    throw new NotFoundException($"Дополнение к уборке c Id={cleaningAddition.Id} не найдено или удалено");
+                listModels.Add(_autoMapperInstance.Map<CleaningAdditionModel>(cleaningAddition));
             }
             return listModels;
         }
 
-        public void AddCleaningAdditionsByListIdsToCleaner(List<int> ids, int userId)
+        public void AddCleaningAdditionToCleaner(int id, UserModel userModel)
         {
-            foreach (int id in ids)
-            {
-                var model = GetCleaningAdditionById(id);
-                _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userId);
-            }
+            var user = _userRepository.GetUserById(userModel.Id);
+            if (user == null || user.IsDeleted)
+                throw new NotFoundException("Вы пытаетеь добавить навык к несуществующему или удалённому пользователю");
+
+            if (user.Role != Data.Enums.Role.Cleaner)
+                throw new NoAccessException("Пользователь не является клинером");
+
+            var cleaningAddition = _cleaningAdditionRepository.GetCleaningAdditionById(id);
+            if (cleaningAddition == null || cleaningAddition.IsDeleted)
+                throw new NotFoundException("Дополнение к уборке не найдено или удалено");
+
+            if (userModel.CleaningAdditions == null)
+                userModel.CleaningAdditions = new();
+
+            userModel.CleaningAdditions.Add(_autoMapperInstance.Map<CleaningAdditionModel>(cleaningAddition));
+            _cleaningAdditionRepository.AddCleaningAdditionToCleaner(id, userModel.Id);
+
         }
 
         public int AddCleaningAddition(CleaningAdditionModel cleaningAdditionModel)

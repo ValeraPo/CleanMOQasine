@@ -12,6 +12,9 @@ namespace CleanMOQasine.API.Configurations
             CreateMap<CleaningAdditionInputModel, CleaningAdditionModel>();
             CreateMap<CleaningAdditionModel, CleaningAdditionOutputModel>();
 
+            CreateMap<GradeModel, GradeBaseOutputModel>();
+            CreateMap<GradeBaseInputModel, GradeModel>();
+
             CreateMap<CleanerInsertInputModel, UserModel>();
             CreateMap<UserUpdateInputModel, UserModel>();
             CreateMap<ClientInsertInputModel, UserModel>();

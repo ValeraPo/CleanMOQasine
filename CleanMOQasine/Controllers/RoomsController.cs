@@ -45,7 +45,7 @@ namespace CleanMOQasine.API.Controllers
 
         //api/Rooms
         [HttpGet()]
-        [Authorize]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(List<RoomOutputModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

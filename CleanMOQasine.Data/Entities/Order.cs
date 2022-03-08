@@ -15,7 +15,6 @@ namespace CleanMOQasine.Data.Entities
         public DateTime Date { get; set; }
         public bool IsDeleted { get; set; }
 
-
         public virtual ICollection<Room>? Rooms { get; set; }
         public virtual ICollection<CleaningAddition>? CleaningAdditions { get; set; }
         public virtual ICollection<User>? Cleaners { get; set; }

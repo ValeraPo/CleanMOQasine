@@ -15,7 +15,8 @@ namespace CleanMOQasine.Business.Services
         private readonly ICleaningAdditionRepository _cleaningAdditionRepository;
         private readonly IMapper _autoMapper;
 
-        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository, ICleaningAdditionRepository cleaningAdditionRepository)
+        public UserService(IMapper autoMapper, IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository, 
+            ICleaningAdditionRepository cleaningAdditionRepository)
         {
             _userRepository = userRepository;
             _autoMapper = autoMapper;
@@ -72,14 +73,6 @@ namespace CleanMOQasine.Business.Services
                 return false;
 
             return true;
-        }
-
-        public void CheckIfThatUserAlreadyExists(UserModel userModel)
-        {
-            if (CheckIfLoginExists(userModel.Login))
-                throw new AuthenticationException("Пользователь с таким логином уже существует");
-            else if (CheckIfEmailExists(userModel.Email))
-                throw new AuthenticationException("Пользователь с таким email уже существует");
         }
 
         public UserModel AddUser(UserModel userModel)
@@ -148,6 +141,14 @@ namespace CleanMOQasine.Business.Services
         {
             if (user is null)
                 throw new NotFoundException($"Пользователь с id = {id} не найден");
+        }
+
+        private void CheckIfThatUserAlreadyExists(UserModel userModel)
+        {
+            if (CheckIfLoginExists(userModel.Login))
+                throw new AuthenticationException("Пользователь с таким логином уже существует");
+            else if (CheckIfEmailExists(userModel.Email))
+                throw new AuthenticationException("Пользователь с таким email уже существует");
         }
     }
 }

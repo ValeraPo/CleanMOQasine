@@ -3,15 +3,12 @@ using CleanMOQasine.Data.Repositories;
 using CleanMOQasine.Data.Tests.TestData;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanMOQasine.Data.Tests
 {
-    public class WorkingHoursTests
+    public class WorkingTimeRepositoryTests
     {
         private CleanMOQasineContext _context;
         private IWorkingTimeRepository _repo;
@@ -28,10 +25,8 @@ namespace CleanMOQasine.Data.Tests
             _repo = new WorkingTimeRepository(_context);
         }
 
-        [TestCaseSource(typeof(WorkingHoursTestCaseSources)
-            , nameof(WorkingHoursTestCaseSources.GetAllWorkingHoursData))]
-        public void GetAllWorkingTimesTests(List<WorkingTime> allWorkingHours
-            , List<WorkingTime> expected)
+        [TestCaseSource(typeof(WorkingHoursTestCaseSources), nameof(WorkingHoursTestCaseSources.GetAllWorkingHoursData))]
+        public void GetAllWorkingTimesTests(List<WorkingTime> allWorkingHours, List<WorkingTime> expected)
         {
             //given
             _context.WorkingHours.AddRange(allWorkingHours);
@@ -44,10 +39,8 @@ namespace CleanMOQasine.Data.Tests
             CollectionAssert.AreEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(WorkingHoursTestCaseSources)
-            , nameof(WorkingHoursTestCaseSources.GetWorkingTimeById))]
-        public void GetWorkingTimeByIdTests(WorkingTime workingHours
-            , WorkingTime expected)
+        [TestCaseSource(typeof(WorkingHoursTestCaseSources), nameof(WorkingHoursTestCaseSources.GetWorkingTimeById))]
+        public void GetWorkingTimeByIdTests(WorkingTime workingHours, WorkingTime expected)
         {
             //given
             _context.WorkingHours.Add(workingHours);
@@ -60,10 +53,8 @@ namespace CleanMOQasine.Data.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(WorkingHoursTestCaseSources)
-            , nameof(WorkingHoursTestCaseSources.UpdateWorkingHours))]
-        public void UpdateWorkingTimeByIdTests(WorkingTime workingHours
-            , WorkingTime expected, WorkingTime objectToUpdate)
+        [TestCaseSource(typeof(WorkingHoursTestCaseSources), nameof(WorkingHoursTestCaseSources.UpdateWorkingHours))]
+        public void UpdateWorkingTimeByIdTests(WorkingTime workingHours, WorkingTime expected, WorkingTime objectToUpdate)
         {
             //given
             _context.WorkingHours.Add(workingHours);
@@ -78,10 +69,8 @@ namespace CleanMOQasine.Data.Tests
             Assert.AreEqual(expected.IsDeleted, actual.IsDeleted);
         }
 
-        [TestCaseSource(typeof(WorkingHoursTestCaseSources)
-            , nameof(WorkingHoursTestCaseSources.DeleteWorkingTimeById))]
-        public void DeleteWorkingTimeByIdTests(WorkingTime workingHours
-            , WorkingTime expected)
+        [TestCaseSource(typeof(WorkingHoursTestCaseSources), nameof(WorkingHoursTestCaseSources.DeleteWorkingTimeById))]
+        public void DeleteWorkingTimeByIdTests(WorkingTime workingHours, WorkingTime expected)
         {
             //given
             _context.WorkingHours.Add(workingHours);
@@ -95,10 +84,8 @@ namespace CleanMOQasine.Data.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCaseSource(typeof(WorkingHoursTestCaseSources)
-            , nameof(WorkingHoursTestCaseSources.AddWorkingTime))]
-        public void AddWorkingTime(WorkingTime workingHours
-            , WorkingTime expected)
+        [TestCaseSource(typeof(WorkingHoursTestCaseSources), nameof(WorkingHoursTestCaseSources.AddWorkingTime))]
+        public void AddWorkingTime(WorkingTime workingHours, WorkingTime expected)
         {
             //given
             UserTestData mockedUser = new();

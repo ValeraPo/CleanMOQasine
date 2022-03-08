@@ -15,14 +15,14 @@ namespace CleanMOQasine.Business.Services
         private readonly IRoomRepository _roomRepository;
         private readonly IMapper _mapper;
 
-        public OrderService(IOrderRepository orderRpository, 
+        public OrderService(IOrderRepository orderRepository, 
             IUserRepository userRepository, 
             IMapper mapper,
             ICleaningAdditionRepository cleaningAdditionRepository,
             ICleaningTypeRepository cleaningTypeRepository,
             IRoomRepository roomRepository)
         {
-            _orderRepository = orderRpository;
+            _orderRepository = orderRepository;
             _userRepository = userRepository;
             _mapper = mapper;
             _cleaningAdditionRepository = cleaningAdditionRepository;
@@ -121,7 +121,7 @@ namespace CleanMOQasine.Business.Services
             var cleaningAdditions = GetCleaningAdditionByOrder(orderModel);
 
             var cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
-            // Смотрим даты на меся вперед
+            // Смотрим даты на месяц вперед
             var maxDays = 30;
             var count = 0;
             while (cleaners.Count < countCleaners || count >= maxDays)

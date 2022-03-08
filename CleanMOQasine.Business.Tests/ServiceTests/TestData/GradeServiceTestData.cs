@@ -24,8 +24,10 @@ namespace CleanMOQasine.Business.Tests.ServiceTests
                 {
                     Address = "Вяртсиля ага ага",
                     Cleaners = new List<User>(),
+                    CleaningType = new CleaningType { Name = "Капитальная" },
                     Client = new User
                     {
+                        Login = "Borziy",
                         FirstName = "Antoxa",
                         LastName = "yaDa",
                         Role = Data.Enums.Role.Client

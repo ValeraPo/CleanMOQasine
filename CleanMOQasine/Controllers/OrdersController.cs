@@ -7,6 +7,7 @@ using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel;
 using System.Security.Claims;
 
@@ -14,6 +15,7 @@ namespace CleanMOQasine.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [SwaggerTag("The controller is used to interact with orders")]
     public class OrdersController : ControllerBase
     {
         private readonly IOrderService _orderService;
@@ -41,10 +43,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/admin
         [HttpGet]
         [Authorize]
-        [Description("Get order by role")]
         [ProducesResponseType(typeof(List<OrderOutputModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Get all orders by role. Roles: All.")]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
             var models = new List<OrderModel>();
@@ -61,10 +63,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [HttpGet("{id}")]
         [Authorize]
-        [Description("Get order by id")]
         [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Get order by id. Roles: All.")]
+
         public ActionResult<OrderOutputModel> GetOrderById(int id)
         {
             var model = _orderService.GetOrderById(id);
@@ -75,28 +78,34 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders
         [HttpPost]
         [AuthorizeEnum(Role.Client)]
-        [Description("Add order by client")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status302Found)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Add order. Roles: Client.")]
         public ActionResult AddOrder([FromBody] OrderUpdateInputModel order)
         {
             var modelOrder = CreateOrder(order);
             modelOrder.Client = _userService.GetUserById(GetUserId());
-
-            _orderService.AddOrder(modelOrder);
-            return StatusCode(StatusCodes.Status201Created);
+            var createdModelOrder = _orderService.AddOrder(modelOrder);
+            // Если не нашли необходимое количество клинеров
+            if(createdModelOrder == null)
+                return StatusCode(StatusCodes.Status404NotFound);
+            // Если нашли клинеров только на другие даты
+            if(createdModelOrder.Date != modelOrder.Date)
+                return StatusCode(StatusCodes.Status302Found, createdModelOrder);
+            return StatusCode(StatusCodes.Status201Created, createdModelOrder);
         }
 
         //api/Orders/admin
         [HttpPost("admin")]
         [AuthorizeEnum(Role.Admin)]
-        [Description("Add order by admin")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Add order. Roles: Admin.")]
         public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
         {
             var modelOrder = CreateOrder(order);
@@ -108,10 +117,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [HttpPut("{id}")]
         [AuthorizeEnum(Role.Admin, Role.Client)]
-        [Description("Update order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Update order. Roles: Admin, Client.")]
         public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
             var model = _mapper.Map<OrderModel>(order);
@@ -122,11 +131,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42/cleaner
         [HttpPut("{id}/cleaner")]
         [AuthorizeEnum(Role.Admin)]
-        [Description("Add cleaner to order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Add cleaner to order. Roles: Admin.")]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             _orderService.AddCleaner(id, cleaner.CleanerId);
@@ -136,11 +145,11 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42/remove-cleaner
         [HttpPut("{id}/remove-cleaner")]
         [AuthorizeEnum(Role.Admin)]
-        [Description("Remove cleaner from order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Remove cleaner from order. Roles: Admin.")]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
             _orderService.RemoveCleaner(id, cleaner.CleanerId);
@@ -150,10 +159,10 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [AuthorizeEnum(Role.Admin)]
         [HttpDelete("{id}")]
-        [Description("Delete order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Delete order. Roles: Admin.")]
         public ActionResult DeleteOrder(int id)
         {
             _orderService.DeleteOrder(id);
@@ -163,22 +172,23 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42
         [AuthorizeEnum(Role.Admin)]
         [HttpPatch("{id}")]
-        [Description("Restore order")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Restore order. Roles: Admin.")]
         public ActionResult RestoreOrder(int id)
         {
             _orderService.RestoreOrder(id);
             return Ok($"Order with id = {id} was restored");
         }
-
-        [AuthorizeEnum(Role.Admin, Role.Client)]
+        
+        //api/Orders/42/payment
+        [AuthorizeEnum(Role.Admin)]
         [HttpPost("{orderId}/payment")]
-        [Description("Delete order")]
         [ProducesResponseType(typeof(PaymentInputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [SwaggerOperation("Add payment to order. Roles: Admin.")]
         public ActionResult AddPayment([FromBody] PaymentInputModel payment, int orderId)
         {
             var paymentModel = _mapper.Map<PaymentModel>(payment);

@@ -62,12 +62,16 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.UpdateOrder(order, entity);
         }
 
-        public void AddOrder(OrderModel orderModel)
+        public OrderModel AddOrder(OrderModel orderModel)
         {
             var maxHours = 4;
-            var cleaners = SearchCleaners(orderModel);
+            var countCleaners = (int)(orderModel.TotalDuration / TimeSpan.FromHours(maxHours));
+            var cleaners = SearchCleaners(orderModel, countCleaners);
+            // Если не нашли необходимое количество клмнеров 
+            if (cleaners == null)
+                return null;
             // Определяем количество клинеров
-            for (int i = 0; i <= (int)(orderModel.TotalDuration / TimeSpan.FromHours(maxHours)); i++)
+            for (int i = 0; i <= countCleaners ; i++)
             {
                 //Выбираем наименее загруженного клинера
                 var cleaner = cleaners.MinBy(c => c.Orders.Count());
@@ -76,6 +80,7 @@ namespace CleanMOQasine.Business.Services
             
             var entity = _mapper.Map<Order>(orderModel);
             _orderRepository.AddOrder(entity);
+            return orderModel;
         }
 
         public void AddCleaner(int idOrder, int idUser)
@@ -110,7 +115,7 @@ namespace CleanMOQasine.Business.Services
             _orderRepository.RestoreOrder(order);
         }
 
-        public List<UserModel> SearchCleaners(OrderModel orderModel)
+        public List<UserModel> SearchCleaners(OrderModel orderModel, int countCleaners)
         {
             // Берем список 
             var cleaningAdditions = GetCleaningAdditionByOrder(orderModel);
@@ -119,16 +124,15 @@ namespace CleanMOQasine.Business.Services
             // Смотрим даты на месяц вперед
             var maxDays = 30;
             var count = 0;
-            while (cleaners.Count == 0 || count >= maxDays)
+            while (cleaners.Count < countCleaners || count >= maxDays)
             {
                 orderModel.Date.AddDays(1);
                 cleaners = _userRepository.GetCleaners(cleaningAdditions, orderModel.Date, orderModel.TotalDuration);
                 count++;
             }
-            // Если в желаемый день не нашли клинеров, говорим, что можем сдвинуть заказ на несколько дней
-            if (count > 0)
-            { // Выводим сообщение пользователю
-            }
+            //Если count дощло до лимита, возвращаем null
+            if (count == maxDays)
+                return null;
             return _mapper.Map<List<UserModel>>(cleaners);
         }
 

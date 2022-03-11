@@ -5,7 +5,7 @@ namespace CleanMOQasine.Business.Services
     public interface IOrderService
     {
         void AddCleaner(int idOrder, int idUser);
-        void AddOrder(OrderModel orderModel);
+        OrderModel AddOrder(OrderModel orderModel);
         void DeleteOrder(int id);
         List<OrderModel> GetAllOrders();
         OrderModel GetOrderById(int id);
@@ -15,5 +15,6 @@ namespace CleanMOQasine.Business.Services
         List<OrderModel> GetOrdersByCleanerId(int idCleaner);
         List<OrderModel> GetOrdersByClientId(int idUser);
         void AddPayment(PaymentModel payment, int orderId);
+        List<UserModel> SearchCleaners(OrderModel orderModel, int countCleaners);
     }
 }

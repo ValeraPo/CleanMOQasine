@@ -31,6 +31,13 @@ namespace CleanMOQasine.Business.Services
             return _autoMapper.Map<UserModel>(user);
         }
 
+        public UserModel GetClientById(int id)
+        {
+            var user = _userRepository.GetClientById(id);
+            CheckUser(user, id);
+            return _autoMapper.Map<UserModel>(user);
+        }
+
         public void UpdateUser(int id, UserModel userModel)
         {
             var user = _userRepository.GetUserById(id);

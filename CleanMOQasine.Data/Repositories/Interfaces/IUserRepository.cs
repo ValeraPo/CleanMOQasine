@@ -6,6 +6,7 @@ namespace CleanMOQasine.Data.Repositories
     {
         int AddUser(User user);
         User? GetUserById(int id);
+        User? GetClientById(int id);
         User? GetUserByLogin(string login);
         User? GetUserByEmail(string email);
         List<User> GetUsers();

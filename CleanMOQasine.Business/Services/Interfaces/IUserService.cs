@@ -13,6 +13,7 @@ namespace CleanMOQasine.Business.Services
         List<UserModel> GetAllAdmins();
         List<UserModel> GetAllCleaners();
         List<UserModel> GetAllClients();
+        UserModel GetClientById(int id);
         UserModel GetUserById(int id);
         void RestoreUserById(int id);
         void UpdateUser(int id, UserModel userModel);

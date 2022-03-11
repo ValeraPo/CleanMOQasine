@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using CleanMOQasine.API.Attributes;
 using CleanMOQasine.API.Models;
-using CleanMOQasine.Business.Exceptions;
 using CleanMOQasine.Business.Models;
 using CleanMOQasine.Business.Services;
 using CleanMOQasine.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel;
 using System.Security.Claims;
 
 namespace CleanMOQasine.API.Controllers
@@ -44,8 +42,8 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet]
         [Authorize]
         [ProducesResponseType(typeof(List<OrderOutputModel>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Get all orders by role. Roles: All.")]
         public ActionResult<List<OrderOutputModel>> GetOrders()
         {
@@ -64,10 +62,9 @@ namespace CleanMOQasine.API.Controllers
         [HttpGet("{id}")]
         [Authorize]
         [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Get order by id. Roles: All.")]
-
         public ActionResult<OrderOutputModel> GetOrderById(int id)
         {
             var model = _orderService.GetOrderById(id);
@@ -80,9 +77,9 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Client)]
         [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(OrderOutputModel), StatusCodes.Status302Found)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Add order. Roles: Client.")]
         public ActionResult AddOrder([FromBody] OrderUpdateInputModel order)
         {
@@ -102,9 +99,9 @@ namespace CleanMOQasine.API.Controllers
         [HttpPost("admin")]
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Add order. Roles: Admin.")]
         public ActionResult AddOrder([FromBody] OrderInsertInputModel order)
         {
@@ -118,8 +115,8 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}")]
         [AuthorizeEnum(Role.Admin, Role.Client)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Update order. Roles: Admin, Client.")]
         public ActionResult UpdateOrder(int id, [FromBody] OrderUpdateInputModel order)
         {
@@ -132,9 +129,9 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}/cleaner")]
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Add cleaner to order. Roles: Admin.")]
         public ActionResult AddCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
@@ -146,9 +143,9 @@ namespace CleanMOQasine.API.Controllers
         [HttpPut("{id}/remove-cleaner")]
         [AuthorizeEnum(Role.Admin)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Remove cleaner from order. Roles: Admin.")]
         public ActionResult RemoveCleaner(int id, [FromBody] OrderCleanerInputModel cleaner)
         {
@@ -160,8 +157,8 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Delete order. Roles: Admin.")]
         public ActionResult DeleteOrder(int id)
         {
@@ -173,8 +170,8 @@ namespace CleanMOQasine.API.Controllers
         [AuthorizeEnum(Role.Admin)]
         [HttpPatch("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(EntityNotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Restore order. Roles: Admin.")]
         public ActionResult RestoreOrder(int id)
         {
@@ -185,9 +182,9 @@ namespace CleanMOQasine.API.Controllers
         //api/Orders/42/payment
         [AuthorizeEnum(Role.Admin)]
         [HttpPost("{orderId}/payment")]
-        [ProducesResponseType(typeof(PaymentInputModel), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(AuthenticationException), StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(NotFoundException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [SwaggerOperation("Add payment to order. Roles: Admin.")]
         public ActionResult AddPayment([FromBody] PaymentInputModel payment, int orderId)
         {

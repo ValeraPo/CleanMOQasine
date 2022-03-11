@@ -32,14 +32,14 @@ namespace CleanMOQasine.Business.Tests.TestData
                         {
                             Name = "Помыть шест",
                             Price = 343,
-                            Duration = TimeSpan.FromDays(1),
+                            Duration = TimeSpan.FromMinutes(15),
                             IsDeleted = false
                         },
                         new CleaningAdditionModel
                         {
                             Name = "Искупать попугая",
                             Price = 400,
-                            Duration = TimeSpan.FromDays(1),
+                            Duration = TimeSpan.FromMinutes(20),
                             IsDeleted = false
                         }
                     },
@@ -68,14 +68,14 @@ namespace CleanMOQasine.Business.Tests.TestData
                     {
                         Name = "Помыть шест",
                         Price = 343,
-                        Duration = TimeSpan.FromDays(1),
+                        Duration = TimeSpan.FromMinutes(15),
                         IsDeleted = false
                     },
                     new CleaningAdditionModel
                     {
                         Name = "Искупать попугая",
                         Price = 400,
-                        Duration = TimeSpan.FromDays(1),
+                        Duration = TimeSpan.FromMinutes(20),
                         IsDeleted = false
                     }
                 },

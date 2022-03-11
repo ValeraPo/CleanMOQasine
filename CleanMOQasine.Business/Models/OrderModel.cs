@@ -24,7 +24,7 @@ namespace CleanMOQasine.Business.Models
                 + CleaningAdditions.Select(c => c.Price).Sum()) * Rooms.Count
                 + Rooms.Select(r => r.Price).Sum();
             
-            set { } 
+            private set { } 
         }
 
         public TimeSpan TotalDuration
@@ -33,14 +33,14 @@ namespace CleanMOQasine.Business.Models
                 + CleaningAdditions.Select(c => c.Duration).Sum())
                 * Rooms.Count;
            
-            set { }
+            private set { }
         }
 
         public bool IsCompleted 
         {
             get => Date.Add(TotalDuration) <= DateTime.Now;
             
-            set 
+            private set 
             {
                 _isCompleted = value;
             } 

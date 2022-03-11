@@ -162,6 +162,7 @@ namespace CleanMOQasine.API.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [SwaggerOperation("Add working time to cleaner. Roles: Admin.")]
         public ActionResult<WorkingTimeOutputModel> AddCleanersWorkingTime([FromBody] WorkingTimeOutputModel workingTimeOutput,int id)
         {
             var workingTime = _autoMapper.Map<WorkingTimeModel>(workingTimeOutput);

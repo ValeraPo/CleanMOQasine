@@ -12,10 +12,6 @@ namespace CleanMOQasine.Data.Repositories
             _dbContext = dbContext;
         }
 
-        public User? GetClientById(int id) => _dbContext.Users.Where(c => c.Role == Enums.Role.Client)
-            .Where(c => !c.IsDeleted)
-            .FirstOrDefault(c => c.Id == id);
-
         public User? GetUserById(int id) => _dbContext.Users.Include(u=>u.CleaningAdditions)
                                                             .Include(u=>u.WorkingHours)
                                                             .FirstOrDefault(u => u.Id == id);

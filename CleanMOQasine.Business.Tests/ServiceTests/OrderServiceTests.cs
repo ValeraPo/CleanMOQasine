@@ -17,6 +17,7 @@ namespace CleanMOQasine.Business.Tests
     {
         private IMapper _autoMapper;
         private readonly OrderTestData _orderTestData;
+        private readonly UserTestData _userTestData;
         private Mock<IOrderRepository> _orderRepositoryMock;
         private Mock<IUserRepository> _userRepositoryMock;
         private Mock<ICleaningAdditionRepository> _cleaningAdditionRepositoryMock;
@@ -26,6 +27,7 @@ namespace CleanMOQasine.Business.Tests
         public OrderServiceTests()
         {
             _orderTestData = new OrderTestData();
+            _userTestData = new UserTestData(); 
             _autoMapper = new Mapper(
                 new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperToData>()));
         }
@@ -171,10 +173,9 @@ namespace CleanMOQasine.Business.Tests
         {
             //given
             var orderModel = _orderTestData.GetOrderModelForTests();
-            var userModel = _orderTestData.GetUserModelForTests();
-            var user = _autoMapper.Map<User>(userModel);
+            var users = _userTestData.GetListOfCleanersForTests();
             _orderRepositoryMock.Setup(m => m.AddOrder(It.IsAny<Order>()));
-            _userRepositoryMock.Setup(m => m.GetCleaners(It.IsAny<List<CleaningAddition>>(), It.IsAny<DateTime>(), It.IsAny<TimeSpan>())).Returns(new List<User> { user });
+            _userRepositoryMock.Setup(m => m.GetCleaners(It.IsAny<List<CleaningAddition>>(), It.IsAny<DateTime>(), It.IsAny<TimeSpan>())).Returns(users);
             var sut = new OrderService(_orderRepositoryMock.Object,
                 _userRepositoryMock.Object, _autoMapper,
                 _cleaningAdditionRepositoryMock.Object,
